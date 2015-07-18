@@ -1,0 +1,231 @@
+<html>
+<head>
+  <title>edX Odometer</title>
+  <meta charset="utf-8">
+
+  <!-- This script enables communication between you iframe and the platform.
+       REQUIRED --- DO NOT REMOVE!! -->
+   <script src="/static/js/capa/src/jschannel.js"></script>
+
+</head>
+<body>
+  <!-- This is the custom script that establishes the UI and gives the platform the state when requested. -->
+  <SCRIPT Language="JavaScript">
+  var MultiOdometer = (function() {
+     var channel,
+     // The above wrapper function and channel variable are both necessary,
+     // REQUIRED --- DO NOT REMOVE/CHANGE!!
+                
+     // The "state" JSON dictionary below is passed to the platform for grading and saving.
+     // Pass through whatever you wish
+        state = {
+           result: true
+        };
+            
+     // Establish a channel only if this application is embedded in an iframe.
+     // This will let the parent window communicate with this application using
+     // RPC and bypass SOP restrictions.
+     //
+     // REQUIRED --- DO NOT REMOVE/CHANGE!!
+     if (window.parent !== window) {
+        console.log("RAM -------- building channel");
+        channel = Channel.build({
+          window: window.parent,
+          origin: "*",
+          scope: "JSInput"
+        });
+        channel.bind("getGrade", getGrade);
+//        channel.bind("getState", getState);
+     }
+
+    function getGrade() {
+      console.log("RAM ----- getGrade() ");
+      return JSON.stringify(state);
+    }
+
+    function getState() {
+      console.log("RAM ----- getState() ");
+      return JSON.stringify(state);
+    }
+
+    // return that gives the platform the names of the functions it has available.
+    //
+    // REQUIRED --- DO NOT REMOVE/CHANGE!!
+    return {
+       getGrade: getGrade
+//       getState: getState
+    };
+
+
+  }());
+</SCRIPT>
+
+<SCRIPT>
+    // ------------- CUSTOM Odometer Code ---------------
+
+    var value = 0;
+    base = 10;
+    var odometer = "00";
+
+    //Sets the base from drop-down 
+    function setBase(n) {
+      if (n == 0) {
+	 document.getElementById("basediv").style.visibility="visible";
+	 var val = document.getElementById("baseinput").value;
+	 if (val > 32) {
+	    alert("Sorry, I can only handle bases up to 32.");
+    //        document.getElementById("basediv").style.visibility="hidden";
+	    document.getElementById("baseinput").value = base;
+	    return;    // ignore bases above 32
+	 }
+	 base = val;
+	 value = 0;
+	 document.getElementById("odometer").innerHTML = "00";
+	 document.getElementById("decimal").innerHTML = value;
+	 setOdoLabel(base);
+	 return;
+      }
+      base = n;
+      value = 0;
+      document.getElementById("odometer").innerHTML = "00";
+      document.getElementById("decimal").innerHTML = value;
+      document.getElementById("basediv").style.visibility="hidden";
+      setOdoLabel(base);
+    }
+
+    function setOdoLabel(base) {
+       var label = document.getElementById("odolabel")
+       if (base == 2)
+	 label.innerHTML = "binary";
+       else if (base == 8)
+	 label.innerHTML = "octal";
+       else if (base == 10)
+	 label.innerHTML = "decimal";
+       else if (base == 16)
+	 label.innerHTML = "hex";
+       else
+	 label.innerHTML = "base " + base;
+    }
+
+    function decToAltDigit(d, base) {
+       if (base <= 10)
+	 return d;
+       if (d < 10)
+	 return d;
+       else {
+	 d = d - 10;
+	 return "ABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(d);
+       }
+    }
+
+    function decToAltBase(n, base) {
+       if (n == 0)
+	 return "";
+       var rmdr = n % base;
+       return decToAltBase(Math.floor(n/base), base) + decToAltDigit(rmdr, base);
+    }
+
+    function padLen(base) {
+       if (base >= 10)
+	 return 2;
+       else if (base >= 3)
+	 return 4;
+       else if (base >= 2)
+	 return 8;
+    }
+
+    // Pad the number to  places
+    function pad(str) {
+      var len = str.length;
+      var padlen = padLen(base);
+      for (k=len; k < padlen; k++)
+	 str = "0" + str;
+      return str;; 
+    }
+
+    function limit(base) {
+       if (base >= 10)
+	 return Math.pow(base,2) - 1;
+       else if (base >= 3)
+	 return Math.pow(base,4) - 1;
+       else
+	 return Math.pow(base,8) - 1;     
+    }
+
+    // Advance the odometer
+    function advance() {
+       value += 1;
+       if (value > limit(base))
+	 value = 0;
+       odometer =    pad(decToAltBase(value, base));
+    //   alert(value + " = " + pad(decToBinary(value)));
+       document.getElementById("odometer").innerHTML = odometer;
+       document.getElementById("decimal").innerHTML = value;
+    }
+</SCRIPT>
+
+<table width="400" align="center" border="1" frame="box" rules="none">
+<tr>
+<td>
+<img src="./android_CSP-128px.jpg">
+</td>
+<td>
+Choose a base from the drop-down menu and click the <b><i>Next Number</i></b> button to advance
+the odometer by 1. You can try bases from 2 to 32.
+<br><br>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<FORM onSubmit="" NAME="odometerdemo">
+<CENTER>
+<TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
+<TR>
+<TD BGCOLOR="#999999" ALIGN="CENTER">
+
+<TABLE>
+<TR>
+<TD>
+<SELECT id="bases" onchange="setBase(value)">
+<OPTION value="2">Binary</OPTION>
+<OPTION value="8">Octal</OPTION>
+<OPTION value="10" selected>Decimal</OPTION>
+<OPTION value="16">Hexadecimal</OPTION>
+<OPTION value="0">Other</OPTION>
+</SELECT>
+<FONT COLOR="#ffffff" FACE="Arial"><B>Odometer</B></FONT>
+</TD>
+<TD>
+<DIV ID="basediv" style="visibility:hidden">
+ <FONT COLOR="#ffffff" FACE="Arial" SIZE="1"><B>Base:</B></FONT>
+ <INPUT TYPE="text" ID="baseinput" SIZE="2" MAXLENGTH="2" VALUE="4" onchange="setBase(0)">
+</DIV>
+</TD>
+</TR>
+</TABLE>
+
+<BR>
+<font color="#ffffff" SIZE="1"><LABEL>decimal</LABEL></FONT>
+<font color="#ffffff" SIZE="5"><LABEL id="decimal" >0</LABEL></font>
+</TD>
+
+</TR>
+<TR>
+<TD>
+<CENTER>
+<font color="#ffffff" SIZE="1"><LABEL id="odolabel">decimal</LABEL></FONT>
+<font color="#fffffff" SIZE="5"><LABEL id="odometer" >00</LABEL></font>
+<BR>
+<INPUT TYPE="button" VALUE="Next Number" onClick='advance()'>
+</CENTER>
+</TD>
+</TR>
+</TABLE>
+</CENTER>
+</FORM>
+</td>
+</tr>
+</table>
+
+</body>
+</html>

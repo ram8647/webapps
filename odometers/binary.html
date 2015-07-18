@@ -1,0 +1,138 @@
+<html>
+<head>
+  <title>edX Binary Odometer</title>
+  <meta charset="utf-8">
+
+  <!-- This script enables communication between you iframe and the platform.
+       REQUIRED --- DO NOT REMOVE!! -->
+   <script src="/static/js/capa/src/jschannel.js"></script>
+
+</head>
+<body>
+  <!-- This is the custom script that establishes the UI and gives the platform the state when requested. -->
+  <SCRIPT Language="JavaScript">
+  var BinaryOdometer = (function() {
+     var channel,
+     // The above wrapper function and channel variable are both necessary,
+     // REQUIRED --- DO NOT REMOVE/CHANGE!!
+                
+     // The "state" JSON dictionary below is passed to the platform for grading and saving.
+     // Pass through whatever you wish
+        state = {
+           result: true
+        };
+            
+     // Establish a channel only if this application is embedded in an iframe.
+     // This will let the parent window communicate with this application using
+     // RPC and bypass SOP restrictions.
+     //
+     // REQUIRED --- DO NOT REMOVE/CHANGE!!
+     if (window.parent !== window) {
+        console.log("RAM -------- building channel");
+        channel = Channel.build({
+          window: window.parent,
+          origin: "*",
+          scope: "JSInput"
+        });
+        channel.bind("getGrade", getGrade);
+     }
+
+    function getGrade() {
+      console.log("RAM ----- getGrade() ");
+      return JSON.stringify(state);
+    }
+
+    function getState() {
+      console.log("RAM ----- getState() ");
+      return JSON.stringify(state);
+    }
+
+    // return that gives the platform the names of the functions it has available.
+    //
+    // REQUIRED --- DO NOT REMOVE/CHANGE!!
+    return {
+       getGrade: getGrade
+    };
+
+
+  }());
+</SCRIPT>
+<SCRIPT>
+// Binary Odometer Code
+
+var value = 0;
+var odometer = "0 0 0 0 0";
+
+//Convert decimal value to binary
+function decToBinary(n) {
+   if (n == 0)
+      return "";
+   else if (n % 2 == 1) 
+      return decToBinary(Math.floor(n/2)) + "1";
+   else
+      return decToBinary(Math.floor(n/2)) + "0";
+}
+
+// Pad the binary number to 5 places
+function pad(str) {
+  var len = str.length;
+  for (k=len; k < 5; k++)
+     str = "0" + str;
+  return str;; 
+}
+
+// Advance the odometer
+function advance() {
+   value += 1;
+   if (value > 31)
+     value = 0;
+   odometer =    pad(decToBinary(value));
+//   alert(value + " = " + pad(decToBinary(value)));
+   document.getElementById("odometer").innerHTML = odometer;
+   document.getElementById("decimal").innerHTML = value;
+}
+// end hide -->
+</SCRIPT>
+
+<table width="400" align="center" border="1" frame="box" rules="none">
+<tr>
+<td>
+<img src="./android_CSP-128px.jpg">
+</td>
+<td>
+Click the <b><i>Next Number</i></b> button to advance the binary odometer by 1.
+<br><br>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<FORM onSubmit="" NAME="odometerdemo">
+<CENTER>
+<TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
+<TR>
+<TD BGCOLOR="#999999" ALIGN="CENTER">
+<FONT COLOR="#ffffff" FACE="Arial"><B>Binary Odometer</B></FONT>
+<BR>
+<font color="#ffffff" SIZE="1"><LABEL>decimal</LABEL></FONT>
+<font color="#ffffff" SIZE="5"><LABEL id="decimal" >0</LABEL></font>
+</TD>
+</TR>
+<TR>
+<TD>
+<CENTER>
+<font color="#ffffff" SIZE="1"><LABEL>binary</LABEL></FONT>
+<font color="#ffffff" SIZE="5"><LABEL id="odometer" for="odo">00000</LABEL></font>
+<BR>
+<INPUT TYPE="button" VALUE="Next Number" onClick='advance()'>
+</CENTER>
+</TD>
+</TR>
+</TABLE>
+</CENTER>
+</FORM>
+</td>
+</tr>
+</table>
+
+</body>
+</html>
