@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>BMP Editor</title>
+    <!-- 	<link rel="stylesheet" href="style.css"> -->
+    <script src="converters.js"></script>
+    <script src="bitmap-editor.js"></script>
+  </head>
+  <body onload="">
+    <table width="500" align="center" border="1" frame="box" rules="none">
+      <tr>
+	<td>
+	  <img src="./android_CSP-128px.jpg">
+	</td>
+	<td>
+	  <h3>Bitmap Editor</h3>
+	  Upload your bitmap image. Then to hide your three initials (or any 3-letter string) 
+	  in the image edit the first 24 bytes -- first 3 rows -- modifying the rightmost
+	  bit of each byte with a bit from your initials.  Then click 'Submit'.
+	  <br><br>
+	</td>
+      </tr>
+      <tr>
+	<td colspan="2">
+	  <FORM onSubmit="" NAME="bmpeditor">
+	    <CENTER>
+	      <TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
+		<TR>
+		  <TD BGCOLOR="#999999" ALIGN="CENTER">
+		    <div>
+		      Select a BMP file:
+		      <input type="file" id="fileInput" onchange="fileChangeHandler()">
+		    </div>
+		    <div id="fileDisplayArea"></div>
+		  </TD>
+		</TR>
+		<TR>
+		  <TD>
+		    <CENTER>
+		      <div id="page-wrapper">
+			<textarea id="editor" rows="12" columns="40"></textarea>
+		      </div>
+		      &nbsp;&nbsp;<INPUT ID="submit" TYPE="button" disabled VALUE="Submit" onClick='download()'>
+		    </CENTER>
+		  </TD>
+		</TR>
+
+		<tr>
+		  <td colspan="2">
+		    <FORM onSubmit="" NAME="asciilookup">
+		      <CENTER>
+			<TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
+			  <TR>
+			    <TD BGCOLOR="#999999" ALIGN="CENTER">
+			      <font color="#ffffff" SIZE="5"><LABEL>Letter:  </LABEL>
+				<INPUT TYPE="text" ID="inputletter" SIZE="6">
+				&nbsp;&nbsp;<INPUT TYPE="button" VALUE="Convert" onClick='convertAscii()'>
+				<LABEL id="binary"></LABEL></FONT>
+			    </TD>
+			  </TR>
+			</TABLE>
+		    </FORM>
+		  </TD>
+		</tr>
+
+		<tr>
+		  <td colspan="2">
+		    <FORM onSubmit="" NAME="decimallookup">
+		      <CENTER>
+			<TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
+			  <TR>
+			    <TD BGCOLOR="#999999" ALIGN="CENTER">
+			      <font color="#ffffff" size="5">
+				<LABEL>Number: </LABEL>
+				<INPUT TYPE="text" ID="inputnumber" SIZE="6">
+				&nbsp;&nbsp;<INPUT TYPE="button" VALUE="Convert" onClick='convertDecimal()'>
+				&nbsp;&nbsp;&nbsp;&nbsp;<LABEL ID="decbinary"></LABEL></font>
+			    </TD>
+			  </TR>
+			</TABLE>
+		    </FORM>
+		  </TD>
+		</tr>
+
+		<tr>
+		  <td>
+		    <table>
+		      <tr>
+			<td>
+			  <div id="rawimgdiv" style="visibility:hidden">
+			    Original<br />
+			    <img id="rawimg" src="" alt='MyImage'>
+			  </div>
+			</td>
+			<td>
+			  &nbsp;&nbsp;
+			</td>
+			<td>
+			  <div id="stegimgdiv" style="visibility:hidden">
+			    Stego<br />
+			    <img id="stegimg" src="" alt='MyImage'> (Right click on the image to download it.)
+			  </div>
+			</td>
+		      </tr>
+		  </td>
+		</tr>
+		</table>
+	  </FORM>
+	  </TABLE>
+	  </CENTER>
+  </body>
+</html>

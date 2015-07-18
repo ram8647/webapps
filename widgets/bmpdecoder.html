@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	  "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>BMP Decoder</title>
+    <!-- 	<link rel="stylesheet" href="style.css"> -->
+    <script src="converters.js"></script>
+    <script src="bitmap-editor.js"></script>
+  </head>
+  <body onload="">
+    <table width="500" align="center" border="1" frame="box" rules="none">
+      <tr>
+	<td>
+	  <img src="./android_CSP-128px.jpg">
+	</td>
+	<td>
+	  <h3>Bitmap Decoder</h3>
+	  Upload your bitmap image. Then click 'Decode'.
+	  <br><br>
+	</td>
+      </tr>
+      <tr>
+	<td colspan="2">
+	  <FORM onSubmit="" NAME="bmpeditor">
+	    <CENTER>
+	      <TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
+		<TR>
+		  <TD BGCOLOR="#999999" ALIGN="CENTER">
+		    <div>
+		      Select a BMP file:
+		      <input type="file" id="fileInput" onchange="fileChangeHandler()">
+		    </div>
+		  </TD>
+		</TR>
+		<TR>
+		  <TD>
+		    <CENTER>
+		      &nbsp;&nbsp;<INPUT ID="decode" TYPE="button" disabled VALUE="Decode" onClick='decodeImg()'>
+		    </CENTER>
+		  </TD>
+		</TR>
+
+		<tr>
+		  <td>
+		    <table>
+		      <tr>
+			<td>
+			  <div id="rawimgdiv" style="visibility:hidden">
+			    <table>
+			      <tr>
+				<td><img id="rawimg" src="" alt='MyImage'></td>
+				<td><label id="message"></label>
+			      </tr>
+			    </table>
+			  </div>
+			</td>
+			<td>
+			  &nbsp;&nbsp;
+			</td>
+		      </tr>
+		  </td>
+		</tr>
+		</table>
+	  </FORM>
+	  </TABLE>
+	  </CENTER>
+  </body>
+</html>

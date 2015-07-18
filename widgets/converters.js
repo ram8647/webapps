@@ -178,5 +178,17 @@ function limit(base) {
     return Math.pow(base,8) - 1;     
 }
 
+/**
+ * Converts s to a hex (base 16) string
+ * @param s a string in some other base
+ * @param a hex representation of s
+ */
+function numHex(s) {
+  var a = s.toString(16);
+  if ( (a.length % 2) > 0 ) { 
+    a = "0" + a; 
+  }
+  return a;
+}
 
 
