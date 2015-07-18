@@ -1,0 +1,222 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	  "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>4-bit computer</title>
+    <!-- 	<link rel="stylesheet" href="style.css"> -->
+    <script src="../numbers/converters.js"></script>
+    <script src="computer.js"></script>
+    <script Language="JavaScript">
+      
+      // The computer's internal registers and RAM
+      var pcounter = 0;
+      var pregister = 0;
+      var registerA = 0;
+      var registerB = 0;
+
+      var ram = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+      var dataIndex = 0;   // Data segment 0..7
+      var progIndex = 8;   // Prog segment 8..15
+
+      //  Reset the computer -- like restarting
+      function reset() {
+        alert("Restarting...");
+        pcounter = 0;
+        pregister = 0;
+        registerA = 0;
+        registerB = 0;
+        for (var i=0; i < 16; i++) {
+	  ram[i] = 0;
+        }
+	resetVisual();
+      }
+
+     // Display the current state of the computer after reset
+     function resetVisual() {
+       document.getElementById("pctr").value = pad(decToBinary(pcounter), 4);
+       document.getElementById("preg").value = pad(decToBinary(pregister), 8);
+       document.getElementById("rega").value = pad(decToBinary(registerA), 8);
+       document.getElementById("regb").value = pad(decToBinary(registerB), 8);
+       for (var i=0; i < 16; i++) {
+         var id = "m" + pad(decToBinary(i), 4);
+         document.getElementById(id).value = pad(decToBinary(ram[i]), 8);
+       }
+     }
+
+     function handleKeyboardInput() {
+       if (event.keyCode == 13) {
+        // alert(document.getElementById('keyboard').value);        
+       }
+     }
+
+     // Restricts input in memory textfields to 0s and 1s
+     function handleRAM(textfield) {
+       textfield.value = textfield.value.replace(/[^0-1]/,'');
+     }
+
+     // Copy all input elements to memory
+     function updateState() {
+       for (var i=0; i < 16; i++) {
+         var id = "m" + pad(decToBinary(i), 4);
+         ram[i] = binaryToDecimal(document.getElementById(id).value);
+       }
+     }
+
+     function fetchExecute() {
+       alert("Running...");
+     }
+
+     function step() {
+       fetchNextInstruction();
+       executeCurrentInstruction();
+     }
+
+     function fetchNextInstruction() {
+        updateState();
+        var pctr = binaryToDecimal(document.getElementById("pctr").value);
+        var instr = ram[pctr];
+        document.getElementById("preg").value = pad(decToBinary(instr), 8);
+        pctr += 1;
+        if (pctr > 7) 
+          pctr = 0;
+        document.getElementById("pctr").value = pad(decToBinary(pctr), 4);
+     }
+
+     function executeCurrentInstruction() {
+        var preg =  document.getElementById("preg").value;
+        var instr = binaryToDecimal(preg.substring(0,4));
+        var addrbin = preg.substring(4)
+        var addr = binaryToDecimal(addrbin);
+      
+       if (instr == 1)  {   // GET x and put in registerA
+          document.getElementById("rega").value = pad(decToBinary(ram[addr]),8);
+       }
+       if (instr == 2)  {   // Add x to register
+          var rega = binaryToDecimal(document.getElementById("rega").value);
+          var operand = ram[addr];
+          var result = rega + operand;
+          document.getElementById("rega").value = pad(decToBinary(result),8);
+       }
+       if (instr == 3)  {   // Put regA at x
+          var rega = binaryToDecimal(document.getElementById("rega").value);
+          ram[addr] = rega;
+          document.getElementById("m"+addrbin).value = pad(decToBinary(ram[addr]),8);
+       }
+       if (instr == 8)  {   // Print x
+          var monitor = document.getElementById("monitor");
+          monitor.value = monitor.value + ram[addr] + "\n" ;
+       }
+       if (instr == 9)  {   // Read keyboard into x and echo it
+          var keyboard = document.getElementById("keyboard").value;
+          var monitor = document.getElementById("monitor");
+          monitor.value = keyboard + "\n";
+          ram[addr] = keyboard;
+          document.getElementById("m"+addrbin).value = pad(decToBinary(ram[addr]),8);
+       }
+     }
+   </script>
+  </head>
+  <body onload="">
+    <table width="550" align="center" border="1" frame="box" rules="none">  <!-- Main Container -->
+      <tr>
+	<td>
+	  <img src="./android_CSP-128px.jpg">
+	</td>
+	<td>
+	  <h1>4-Bit Computer Simulator</h1>
+	</td>
+      </tr>
+      <tr>
+	<td colspan="2">
+	  <TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">  <!-- Computer table -->
+	    <TR>
+	      <TD>
+		<CENTER>
+		  <div id="userinterface">
+                    <table border="0">
+                      <tr>
+                        <td>
+                          <font color="red">Monitor</font><br />
+ 			  <textarea id="monitor" rows="12" columns="60" readonly></textarea>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <font color="red">Keyboard</font><br />
+ 			  <input id="keyboard" type="text" width="8" onkeydown="handleKeyboardInput()"></input>
+                        </td>
+                      </tr>
+                    </table>
+		  </div>
+		  <!-- 		      &nbsp;&nbsp;<INPUT ID="submit" TYPE="button" disabled VALUE="Submit" onClick='download()'> -->
+		</CENTER>
+	      </TD>
+	    </TR>
+
+	    <tr>
+	      <td>
+		<table border="1">  <!-- RAM and CPU table -->
+		  <tr>
+		    <td>
+		      <div id="ram" style="visibility:visible">
+			<font color="red">RAM</font><br />
+                        <table><tr><td><u>INST</u></td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td><u>DATA</u></td><td>&nbsp;</td></tr></table>
+                        <table><tr><td>0000:</td><td><input id="m0000" type="text" size="8" value="00000000" maxlength="8" onkeyup="handleRAM(this)"></td>
+                            <td>1000:</td><td><input id="m1000" type="text" size="8" value="00000000" maxlength="8" onkeyup="handleRAM(this)"></td></tr></table>
+                        <table><tr><td>0001:</td><td><input id="m0001" type="text" size="8" value="00000000" maxlength="8" onkeyup="handleRAM(this)"></td>
+                            <td>1001:</td><td><input id="m1001" type="text" size="8" value="00000000" maxlength="8" onkeyup="handleRAM(this)"></td></tr></table>
+                        <table><tr><td>0010:</td><td><input id="m0010" type="text" size="8" value="00000000" maxlength="8" onkeyup="handleRAM(this)"></td>
+                            <td>1010:</td><td><input id="m1010" type="text" size="8" value="00000000" maxlength="8" onkeyup="handleRAM(this)"></td></tr></table>
+                        <table><tr><td>0011:</td><td><input id="m0011" type="text" size="8" value="00000000" maxlength="8" onkeyup="handleRAM(this)"></td>
+                            <td>1011:</td><td><input id="m1011" type="text" size="8" value="00000000" maxlength="8" onkeyup="handleRAM(this)"></td></tr></table>
+                        <table><tr><td>0100:</td><td><input id="m0100" type="text" size="8" value="00000000" maxlength="8" onkeyup="handleRAM(this)"></td>
+                            <td>1100:</td><td><input id="m1100" type="text" size="8" value="00000000" maxlength="8" onkeyup="handleRAM(this)"></td></tr></table>
+                        <table><tr><td>0101:</td><td><input id="m0101" type="text" size="8" value="00000000" maxlength="8" onkeyup="handleRAM(this)"></td>
+                            <td>1101:</td><td><input id="m1101" type="text" size="8" value="00000000" maxlength="8" onkeyup="handleRAM(this)"></td></tr></table>
+                        <table><tr><td>0110:</td><td><input id="m0110" type="text" size="8" value="00000000" maxlength="8" onkeyup="handleRAM(this)"></td>
+                            <td>1110:</td><td><input id="m1110" type="text" size="8" value="00000000" maxlength="8" onkeyup="handleRAM(this)"></td></tr></table>
+                        <table><tr><td>0111:</td><td><input id="m0111" type="text" size="8" value="00000000" maxlength="8" onkeyup="handleRAM(this)"></td>
+                            <td>1111:</td><td><input id="m1111" type="text" size="8" value="00000000" maxlength="8" onkeyup="handleRAM(this)"></td></tr></table>
+		      </div>
+		    </td>
+		    <td>
+                      <font color="red">CPU</font><br />
+		      <div id="cpu" style="visibility:visible">
+                        <table><tr><td><u>PCTR:</u>&nbsp;</td><td><input id="pctr" type="text" size="4" value="0000" maxlength="4" readonly></td>
+                            <td><u>PREG:</u></td><td><input id="preg" type="text" size="8"  value="00000000" maxlength="8" readonly></td></tr></table>
+                        <table><tr><td><u>REGA:</u></td><td><input id="rega" type="text" size="8"  value="00000000" maxlength="8" readonly></td>
+                            <td><u>REGB:</u></td><td><input id="regb" type="text" size="8" value="00000000" maxlength="8" readonly></td></tr></table>
+
+                        <font size="2">
+                        <br />Instruction set
+                        <br />&nbsp;&nbsp;&lt;x&gt; is a 4-bit memory address
+                        <br />&nbsp;&nbsp;0000 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- NOP (Do nothing)
+                        <br />&nbsp;&nbsp;0001 &lt;x&gt; -- GET value at &lt;x&gt; and put in REGA
+                        <br />&nbsp;&nbsp;0010 &lt;x&gt; -- ADD value at &lt;x&gt; to REGA
+                        <br />&nbsp;&nbsp;0011 &lt;x&gt; -- PUT value in REGA at  &lt;x&gt;
+                        <br />&nbsp;&nbsp;1000 &lt;x&gt; -- PRINT value at  &lt;x&gt;
+                        <br />&nbsp;&nbsp;1001 &lt;x&gt; -- INPUT keyboard to  &lt;x&gt;
+                        <br />
+                        </font>
+		      </div>
+		    </td>
+		  </tr>
+		</table> <!-- end of RAM & CPU table -->
+              </td>
+	    </tr>
+            <tr>
+              <td>
+               <button type="button" id="reset" onclick="reset()">Reset</input>
+               <button type="button" id="step" onclick="step()">Step</input>
+               <button type="button" id="run" onclick="fetchExecute()">Run</input>
+              </td>
+            <tr>
+          
+	  </table> <!-- end of computer table -->
+	</td>
+      </tr>
+    </table>  <!-- end of main container -->
+  </body>
+</html>
