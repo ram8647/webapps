@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <title> Decimal Lookup</title>
+  <meta charset="utf-8">
+
+  <!-- edX: This script enables communication between you iframe and the platform.
+       REQUIRED for edX --- DO NOT REMOVE!! -->
+   <script src="/static/js/capa/src/jschannel.js"></script>
+   <script src="./ed-jsinput.js"></script>
+
+   <script src="./converters.js"></script>
+   <script Language="JavaScript">
+    // Initialization
+    function init() {
+    }
+
+    // Convert input number to binary value
+    function convert() {
+       var input = document.getElementById("inputnumber").value;
+       var binary = decToBinary(input);
+       document.getElementById("binary").innerHTML = binary;
+    }
+    // end hide -->
+   </script>
+</head>
+<body onLoad="init()">
+  <table width="600" align="center" border="1" frame="box" rules="none">
+    <tr>
+      <td>
+	<table>
+	  <tr>
+	    <td>
+	      <img src="./android_CSP-128px.jpg">
+	    </td>
+	  </tr>
+	</table>
+      </td>
+      <td>
+	<h3>Decimal Lookup</h3>
+	Type a decimal number in the text field and click the <b><i>Convert</i></b> button
+	to see its binary equivalent.
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+	<FORM onSubmit="" NAME="odometerdemo">
+	  <CENTER>
+	    <TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
+	      <TR>
+		<TD BGCOLOR="#999999" ALIGN="CENTER">
+		  <font size="6">
+		    <LABEL>Number: </LABEL>
+		    <INPUT TYPE="text" ID="inputnumber" SIZE="6">
+		    &nbsp;&nbsp;<INPUT TYPE="button" VALUE="Convert" onClick='convert()'>
+		    &nbsp;&nbsp;&nbsp;&nbsp;<LABEL ID="binary"></LABEL></font>
+		</TD>
+	      </TR>
+	      <TR>
+		<TD>
+		  <CENTER>
+
+		  </CENTER>
+		</TD>
+	      </TR>
+	    </TABLE>
+	  </CENTER>
+	</FORM>
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>
