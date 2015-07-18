@@ -1,3 +1,5 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
   <title>edX Odometer</title>
@@ -8,10 +10,7 @@
    <script src="/static/js/capa/src/jschannel.js"></script>
    <script src="./edx-jsinput.js"></script>
    <script src="./converters.js"></script>
-
-</head>
-<body>
-<SCRIPT>
+   <script LANGUAGE="JavaScript">
     // ------------- CUSTOM Odometer Code ---------------
     var value = 0;
     base = 10;
@@ -67,70 +66,70 @@
        document.getElementById("odometer").innerHTML = odometer;
        document.getElementById("decimal").innerHTML = value;
     }
-</SCRIPT>
+   </script>
+</head>
+<body>
+  <table width="400" align="center" border="1" frame="box" rules="none">
+    <tr>
+      <td>
+	<img src="./android_CSP-128px.jpg">
+      </td>
+      <td>
+	Choose a base from the drop-down menu and click the <b><i>Next Number</i></b> button to advance
+	the odometer by 1. You can try bases from 2 to 32.
+	<br><br>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+	<FORM onSubmit="" NAME="odometerdemo">
+	  <CENTER>
+	    <TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
+	      <TR>
+		<TD BGCOLOR="#999999" ALIGN="CENTER">
 
-<table width="400" align="center" border="1" frame="box" rules="none">
-<tr>
-<td>
-<img src="./android_CSP-128px.jpg">
-</td>
-<td>
-Choose a base from the drop-down menu and click the <b><i>Next Number</i></b> button to advance
-the odometer by 1. You can try bases from 2 to 32.
-<br><br>
-</td>
-</tr>
-<tr>
-<td colspan="2">
-<FORM onSubmit="" NAME="odometerdemo">
-<CENTER>
-<TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
-<TR>
-<TD BGCOLOR="#999999" ALIGN="CENTER">
+		  <TABLE>
+		    <TR>
+		      <TD>
+			<SELECT id="bases" onchange="setBase(value)">
+			  <OPTION value="2">Binary</OPTION>
+			  <OPTION value="8">Octal</OPTION>
+			  <OPTION value="10" selected>Decimal</OPTION>
+			  <OPTION value="16">Hexadecimal</OPTION>
+			  <OPTION value="0">Other</OPTION>
+			</SELECT>
+			<FONT COLOR="#ffffff" FACE="Arial"><B>Odometer</B></FONT>
+		      </TD>
+		      <TD>
+			<DIV ID="basediv" style="visibility:hidden">
+			  <FONT COLOR="#ffffff" FACE="Arial" SIZE="1"><B>Base:</B></FONT>
+			  <INPUT TYPE="text" ID="baseinput" SIZE="2" MAXLENGTH="2" VALUE="4" onchange="setBase(0)">
+			</DIV>
+		      </TD>
+		    </TR>
+		  </TABLE>
 
-<TABLE>
-<TR>
-<TD>
-<SELECT id="bases" onchange="setBase(value)">
-<OPTION value="2">Binary</OPTION>
-<OPTION value="8">Octal</OPTION>
-<OPTION value="10" selected>Decimal</OPTION>
-<OPTION value="16">Hexadecimal</OPTION>
-<OPTION value="0">Other</OPTION>
-</SELECT>
-<FONT COLOR="#ffffff" FACE="Arial"><B>Odometer</B></FONT>
-</TD>
-<TD>
-<DIV ID="basediv" style="visibility:hidden">
- <FONT COLOR="#ffffff" FACE="Arial" SIZE="1"><B>Base:</B></FONT>
- <INPUT TYPE="text" ID="baseinput" SIZE="2" MAXLENGTH="2" VALUE="4" onchange="setBase(0)">
-</DIV>
-</TD>
-</TR>
-</TABLE>
+		  <BR>
+		  <font color="#ffffff" SIZE="1"><LABEL>decimal</LABEL></FONT>
+		  <font color="#ffffff" SIZE="5"><LABEL id="decimal" >0</LABEL></font>
+		</TD>
 
-<BR>
-<font color="#ffffff" SIZE="1"><LABEL>decimal</LABEL></FONT>
-<font color="#ffffff" SIZE="5"><LABEL id="decimal" >0</LABEL></font>
-</TD>
-
-</TR>
-<TR>
-<TD>
-<CENTER>
-<font color="#ffffff" SIZE="1"><LABEL id="odolabel">decimal</LABEL></FONT>
-<font color="#fffffff" SIZE="5"><LABEL id="odometer" >00</LABEL></font>
-<BR>
-<INPUT TYPE="button" VALUE="Next Number" onClick='advance()'>
-</CENTER>
-</TD>
-</TR>
-</TABLE>
-</CENTER>
-</FORM>
-</td>
-</tr>
-</table>
-
+	      </TR>
+	      <TR>
+		<TD>
+		  <CENTER>
+		    <font color="#ffffff" SIZE="1"><LABEL id="odolabel">decimal</LABEL></FONT>
+		    <font color="#fffffff" SIZE="5"><LABEL id="odometer" >00</LABEL></font>
+		    <BR>
+		    <INPUT TYPE="button" VALUE="Next Number" onClick='advance()'>
+		  </CENTER>
+		</TD>
+	      </TR>
+	    </TABLE>
+	  </CENTER>
+	</FORM>
+      </td>
+    </tr>
+  </table>
 </body>
 </html>

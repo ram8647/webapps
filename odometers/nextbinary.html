@@ -1,96 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
   <title>edX Binary Odometer</title>
   <meta charset="utf-8">
 
-  <!-- This script enables communication between you iframe and the platform.
-       REQUIRED --- DO NOT REMOVE!! -->
+  <!-- edX: This script enables communication between the iframe and the platform.
+       REQUIRED for edX --- DO NOT REMOVE!! -->
    <script src="/static/js/capa/src/jschannel.js"></script>
    <script src="./edx-jsinput.js"></script>
-   <script src="./converters.js"></script>
 
+   <script src="./converters.js"></script>
+   <SCRIPT LANGUAGE="JavaScript">
+    // Binary Odometer Code
+
+    var decimalValue = 0;
+    var binary = "00000";
+    var nCorrect = 0;
+    var nTries = 0;
+
+    function init() {
+       decimalValue = Math.round(Math.random() * 32);
+       document.getElementById("binary").innerHTML = decToBinary(decimalValue);
+    }
+
+    // Check the odometer
+    function check() {
+       var answer = document.getElementById("answer").value;
+    //   var answerDecimal = binaryToDecimal(answer, 1);
+       var answerDecimal = binaryToDecimal(answer);
+       if (decimalValue + 1 == answerDecimal) {
+	 nCorrect += 1;
+	 alert("Correct! That's " + nCorrect + " correct.");
+	 nTries = 0;
+	 decimalValue = Math.round((Math.random() * 32));
+	 document.getElementById("binary").innerHTML = decToBinary(decimalValue);
+	 document.getElementById("correct").innerHTML = "Correct: " + nCorrect;
+       }
+       else {
+	 nTries += 1;
+	 if (nTries <= 3) {
+	    alert("Incorrect. Number of tries = " + nTries + " Try again. ");
+	 }
+	 else  {
+	    alert("Incorrect. Number of tries = " + nTries + " The answer is " + decToBinary(decimalValue+1) + " Let's try a new problem. ");
+	    nTries = 0;
+	    decimalValue = Math.round((Math.random() * 32));
+	    document.getElementById("binary").innerHTML = decToBinary(decimalValue);
+	 }
+       } 
+    }
+   </SCRIPT>
 </head>
 <body onLoad="init()">
-<SCRIPT>
-// Binary Odometer Code
+  <table width="400" align="center" border="1" frame="box" rules="none">
+    <tr>
+      <td>
+	<img src="./android_CSP-128px.jpg">
+      </td>
+      <td>
+	<h3>Counting in Binary</h3>
+	Type your answer in the text field and click the <b><i>Check</i></b> button.
+	<br><br>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+	<FORM onSubmit="" NAME="odometerdemo">
+	  <CENTER>
+	    <TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
+	      <TR>
+		<TD BGCOLOR="#999999" ALIGN="CENTER">
+		  <font color="#ffffff" SIZE="5"><LABEL>The current number is: </LABEL></FONT>
+		  <font color="#ff0000" SIZE="5"><LABEL id="binary" >00000</LABEL></font>
+		  <br><font color="#ffffff" SIZE="5"><LABEL>What is the next number?</LABEL></font>
+		</TD>
+	      </TR>
+	      <TR>
+		<TD>
+		  <CENTER>
+		    <INPUT TYPE="text" ID="answer" SIZE="6">
+		    &nbsp;&nbsp;<INPUT TYPE="button" VALUE="Check" onClick='check()'>
+		    &nbsp;&nbsp;&nbsp;&nbsp;<LABEL ID="correct">Correct: 0</LABEL>
 
-var decimalValue = 0;
-var binary = "00000";
-var nCorrect = 0;
-var nTries = 0;
-
-function init() {
-   decimalValue = Math.round(Math.random() * 32);
-   document.getElementById("binary").innerHTML = decToBinary(decimalValue);
-}
-
-// Check the odometer
-function check() {
-   var answer = document.getElementById("answer").value;
-   var answerDecimal = binaryToDecimal(answer, 1);
-   if (decimalValue + 1 == answerDecimal) {
-     nCorrect += 1;
-     alert("Correct! That's " + nCorrect + " correct.");
-     nTries = 0;
-     decimalValue = Math.round((Math.random() * 32));
-     document.getElementById("binary").innerHTML = decToBinary(decimalValue);
-     document.getElementById("correct").innerHTML = "Correct: " + nCorrect;
-   }
-   else {
-     nTries += 1;
-     if (nTries <= 3) {
-        alert("Incorrect. Number of tries = " + nTries + " Try again. ");
-     }
-     else  {
-        alert("Incorrect. Number of tries = " + nTries + " The answer is " + decToBinary(decimalValue+1) + " Let's try a new problem. ");
-	nTries = 0;
-	decimalValue = Math.round((Math.random() * 32));
-	document.getElementById("binary").innerHTML = decToBinary(decimalValue);
-     }
-   } 
-}
-// end hide -->
-</SCRIPT>
-
-<table width="400" align="center" border="1" frame="box" rules="none">
-<tr>
-<td>
-<img src="./android_CSP-128px.jpg">
-</td>
-<td>
-<h3>Counting in Binary</h3>
-Type your answer in the text field and click the <b><i>Check</i></b> button.
-<br><br>
-</td>
-</tr>
-<tr>
-<td colspan="2">
-<FORM onSubmit="" NAME="odometerdemo">
-<CENTER>
-<TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
-<TR>
-<TD BGCOLOR="#999999" ALIGN="CENTER">
-<font color="#ffffff" SIZE="5"><LABEL>The current number is: </LABEL></FONT>
-<font color="#ff0000" SIZE="5"><LABEL id="binary" >00000</LABEL></font>
-<br><font color="#ffffff" SIZE="5"><LABEL>What is the next number?</LABEL></font>
-</TD>
-</TR>
-<TR>
-<TD>
-<CENTER>
-<INPUT TYPE="text" ID="answer" SIZE="6">
-&nbsp;&nbsp;<INPUT TYPE="button" VALUE="Check" onClick='check()'>
-&nbsp;&nbsp;&nbsp;&nbsp;<LABEL ID="correct">Correct: 0</LABEL>
-
-</CENTER>
-</TD>
-</TR>
-</TABLE>
-</CENTER>
-</FORM>
-</td>
-</tr>
-</table>
+		  </CENTER>
+		</TD>
+	      </TR>
+	    </TABLE>
+	  </CENTER>
+	</FORM>
+      </td>
+    </tr>
+  </table>
 
 </body>
 </html>

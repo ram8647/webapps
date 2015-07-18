@@ -1,118 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-  <title>edX Decimal to Binary</title>
+  <title>Decimal to Binary</title>
   <meta charset="utf-8">
 
-  <!-- This script enables communication between you iframe and the platform.
-       REQUIRED --- DO NOT REMOVE!! -->
+  <!-- edX: This script enables communication between iframe and the platform.
+       REQUIRED for edX --- DO NOT REMOVE!! -->
    <script src="/static/js/capa/src/jschannel.js"></script>
    <script src="./edx-jsinput.js"></script>
+
    <script src="./converters.js"></script>
-</head>
-<body onLoad="init()">
-<SCRIPT>
-// Decimal to Binary
+   <script>
+     // Decimal to converter widget
+     var decimalValue = 0;
+     var binary = "00000";
+     var nCorrect = 0;
+     var nTries = 0;
+     var hintNum = 0;
+     var hints = [
+	 "Let the decimal number be D and write down the place values -- 32  16  8  4  2  1 -- with 0s beneath them.",
+	 "Put a 1 under the largest place value that goes into D and subtract it from D.",
+	 "Repeat until D becomes 0."
+	 ];
 
-var decimalValue = 0;
-var binary = "00000";
-var nCorrect = 0;
-var nTries = 0;
-var hintNum = 0;
-var hints = [
-    "Let the decimal number be D and write down the place values -- 32  16  8  4  2  1 -- with 0s beneath them.",
-    "Put a 1 under the largest place value that goes into D and subtract it from D.",
-    "Repeat until D becomes 0."
-    ];
-function init() {
-   decimalValue = Math.round(Math.random() * 64);
-   document.getElementById("decimal").innerHTML = decimalValue;
-}
-
-// Give a hint
-function hint() {
-   document.getElementById("hinttext").innerHTML = "HINT(" + (hintNum+1) + "): " + hints[hintNum];
-   hintNum = (hintNum + 1) % hints.length;
-}
-
-// Check the answer
-function check() {
-   var input = document.getElementById("answer").value;
-   var answer = binaryToDecimal(input,1);
-   if (answer == decimalValue) {
-     nCorrect += 1;
-     alert("Correct! That's " + nCorrect + " correct.");
-     nTries = 0;
-     decimalValue = Math.round((Math.random() * 64));
-     document.getElementById("decimal").innerHTML = decimalValue;
-     document.getElementById("correct").innerHTML = "Correct: " + nCorrect;
-   }
-   else {
-     nTries += 1;
-     if (nTries <= 3) {
-        alert(input + " which is " + answer + " in decimal, is incorrect. \nNumber of tries = " + nTries + " Try again. ");
-     }
-     else  {
-        alert(input + " which is " + answer + " in decimal, is incorrect. \nNumber of tries = " + nTries 
-                    + "\n" + decimalValue + " is " + decToBinary(decimalValue) + " in binary. \nLet's try a new problem. ");
-	nTries = 0;
-	decimalValue = Math.round((Math.random() * 64));
+     // Initialize the app.
+     function init() {
+	decimalValue = Math.round(Math.random() * 64);
 	document.getElementById("decimal").innerHTML = decimalValue;
      }
-   } 
-}
-// end hide -->
-</SCRIPT>
 
-<table width="600" align="center" border="1" frame="box" rules="none">
-<tr>
-<td>
-<table>
-<tr>
-<td>
-<img src="./android_CSP-128px.jpg">
-</td>
-</tr><tr>
-<td align="center">
-<br><INPUT TYPE="button" STYLE="background-color:magenta" VALUE="Hint" onClick='hint()'>
-</td>
-</tr>
-</table>
-</td>
-<td>
-<h3>Converting Decimal to Binary</h3>
-Type your answer in the text field and click the <b><i>Check</i></b> button.
-<br><br><font color="#ff00dd" SIZE="3"><LABEL ID="hinttext"></LABEL></FONT>
-<br><br>
-</td>
-</tr>
-<tr>
-<td colspan="2">
-<FORM onSubmit="" NAME="odometerdemo">
-<CENTER>
-<TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
-<TR>
-<TD BGCOLOR="#999999" ALIGN="CENTER">
-<font color="#ffffff" SIZE="5"><LABEL>The current number is: </LABEL></FONT>
-<font color="#ff0000" SIZE="5"><LABEL id="decimal" >25</LABEL></font>
-<br><font color="#ffffff" SIZE="5"><LABEL>What is its binary (base 2) value?</LABEL></font>
-</TD>
-</TR>
-<TR>
-<TD>
-<CENTER>
-<INPUT TYPE="text" ID="answer" SIZE="6">
-&nbsp;&nbsp;<INPUT TYPE="button" VALUE="Check" onClick='check()'>
-&nbsp;&nbsp;&nbsp;&nbsp;<LABEL ID="correct">Correct: 0</LABEL>
+     // Give the next hint wrapping around to the beginning.
+     function hint() {
+	document.getElementById("hinttext").innerHTML = "HINT(" + (hintNum+1) + "): " + hints[hintNum];
+	hintNum = (hintNum + 1) % hints.length;
+     }
 
-</CENTER>
-</TD>
-</TR>
-</TABLE>
-</CENTER>
-</FORM>
-</td>
-</tr>
-</table>
+     // Check the user's answer.
+     function check() {
+	var input = document.getElementById("answer").value;
+	var answer = binaryToDecimal(input);
+	if (answer == decimalValue) {
+	  nCorrect += 1;
+	  alert("Correct! That's " + nCorrect + " correct.");
+	  nTries = 0;
+	  decimalValue = Math.round((Math.random() * 64));
+	  document.getElementById("decimal").innerHTML = decimalValue;
+	  document.getElementById("correct").innerHTML = "Correct: " + nCorrect;
+	}
+	else {
+	  nTries += 1;
+	  if (nTries <= 3) {
+	     alert(input + " which is " + answer + " in decimal, is incorrect. \nNumber of tries = " + nTries + " Try again. ");
+	  }
+	  else  {
+	     alert(input + " which is " + answer + " in decimal, is incorrect. \nNumber of tries = " + nTries 
+			 + "\n" + decimalValue + " is " + decToBinary(decimalValue) + " in binary. \nLet's try a new problem. ");
+	     nTries = 0;
+	     decimalValue = Math.round((Math.random() * 64));
+	     document.getElementById("decimal").innerHTML = decimalValue;
+	  }
+	} 
+     }
+    </script>
+</head>
+<body onLoad="init()">
+  <table width="600" align="center" border="1" frame="box" rules="none">
+    <tr>
+      <td>
+	<table>
+	  <tr>
+	    <td>
+	      <img src="./android_CSP-128px.jpg">
+	    </td>
+	  </tr><tr>
+	    <td align="center">
+	      <br><INPUT TYPE="button" STYLE="background-color:magenta" VALUE="Hint" onClick='hint()'>
+	    </td>
+	  </tr>
+	</table>
+      </td>
+      <td>
+	<h3>Converting Decimal to Binary</h3>
+	Type your answer in the text field and click the <b><i>Check</i></b> button.
+	<br><br><font color="#ff00dd" SIZE="3"><LABEL ID="hinttext"></LABEL></FONT>
+	<br><br>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+	<FORM onSubmit="" NAME="odometerdemo">
+	  <CENTER>
+	    <TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
+	      <TR>
+		<TD BGCOLOR="#999999" ALIGN="CENTER">
+		  <font color="#ffffff" SIZE="5"><LABEL>The current number is: </LABEL></FONT>
+		  <font color="#ff0000" SIZE="5"><LABEL id="decimal" >25</LABEL></font>
+		  <br><font color="#ffffff" SIZE="5"><LABEL>What is its binary (base 2) value?</LABEL></font>
+		</TD>
+	      </TR>
+	      <TR>
+		<TD>
+		  <CENTER>
+		    <INPUT TYPE="text" ID="answer" SIZE="6">
+		    &nbsp;&nbsp;<INPUT TYPE="button" VALUE="Check" onClick='check()'>
+		    &nbsp;&nbsp;&nbsp;&nbsp;<LABEL ID="correct">Correct: 0</LABEL>
+
+		  </CENTER>
+		</TD>
+	      </TR>
+	    </TABLE>
+	  </CENTER>
+	</FORM>
+      </td>
+    </tr>
+  </table>
 
 </body>
 </html>

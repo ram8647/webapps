@@ -1,68 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
 <html>
-<head>
-<script src="./converters.js"></script>
-</head>
-<body>
+  <head>
+    <script src="./converters.js"></script>
+    <script LANGUAGE="JavaScript">
+      // 2-bit Hexadecimal Odometer
 
-<SCRIPT LANGUAGE="JavaScript">
-// 2-bit Hexadecimal Odometer
+      var value = 0;
+      var odometer = "00";
 
-var value = 0;
-var odometer = "00";
-
-// Advance the odometer
-function advance() {
-   value += 1;
-   if (value > 255)
-     value = 0;
-   odometer =    pad(decToHex(value), 2);
-//   alert(value + " = " + pad(decToBinary(value)));
-   document.getElementById("odometer").innerHTML = odometer;
-   document.getElementById("decimal").innerHTML = value;
-}
-</SCRIPT>
-
-<table width="400" align="center" border="1" frame="box" rules="none">
-<tr>
-<td>
-<img src="./android_CSP-128px.jpg">
-</td>
-<td>
-Click the <b><i>Next Number</i></b> button to advance the hex odometer by 1.
-<br><br>
-</td>
-</tr>
-<tr>
-<td colspan="2">
-<FORM onSubmit="" NAME="odometerdemo">
-<CENTER>
-<TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
-<TR>
-<TD BGCOLOR="#999999" ALIGN="CENTER">
-<FONT COLOR="#ffffff" FACE="Arial"><B>Hexadecimal Odometer</B></FONT>
-<BR>
-<font color="#ffffff" SIZE="1"><LABEL>decimal</LABEL></FONT>
-<font color="#ffffff" SIZE="5"><LABEL id="decimal" >0</LABEL></font>
-</TD>
-</TR>
-<TR>
-<TD>
-<CENTER>
-<font color="#ffffff" SIZE="1"><LABEL>hex</LABEL></FONT>
-<font color="#ffffff" SIZE="5"><LABEL id="odometer" >00</LABEL></font>
-<!-- <INPUT TYPE="button" NAME="gobutton" VALUE="Let's play!" onClick='go()'> -->
-<!-- <INPUT TYPE="button" VALUE="Too High" onClick='tooHigh()'> -->
-<BR>
-<INPUT TYPE="button" VALUE="Next Number" onClick='advance()'>
-</CENTER>
-</TD>
-</TR>
-</TABLE>
-</CENTER>
-</FORM>
-</td>
-</tr>
-</table>
-
-</body>
+      // Advance the odometer
+      function advance() {
+      value += 1;
+      if (value > 255)
+      value = 0;
+      odometer =    pad(decToHex(value), 2);
+      //   alert(value + " = " + pad(decToBinary(value)));
+      document.getElementById("odometer").innerHTML = odometer;
+      document.getElementById("decimal").innerHTML = value;
+      }
+    </script>
+  </head>
+  <body>
+    <table width="400" align="center" border="1" frame="box" rules="none">
+      <tr>
+	<td>
+	  <img src="./android_CSP-128px.jpg">
+	</td>
+	<td>
+	  Click the <b><i>Next Number</i></b> button to advance the hex odometer by 1.
+	  <br><br>
+	</td>
+      </tr>
+      <tr>
+	<td colspan="2">
+	  <FORM onSubmit="" NAME="odometerdemo">
+	    <CENTER>
+	      <TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
+		<TR>
+		  <TD BGCOLOR="#999999" ALIGN="CENTER">
+		    <FONT COLOR="#ffffff" FACE="Arial"><B>Hexadecimal Odometer</B></FONT>
+		    <BR>
+		    <font color="#ffffff" SIZE="1"><LABEL>decimal</LABEL></FONT>
+		    <font color="#ffffff" SIZE="5"><LABEL id="decimal" >0</LABEL></font>
+		  </TD>
+		</TR>
+		<TR>
+		  <TD>
+		    <CENTER>
+		      <font color="#ffffff" SIZE="1"><LABEL>hex</LABEL></FONT>
+		      <font color="#ffffff" SIZE="5"><LABEL id="odometer" >00</LABEL></font>
+		      <!-- <INPUT TYPE="button" NAME="gobutton" VALUE="Let's play!" onClick='go()'> -->
+		      <!-- <INPUT TYPE="button" VALUE="Too High" onClick='tooHigh()'> -->
+		      <BR>
+		      <INPUT TYPE="button" VALUE="Next Number" onClick='advance()'>
+		    </CENTER>
+		  </TD>
+		</TR>
+	      </TABLE>
+	    </CENTER>
+	  </FORM>
+	</td>
+      </tr>
+    </table>
+  </body>
 </html>
