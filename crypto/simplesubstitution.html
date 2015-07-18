@@ -1,0 +1,129 @@
+<html>
+<head>
+</head>
+<body>
+<SCRIPT LANGUAGE="JavaScript">
+// Simple Substitution Cipher
+
+var plain_alphabet = "abcdefghijklmnopqrstuvwxyz";
+var cipher_alphabet = "";
+var keyword = "simple";
+var message = "";
+
+function doEncrypt() {
+//  alert('Encrypting');
+  var result = "";
+  message = message.toLowerCase();
+  for (var k=0; k < message.length; k++) {
+    var ch = message.charAt(k);
+    var index = plain_alphabet.indexOf(ch);
+    if (index != -1)
+      result += cipher_alphabet.charAt(index);
+    else 
+      result += ch;
+  }
+  return result.toUpperCase();
+}
+
+function doDecrypt() {
+//  alert('Encrypting');
+  var result = "";
+  message = message.toLowerCase();
+  for (var k=0; k < message.length; k++) {
+    var ch = message.charAt(k);
+    var index = cipher_alphabet.indexOf(ch);
+    if (index != -1)
+      result += plain_alphabet.charAt(index);
+    else 
+      result += ch;
+  }
+  return result.toLowerCase();
+}
+
+// This performs the encryption
+// It is controlled by the label on the 'go' button.
+function doCipher() {
+  keyword = document.forms.simple.keyword.value;
+  message = document.forms.simple.message.value;
+  var key="";
+  for (var k = 0; k < keyword.length; k++) {
+    var ch = keyword.charAt(k);
+    if (key.indexOf(ch) == -1) 
+      key += ch;
+  }
+  keyword = key;
+  cipher_alphabet = keyword;
+  for (var k = 0; k < plain_alphabet.length; k++) {
+    var ch = plain_alphabet.charAt(k);
+    if (cipher_alphabet.indexOf(ch) == -1)
+      cipher_alphabet += ch;
+  }
+
+  var action = document.forms['simple'].querySelector('input:checked').value; 
+  if (action == 'encrypt') {
+    document.getElementById('result').innerHTML = doEncrypt();
+  } else {
+    document.getElementById('result').innerHTML = doDecrypt();
+  }
+}
+
+</SCRIPT>
+
+<table width="400" align="center" border="1" frame="box" rules="none">
+<tr>
+<td colspan="2">
+<h2 align="right">Simple Substitution Cipher <img src="./android_CSP-128px.jpg" width="48"></h2>
+Input your keyword, select your algorithm, type your message, and click <b><i>Go</i></b>.
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<FORM onSubmit="" NAME="simple">
+<CENTER>
+<TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
+<TR>
+<TD BGCOLOR="#999999">
+<FONT COLOR="#ffffff" FACE="Arial"><B>Keyword (26 chars) </B></FONT>
+<INPUT TYPE="text" NAME="keyword" SIZE="26" MAXLENGTH="26" VALUE="simple">
+<BR>
+<FONT COLOR="#ffffff" FACE="Arial"><B>Algorithm: </B></FONT>
+<table>
+<tr>
+<td>
+<INPUT type="radio" name="encrypt" value="encrypt" checked="true">Encrypt
+</td>
+</tr>
+<tr>
+<td>
+<INPUT type="radio" name="encrypt" value="decrypt">Decrypt
+</td>
+</tr>
+</table>
+
+<!-- <INPUT type="radio" name="encrypt" value="encrypt" checked="true">Encrypt -->
+<!-- <INPUT type="radio" name="encrypt" value="decrypt">Decrypt -->
+
+<br><FONT COLOR="#ffffff" FACE="Arial"><B>Message (40 chars) </B></FONT>
+<INPUT TYPE="text" NAME="message" SIZE="40" VALUE="hello">
+<CENTER>
+<INPUT TYPE="button" VALUE="Go" onClick='doCipher()'>
+</CENTER>
+</TD>
+</TR>
+<TR>
+<TD>
+<CENTER>
+<font color="#ffffff"><LABEL id="result" for="prompt">Result</LABEL></font>
+<BR>
+</CENTER>
+</TD>
+</TR>
+</TABLE>
+</CENTER>
+</FORM>
+</td>
+</tr>
+</table>
+
+</body>
+</html>

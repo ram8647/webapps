@@ -1,0 +1,80 @@
+<html>
+<head>
+</head>
+<body>
+<SCRIPT LANGUAGE="JavaScript">
+// Simple Substitution Cipher
+
+var text = "";
+var alphabet = "abcdefghijklmnopqrstuvwxyz";
+var dots = "....................................................................................................";
+var freqs = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+var count = 0;
+
+function countLetters() {
+  count = 0;
+  text = document.forms.freqs.text.value;
+  text = text.toLowerCase();
+  freqs = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+  for (var k = 0; k < text.length; k++) {
+    var ch = text.charAt(k);
+    if (alphabet.indexOf(ch) != 0) {
+      var x = ch.charCodeAt(0) - "a".charCodeAt(0);
+      ++freqs[x];
+      ++count;
+    }
+  }
+//  alert('Freqs ' + freqs);
+
+  var chart = "<table><tr><th>ltr</th><th>%</th><th>....|....|....|....|....|....|....|....|....|....|....|....|....|....|....</th></tr>";
+  for (var k=0; k < freqs.length; k++) {
+    var percent = freqs[k]/count * 100;
+    var row = "<tr><td>";
+    row += String.fromCharCode("a".charCodeAt(0) + k) + " </td><td align='right'> " + percent.toPrecision(2) + "</td><td>" + (dots.substring(0,percent * 5)) + "</td></tr>";
+    chart += row;       
+  }
+  chart += "</table>";
+  document.getElementById('result').innerHTML = chart;
+}
+
+
+</SCRIPT>
+
+<table width="575" align="center" border="1" frame="box" rules="none">
+<tr>
+<td colspan="2">
+<h2 align="center">Frequency Analyzer<img src="./android_CSP-128px.jpg" width="64"></h2>
+Type or paste some text into the text area and type  <b><i>Go</i></b> to see a frequency
+histogram.
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<FORM onSubmit="" NAME="freqs">
+<CENTER>
+<TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
+<TR>
+<TD BGCOLOR="#999999">
+<FONT COLOR="#ffffff" FACE="Arial"><B>Paste Your Text Here</B></FONT>
+<TEXTAREA NAME="text" ROWS="8" COLS="80">
+</TEXTAREA>
+</TD>
+<TD>
+<INPUT TYPE="button" VALUE="Go" onClick='countLetters()'>
+</TD>
+</TR>
+<TR>
+<TD BGCOLOR="FFFFFF">
+<font type="courier" size="1" color="#000000"><LABEL id="result" for="prompt">Result</LABEL></font>
+<BR>
+</TD>
+</TR>
+</TABLE>
+</CENTER>
+</FORM>
+</td>
+</tr>
+</table>
+
+</body>
+</html>

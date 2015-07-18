@@ -1,0 +1,128 @@
+<html>
+<head>
+</head>
+<body>
+<SCRIPT LANGUAGE="JavaScript">
+<!-- ;
+// Binary Guessing Game
+
+var nGuesses = 0;
+var max = 100;
+var nMaxGuesses = 7; // For max = 100
+var guess = 0;
+var low = 0;
+var high = 100;
+var prompt='I\'ll guess your number (1-100)';
+
+function log2(val) {
+  return Math.log(val)/Math.LN2;
+}
+
+// This starts and ends the game.  
+// It is controlled by the label on the 'go' button.
+function go() {
+  var label = document.forms.guessquiz.gobutton.value;
+  if (label == 'Let\'s play!') {
+    max = parseInt(document.forms.guessquiz.max.value);
+    nMaxGuesses = Math.ceil(log2(max));
+    low = 1;
+    high = max;
+    guess = Math.floor((low + high) / 2);
+    prompt="I'll guess within " + nMaxGuesses + " guesses. I guess " + guess;
+    nGuesses = 1;
+    document.getElementById('promptlabel').innerHTML=prompt;
+    document.getElementById('nguesslabel').innerHTML='Number of Guesses: ' + nGuesses;;
+    document.forms.guessquiz.gobutton.value="Just right";
+  } else { // Label is 'Just right!'
+    if (nGuesses == 1) {
+      alert('Aha!!! I guessed your number in ' + nGuesses + ' guess! Pretty good, eh?');
+    } else {
+      alert('Aha!!! I guessed your number in ' + nGuesses + ' guesses! Pretty good, eh?');
+    }
+    document.forms.guessquiz.gobutton.value="Let's play!";
+  }
+}
+
+// My guess was too high. 
+// Lop off the top half of the range
+function tooHigh() {
+  high = guess - 1;
+  if (low <= high) {
+    guess = Math.floor((low + high) / 2);
+    prompt="I'll guess within " + nMaxGuesses + " guesses. I guess " + guess;
+    ++nGuesses;
+    document.getElementById('promptlabel').innerHTML=prompt;
+    document.getElementById('nguesslabel').innerHTML='Number of Guesses: ' + nGuesses;;
+  } else {
+    alert('Are you trying to trick me? I\'ve guessed all possible numbers.');
+    document.forms.guessquiz.gobutton.value="Let's play!";
+  }
+}
+
+// My guess was too low.
+// Lop off the bottom half of the range.
+function tooLow() {
+  low = guess + 1;
+  if (low <= high) {
+    guess = Math.floor((low + high) / 2);
+    prompt="I'll guess within " + nMaxGuesses + " guesses. I guess " + guess;
+    ++nGuesses;
+    document.getElementById('promptlabel').innerHTML=prompt;
+    document.getElementById('nguesslabel').innerHTML='Number of Guesses: ' + nGuesses;;
+    document.forms.guessquiz.nGuesses.value=nGuesses;
+  } else {
+    alert('Are you trying to trick me? I\'ve guessed all possible numbers.');
+    document.forms.guessquiz.gobutton.value="Let's play!";
+  }
+}
+
+// end hide -->
+</SCRIPT>
+
+<table width="400" align="center" border="1" frame="box" rules="none">
+<tr>
+<td>
+<img src="./android_CSP-128px.jpg">
+</td>
+<td>
+You think of a secret number between 1 and <i><b>max</b></i>. You can
+set the max up to 9999.  I'll guess the number in just a few guesses
+if you tell me whether my guess is <i><b>too high</b></i> or <i><b>too
+low</b></i> or <i><b>just right</b></i>.
+<br><br>
+Click the <b><i>Let's Play</i></b> button to start.
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<FORM onSubmit="" NAME="guessquiz">
+<CENTER>
+<TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
+<TR>
+<TD BGCOLOR="#999999">
+<FONT COLOR="#ffffff" FACE="Arial"><B>I'll Guess Your Number Between 1 and </B></FONT>
+<INPUT TYPE="text" NAME="max" SIZE="4" MAXLENGTH="4" VALUE="100">
+</TD>
+</TR>
+<TR>
+<TD>
+<CENTER>
+<font color="#ffffff"><LABEL id="promptlabel" for="prompt">Here's where I'll guess.</LABEL></font>
+<BR>
+<font color="#FFFFFF"><LABEL id="nguesslabel" for="nguesses">Number of Guesses: 0</LABEL></font> 
+<BR>
+<INPUT TYPE="button" NAME="gobutton" VALUE="Let's play!" onClick='go()'>
+<INPUT TYPE="button" VALUE="Too High" onClick='tooHigh()'>
+<INPUT TYPE="button" VALUE="Too Low" onClick='tooLow()'>
+</CENTER>
+</TD>
+</TR>
+</TABLE>
+</CENTER>
+</FORM>
+</td>
+</tr>
+</table>
+
+</body>
+</html>

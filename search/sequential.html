@@ -1,0 +1,102 @@
+<html>
+<head>
+</head>
+<body>
+<SCRIPT LANGUAGE="JavaScript">
+<!-- ;
+// Sequential Guessing Game 
+// In this version the person guesses but
+// the computer just says right/wrong
+
+var nGuesses = 0;
+var max = 10;
+var nMaxGuesses = 20; // For max = 100
+var guess = 0;
+var prompt='You guess my secret number (1-20)';
+var secret = 0;
+
+function log2(val) {
+  return Math.log(val)/Math.LN2;
+}
+
+// This starts and ends the game.  
+// It is controlled by the label on the 'go' button.
+function go() {
+  var label = document.forms.guessquiz.gobutton.value;
+  if (label == 'Let\'s play!') {
+    max = parseInt(document.forms.guessquiz.max.value);
+    nMaxGuesses = Math.ceil(log2(max));
+    secret = 1 + Math.round(Math.random()*(max-1));
+    low = 1;
+    high = max;
+    guess = Math.floor((low + high) / 2);
+    prompt="I'm thinking of a number between 1 and " + max + ".<br> Can you guess it?"
+    nGuesses = 0;
+    document.getElementById('promptlabel').innerHTML=prompt;
+    document.getElementById('nguesslabel').innerHTML="So far, you've had " + nGuesses + " guesses.";
+    document.getElementById('response').innerHTML="";
+    document.forms.guessquiz.gobutton.value="Make guess";
+  } else { // Label is 'Make guess!'
+    var guess = document.forms.guessquiz.guess.value;
+    ++nGuesses;
+    document.getElementById('nguesslabel').innerHTML="So far, you've had " + nGuesses + " guesses.";
+    if (guess != secret) {
+        document.getElementById('response').innerHTML="That guess was incorrect";
+    } else {
+        document.getElementById('response').innerHTML="Congratulations. You guessed my secret in " + nGuesses + " guesses.";
+        document.forms.guessquiz.gobutton.value="Let's play!";
+    }
+  }
+}
+
+// end hide -->
+</SCRIPT>
+
+<table width="400" align="center" border="1" frame="box" rules="none">
+<tr>
+<td>
+<img src="./android_CSP-128px.jpg">
+</td>
+<td>
+I'm thinking of a secret number between 1 and <i><b>max</b></i>. You can
+set the max up to 20.  Can you guess the number? I'll tell you whether
+you are <i><b>right</b></i> or <i><b>wrong</b></i>.
+<br><br>
+Click the <b><i>Let's Play</i></b> button to start.
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<FORM onSubmit="" NAME="guessquiz">
+<CENTER>
+<TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
+<TR>
+<TD BGCOLOR="#999999">
+<FONT COLOR="#ffffff" FACE="Arial"><B>I'll pick a secret number between 1 and </B></FONT>
+<INPUT TYPE="text" NAME="max" SIZE="4" MAXLENGTH="4" VALUE="10">
+</TD>
+</TR>
+<TR>
+<TD>
+<CENTER>
+<font color="#ffffff"><LABEL id="promptlabel" for="prompt"></LABEL></font>
+<BR>
+<font color="#FFFFFF"><LABEL id="nguesslabel" for="nguesses"></LABEL></font> 
+<BR>
+<hr>
+<font color="#FFFFFF"><LABEL id="response" for="response"></LABEL></font> 
+<BR>
+Your guess: <INPUT TYPE="text" NAME="guess" SIZE="4" MAXLENGTH="4" VALUE="0">
+<INPUT TYPE="button" NAME="gobutton" VALUE="Let's play!" onClick='go()'>
+</CENTER>
+</TD>
+</TR>
+</TABLE>
+</CENTER>
+</FORM>
+</td>
+</tr>
+</table>
+
+</body>
+</html>

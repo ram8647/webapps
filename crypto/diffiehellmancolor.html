@@ -1,0 +1,150 @@
+<html>
+<head>
+</head>
+<body onload="setMixedColors()">
+
+<SCRIPT LANGUAGE="JavaScript">
+<!-- ;
+// Diffie Hellman Color Demo
+
+var oursharedcolor = 0xff0000;
+var mysecretcolor = 0xb28ebd;
+var mymixedcolor = (oursharedcolor + mysecretcolor) % 0xFFFFFF;
+var yoursecretcolor = 0xffcccc;
+var yourmixedcolor = (yoursecretcolor + oursharedcolor) % 0xFFFFFF;
+setMixedColors();
+
+function setMixedColors() {
+  mymixedcolor = (mysecretcolor + oursharedcolor) % 0xFFFFFF;
+  yourmixedcolor = (yoursecretcolor + oursharedcolor) % 0xFFFFFF;
+  var colorstr = "#" + mymixedcolor.toString(16);
+  var textbox = document.getElementById("mymixedcolor");
+  textbox.style.backgroundColor = colorstr;
+  textbox.value = mymixedcolor.toString(16);
+  colorstr = "#" + yourmixedcolor.toString(16);
+  textbox = document.getElementById("yourmixedcolor");
+  textbox.style.backgroundColor = colorstr;
+  textbox.value = yourmixedcolor.toString(16); //colorstr;
+}
+
+function changeSharedColor() {
+  var textbox = document.getElementById("sharedhex");
+  var hex = document.getElementById("sharedhex").value
+  oursharedcolor = parseInt("0x" + hex);
+  textbox.style.backgroundColor = "#" + hex;
+  textbox.value = hex;
+  setMixedColors();
+}
+
+function changeSecretColor() {
+  var textbox = document.getElementById("secrethex");
+  var hex = document.getElementById("secrethex").value
+  yoursecretcolor = parseInt("0x" + hex);
+  textbox.style.backgroundColor = "#" + hex;
+  textbox.value = hex;
+  setMixedColors();  
+}
+
+function showSharedSecret() {
+  var textbox = document.getElementById("mysecretcolor");
+//  var mixedcolor = (mysecretcolor + yourmixedcolor) % 0xFFFFFF;
+  var mixedcolor = (mysecretcolor + yourmixedcolor) % 16777215;
+  var colorstr = "#" + mixedcolor.toString(16); 
+//  alert("My secret " + mysecretcolor + " " + yourmixedcolor + " " + mixedcolor);
+  textbox.style.backgroundColor = colorstr;
+  textbox.value = mixedcolor.toString(16);
+
+  textbox = document.getElementById("yoursecretcolor");
+  var mixedcolor = (yoursecretcolor + mymixedcolor) % 0xFFFFFF;
+//  alert("Your secret " + yoursecretcolor + " " + mymixedcolor + " " + mixedcolor);
+  var colorstr = "#" + mixedcolor.toString(16); 
+  textbox.style.backgroundColor = colorstr;
+  textbox.value = mixedcolor.toString(16);
+}
+
+function showYourSecretColor() {
+  var textbox = document.getElementById("yoursecretcolor");
+  var mixedcolor = (yoursecretcolor + mymixedcolor) % 0xFFFFFF;
+  alert("Your secret " + yoursecretcolor + " " + mymixedcolor + " " + mixedcolor);
+  var colorstr = "#" + mixedcolor.toString(16); 
+  textbox.style.backgroundColor = colorstr;
+}
+
+// end hide -->
+</SCRIPT>
+
+
+<table width="500" align="center" border="1">
+<tr>
+<td align="center">
+
+<a target="_blank"
+href="http://upload.wikimedia.org/wikipedia/commons/4/46/Diffie-Hellman_Key_Exchange.svg">
+<img src="http://upload.wikimedia.org/wikipedia/commons/4/46/Diffie-Hellman_Key_Exchange.svg" width="80">
+</a>
+
+</td>
+<td>
+<h4 align="right"><a target="_blank"
+href="http://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange">Diffie-Hellman Exchange</a> : 
+<a target="_blank" href="https://www.youtube.com/watch?v=3QnD2c4Xovk">
+Share a Secret Color</a> <img src="./android_CSP-128px.jpg" width="48"></h4>
+<ol>
+<li>Pick our shared public color.  
+<br>&nbsp;&nbsp; <a target="_blank" href="http://www.w3schools.com/tags/ref_colormixer.asp">Click for help on Hex Color values<a/>
+<li>Then pick your secret color.
+<li>Then click <b><i>Show shared secret!</i></b>.
+</ol>
+</td>
+</tr>
+
+<tr>
+<td>
+<center><b>Publicly Visible<br> to<br> Eve</b></center>
+</td>
+<td>
+<form name="shared" onSubmit="changeSharedColor(); return false;">
+Pick our shared color:
+&nbsp;&nbsp; #<INPUT TYPE = "text" id="sharedhex" SIZE="6" VALUE="ff0000" style='background-color:#ff0000' onchange="changeSharedColor(); return false;" > 
+&nbsp;&nbsp; <INPUT type="submit" value="Change">
+</form>
+
+We share our mixed colors:
+<center>
+Mine&nbsp;: #<INPUT TYPE = "text" size="6" id="mymixedcolor" style='background-color:$mymixedcolor' disabled> 
+&nbsp;&nbsp;Yours: #<INPUT TYPE = "text" size="6" id="yourmixedcolor" style='background-color:#000000' disabled> 
+</center>
+</td>
+</tr>
+
+<tr>
+<td>
+<center><b>Hidden<br> From Eve</b></center>
+</td>
+<td>
+<form name="secret" onSubmit="changeSecretColor(); return false;">
+Your Secret Color: 
+#<INPUT TYPE = "text" id="secrethex" SIZE="6" VALUE="ffcccc" style='background-color:#ffcccc'  onchange="changeSecretColor(); return false;" > 
+<INPUT type="submit" value="Change">
+</form>
+</td>
+</tr>
+
+<tr>
+<td>
+<center><b>Our Shared Secret</b></center>
+</td>
+<td>
+<form name="mysecret" onSubmit="showSharedSecret(); return false;">
+<center>
+<INPUT type="submit" value="Show Shared Secret!">
+<br>Mine&nbsp: <INPUT TYPE = "text" id="mysecretcolor" SIZE="7" style='background-color:#ffffff' disabled> 
+<br>Yours: <INPUT TYPE = "text" id="yoursecretcolor" SIZE="7" style='background-color:#ffffff' disabled> 
+</center>
+</form>
+</td>
+</tr>
+</table>
+
+</body>
+</html>
