@@ -6,71 +6,11 @@
   <!-- This script enables communication between you iframe and the platform.
        REQUIRED --- DO NOT REMOVE!! -->
    <script src="/static/js/capa/src/jschannel.js"></script>
+   <script src="./edx-jsinput.js"></script>
+   <script src="./converters.js"></script>
 
 </head>
 <body onLoad="init()">
-  <!-- This is the custom script that establishes the UI and gives the platform the state when requested. -->
-  <SCRIPT Language="JavaScript">
-  var JSInput = (function() {
-     var channel,
-     // The above wrapper function and channel variable are both necessary,
-     // REQUIRED --- DO NOT REMOVE/CHANGE!!
-                
-     // The "state" JSON dictionary below is passed to the platform for grading and saving.
-     // Pass through whatever you wish
-        state = {
-           result: false,
-           1: true,
-        };
-            
-     // Establish a channel only if this application is embedded in an iframe.
-     // This will let the parent window communicate with this application using
-     // RPC and bypass SOP restrictions.
-     //
-     // REQUIRED --- DO NOT REMOVE/CHANGE!!
-     if (window.parent !== window) {
-        console.log("RAM -------- building channel");
-        channel = Channel.build({
-          window: window.parent,
-          origin: "*",
-          scope: "JSInput"
-        });
-        channel.bind("getGrade", getGrade);
-        channel.bind("getState", getState);
-        channel.bind("setState", setState);
-     }
-
-    function getGrade() {
-      console.log("RAM ----- getGrade() ");
-      if (nCorrect >= 5) 
-        state['result'] = true;
-      console.log(JSON.stringify(state));
-      return JSON.stringify(state);
-    }
-
-    function getState() {
-      console.log("RAM ----- getState() ");
-      if (nCorrect >= 5) 
-        state['result'] = true;
-      return JSON.stringify(state);
-    }
-
-    function setState() {
-      console.log("RAM ----- getState() ");
-    }
-
-    // return that gives the platform the names of the functions it has available.
-    //
-    // REQUIRED --- DO NOT REMOVE/CHANGE!!
-    return {
-       getState: getState,
-       setState: setState,
-       getGrade: getGrade
-    };
-
-
-  }());
-</SCRIPT>
 <SCRIPT>
 // Binary Odometer Code
 
@@ -82,34 +22,6 @@ var nTries = 0;
 function init() {
    decimalValue = Math.round(Math.random() * 32);
    document.getElementById("binary").innerHTML = decToBinary(decimalValue);
-}
-
-// Convert binary to decimal
-function binaryToDecimal(str, place) {
-   if (str.length == 0)
-      return 0;
-   else if (str.charAt(str.length-1) == 0)
-      return 0 + binaryToDecimal(str.substring(0,str.length-1), place * 2);
-   else 
-      return place + binaryToDecimal(str.substring(0,str.length-1), place * 2);
-}
-
-// Convert decimal value to binary
-function decToBinary(n) {
-   if (n == 0)
-      return "";
-   else if (n % 2 == 1) 
-      return decToBinary(Math.floor(n/2)) + "1";
-   else
-      return decToBinary(Math.floor(n/2)) + "0";
-}
-
-// Pad the binary number to 5 places
-function pad(str) {
-  var len = str.length;
-  for (k=len; k < 5; k++)
-     str = "0" + str;
-  return str;; 
 }
 
 // Check the odometer

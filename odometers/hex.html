@@ -1,60 +1,25 @@
 <html>
 <head>
+<script src="./converters.js"></script>
 </head>
 <body>
+
 <SCRIPT LANGUAGE="JavaScript">
-<!-- ;
 // 2-bit Hexadecimal Odometer
 
 var value = 0;
 var odometer = "00";
-
-//Convert decimal value to binary
-function decToBinary(n) {
-   if (n == 0)
-      return "";
-   else if (n % 2 == 1) 
-      return decToBinary(Math.floor(n/2)) + "1";
-   else
-      return decToBinary(Math.floor(n/2)) + "0";
-}
-
-function decToHexDigit(d) {
-   if (d < 10)
-     return d;
-   else {
-     d = d - 10;
-     return "ABCDEF".charAt(d);
-   }
-}
-
-//Convert decimal value to binary
-function decToHex(n) {
-   if (n == 0)
-      return "";
-   var rmdr = n % 16;
-   return decToHex(Math.floor(n/16)) + decToHexDigit(rmdr);
-}
-
-// Pad the binary number to 5 places
-function pad(str) {
-  var len = str.length;
-  for (k=len; k < 2; k++)
-     str = "0" + str;
-  return str;; 
-}
 
 // Advance the odometer
 function advance() {
    value += 1;
    if (value > 255)
      value = 0;
-   odometer =    pad(decToHex(value));
+   odometer =    pad(decToHex(value), 2);
 //   alert(value + " = " + pad(decToBinary(value)));
    document.getElementById("odometer").innerHTML = odometer;
    document.getElementById("decimal").innerHTML = value;
 }
-// end hide -->
 </SCRIPT>
 
 <table width="400" align="center" border="1" frame="box" rules="none">
