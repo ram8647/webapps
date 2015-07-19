@@ -4,9 +4,63 @@
   <head>
     <meta charset="utf-8">
     <title>4-bit computer</title>
-    <!-- 	<link rel="stylesheet" href="style.css"> -->
     <script src="../numbers/converters.js"></script>
     <script src="computer.js"></script>
+    <!-- jQuery -->
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <!-- Tipped  See http://www.tippedjs.com/  and http://www.tippedjs.com/license -->
+    <script type="text/javascript" src="./tipped.js"></script>
+    <link rel="stylesheet" type="text/css" href="./tipped.css" />
+
+    <script type='text/javascript'>
+    $(document).ready(function() {
+      Tipped.create('.boxes .box');
+    });
+    </script>
+    <script type="text/javascript">
+     $(document).ready(function() {
+      Tipped.create('.data', function(element) {
+        var addr = $(element).data('id');
+        return "Data: " + ram[addr] ;
+      }, {
+       cache: false
+      });
+     });
+
+     $(document).ready(function() {
+      Tipped.create('.instr', function(element) {
+        var addr = $(element).data('id');
+        return "Instruction: " + parseInstr(ram[addr]) ;
+      }, {
+       cache: false
+      });
+     });
+
+     $(document).ready(function() {
+      Tipped.create('#pctr', function() {
+        return "Program Counter: " + pcounter ;
+      }, {
+       cache: false
+      });
+     });
+
+     $(document).ready(function() {
+      Tipped.create('#preg', function() {
+        return "Program Register: " + parseInstr(pregister);
+      }, {
+       cache: false
+      });
+     });
+
+     $(document).ready(function() {
+      Tipped.create('#rega', function() {
+        return "RegisterA: " + registerA ;
+      }, {
+       cache: false
+      });
+     });
+    </script>
     <script Language="JavaScript">
       
       // The computer's internal registers and RAM
@@ -18,6 +72,8 @@
       var ram = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
       var dataIndex = 0;   // Data segment 0..7
       var progIndex = 8;   // Prog segment 8..15
+
+      var op = ["NOP", "GET", "PUT", "ADD", "SUB", "MUL", "DIV", "UND","PRN", "INP", "UND","UND","UND","UND","UND","UND"];
 
       //  Reset the computer -- like restarting
       function reset() {
@@ -34,6 +90,10 @@
 
      // Display the current state of the computer after reset
      function resetVisual() {
+       document.getElementById('exec').disabled=true;
+       document.getElementById('fetch').disabled=false;
+       document.getElementById('run').disabled=true;
+
        document.getElementById("pctr").value = pad(decToBinary(pcounter), 4);
        document.getElementById("preg").value = pad(decToBinary(pregister), 8);
        document.getElementById("rega").value = pad(decToBinary(registerA), 8);
@@ -42,6 +102,13 @@
          var id = "m" + pad(decToBinary(i), 4);
          document.getElementById(id).value = pad(decToBinary(ram[i]), 8);
        }
+     }
+
+     function parseInstr(n) {
+        var str = pad(decToBinary(n), 8);
+        var instr = binaryToDecimal(str.substring(0,4));
+        var addr = str.substring(4);
+        return op[instr] + " " + addr;
      }
 
      function handleKeyboardInput() {
@@ -53,6 +120,11 @@
      // Restricts input in memory textfields to 0s and 1s
      function handleRAM(textfield) {
        textfield.value = textfield.value.replace(/[^0-1]/,'');
+       if (event.keyCode == 13) {
+         var id = textfield.id;
+         var addr = binaryToDecimal(id.substring(1));
+         ram[addr] = binaryToDecimal(textfield.value);
+       }
      }
 
      // Copy all input elements to memory
@@ -77,31 +149,52 @@
         var pctr = binaryToDecimal(document.getElementById("pctr").value);
         var instr = ram[pctr];
         document.getElementById("preg").value = pad(decToBinary(instr), 8);
+        pregister = instr;
         pctr += 1;
         if (pctr > 7) 
           pctr = 0;
+        pcounter = pctr;
         document.getElementById("pctr").value = pad(decToBinary(pctr), 4);
+        document.getElementById("fetch").disabled=true;
+        document.getElementById("exec").disabled=false;
      }
 
      function executeCurrentInstruction() {
+        document.getElementById("fetch").disabled=false;
+        document.getElementById("exec").disabled=true;
         var preg =  document.getElementById("preg").value;
         var instr = binaryToDecimal(preg.substring(0,4));
         var addrbin = preg.substring(4)
         var addr = binaryToDecimal(addrbin);
       
        if (instr == 1)  {   // GET x and put in registerA
+          registerA = ram[addr];
           document.getElementById("rega").value = pad(decToBinary(ram[addr]),8);
        }
-       if (instr == 2)  {   // Add x to register
-          var rega = binaryToDecimal(document.getElementById("rega").value);
-          var operand = ram[addr];
-          var result = rega + operand;
-          document.getElementById("rega").value = pad(decToBinary(result),8);
-       }
-       if (instr == 3)  {   // Put regA at x
+       if (instr == 2)  {   // Put regA at x
           var rega = binaryToDecimal(document.getElementById("rega").value);
           ram[addr] = rega;
           document.getElementById("m"+addrbin).value = pad(decToBinary(ram[addr]),8);
+       }
+       if (instr == 3)  {   // Add x to register
+          var operand = ram[addr];
+          registerA = registerA + operand;
+          document.getElementById("rega").value = pad(decToBinary(registerA),8);
+       }
+       if (instr == 4)  {   // Sub x from register
+          var operand = ram[addr];
+          registerA = registerA - operand;
+          document.getElementById("rega").value = pad(decToBinary(registerA),8);
+       }
+       if (instr == 5)  {   // Mult  register by x
+          var operand = ram[addr];
+          registerA = registerA * operand;
+          document.getElementById("rega").value = pad(decToBinary(registerA),8);
+       }
+       if (instr == 6)  {   // Div  register by x
+          var operand = ram[addr];
+          registerA = Math.floor(registerA / operand);
+          document.getElementById("rega").value = pad(decToBinary(registerA),8);
        }
        if (instr == 8)  {   // Print x
           var monitor = document.getElementById("monitor");
@@ -117,7 +210,13 @@
      }
    </script>
   </head>
-  <body onload="">
+  <body onload=''>
+
+<!-- <p> -->
+<!--   <a id='example-callback' href='#' title='Hello World'>Hover over me</a> -->
+<!-- </p> -->
+
+<!-- <div class='caption'>Callback example:</div> -->
     <table width="550" align="center" border="1" frame="box" rules="none">  <!-- Main Container -->
       <tr>
 	<td>
@@ -156,29 +255,41 @@
 
 	    <tr>
 	      <td>
+               <div class='boxes position'>  <!-- start of boxes for tipped -->
 		<table border="1">  <!-- RAM and CPU table -->
 		  <tr>
 		    <td>
 		      <div id="ram" style="visibility:visible">
 			<font color="red">RAM</font><br />
-                        <table><tr><td><u>INST</u></td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <table><tr><td><u>INST</u></td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                             <td><u>DATA</u></td><td>&nbsp;</td></tr></table>
-                        <table><tr><td>0000:</td><td><input id="m0000" type="text" size="8" value="00000000" maxlength="8" onkeyup="handleRAM(this)"></td>
-                            <td>1000:</td><td><input id="m1000" type="text" size="8" value="00000000" maxlength="8" onkeyup="handleRAM(this)"></td></tr></table>
-                        <table><tr><td>0001:</td><td><input id="m0001" type="text" size="8" value="00000000" maxlength="8" onkeyup="handleRAM(this)"></td>
-                            <td>1001:</td><td><input id="m1001" type="text" size="8" value="00000000" maxlength="8" onkeyup="handleRAM(this)"></td></tr></table>
-                        <table><tr><td>0010:</td><td><input id="m0010" type="text" size="8" value="00000000" maxlength="8" onkeyup="handleRAM(this)"></td>
-                            <td>1010:</td><td><input id="m1010" type="text" size="8" value="00000000" maxlength="8" onkeyup="handleRAM(this)"></td></tr></table>
-                        <table><tr><td>0011:</td><td><input id="m0011" type="text" size="8" value="00000000" maxlength="8" onkeyup="handleRAM(this)"></td>
-                            <td>1011:</td><td><input id="m1011" type="text" size="8" value="00000000" maxlength="8" onkeyup="handleRAM(this)"></td></tr></table>
-                        <table><tr><td>0100:</td><td><input id="m0100" type="text" size="8" value="00000000" maxlength="8" onkeyup="handleRAM(this)"></td>
-                            <td>1100:</td><td><input id="m1100" type="text" size="8" value="00000000" maxlength="8" onkeyup="handleRAM(this)"></td></tr></table>
-                        <table><tr><td>0101:</td><td><input id="m0101" type="text" size="8" value="00000000" maxlength="8" onkeyup="handleRAM(this)"></td>
-                            <td>1101:</td><td><input id="m1101" type="text" size="8" value="00000000" maxlength="8" onkeyup="handleRAM(this)"></td></tr></table>
-                        <table><tr><td>0110:</td><td><input id="m0110" type="text" size="8" value="00000000" maxlength="8" onkeyup="handleRAM(this)"></td>
-                            <td>1110:</td><td><input id="m1110" type="text" size="8" value="00000000" maxlength="8" onkeyup="handleRAM(this)"></td></tr></table>
-                        <table><tr><td>0111:</td><td><input id="m0111" type="text" size="8" value="00000000" maxlength="8" onkeyup="handleRAM(this)"></td>
-                            <td>1111:</td><td><input id="m1111" type="text" size="8" value="00000000" maxlength="8" onkeyup="handleRAM(this)"></td></tr></table>
+
+                        <table><tr><td>0000:</td><td><span class='instr' data-id="0"><input onkeyup="handleRAM(this)" id="m0000" type="text" size="8" value="00000000" maxlength="8"></span></td>
+                            <td>1000:</td><td><span class='data' data-id="8"><input id="m1000"  onkeyup="handleRAM(this)" type="text" size="8" value="00000000" maxlength="8"></span></td></tr>
+                        </table>
+
+                        <table><tr><td>0001:</td><td><span class='instr' data-id="1"><input id="m0001"  onkeyup="handleRAM(this)" type="text" size="8" value="00000000" maxlength="8"></span></td>
+                            <td>1001:</td><td><span class='data' data-id="9"><input id="m1001"  onkeyup="handleRAM(this)" type="text" size="8" value="00000000" maxlength="8"></span></td></tr>
+                        </table>
+                        <table><tr><td>0010:</td><td><span class='instr' data-id="2"><input id="m0010"  onkeyup="handleRAM(this)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
+                            <td>1010:</td><td><span class='data' data-id="10"><input id="m1010"  onkeyup="handleRAM(this)" type="text" size="8" value="00000000" maxlength="8" ></span></td></tr>
+                        </table>
+                        <table><tr><td>0011:</td><td><span class='instr' data-id="3"><input id="m0011"  onkeyup="handleRAM(this)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
+                            <td>1011:</td><td><span class='data' data-id="11"><input id="m1011"  onkeyup="handleRAM(this)" type="text" size="8" value="00000000" maxlength="8" ></span></td></tr>
+                        </table>
+                        <table><tr><td>0100:</td><td><span class='instr' data-id="4"><input id="m0100"  onkeyup="handleRAM(this)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
+                            <td>1100:</td><td><span class='data' data-id="12"><input id="m1100"  onkeyup="handleRAM(this)" type="text" size="8" value="00000000" maxlength="8" ></span></td></tr>
+                        </table>
+                        <table><tr><td>0101:</td><td><span class='instr' data-id="5"><input id="m0101"  onkeyup="handleRAM(this)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
+                            <td>1101:</td><td><span class='data' data-id="13"><input id="m1101" onkeyup="handleRAM(this)"  type="text" size="8" value="00000000" maxlength="8" ></span></td></tr>
+                        </table>
+                        <table><tr><td>0110:</td><td><span class='instr' data-id="6"><input id="m0110"  onkeyup="handleRAM(this)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
+                            <td>1110:</td><td><span class='data' data-id="14"><input id="m1110"  onkeyup="handleRAM(this)" type="text" size="8" value="00000000" maxlength="8" ></span></td></tr>
+                        </table>
+                        <table><tr><td>0111:</td><td><span class='instr' data-id="7"><input id="m0111"  onkeyup="handleRAM(this)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
+                            <td>1111:</td><td><span class='data' data-id="15"><input id="m1111"  onkeyup="handleRAM(this)" type="text" size="8" value="00000000" maxlength="8" ></span></td></tr>
+                        </table>
+                        <br /><br />
 		      </div>
 		    </td>
 		    <td>
@@ -187,30 +298,40 @@
                         <table><tr><td><u>PCTR:</u>&nbsp;</td><td><input id="pctr" type="text" size="4" value="0000" maxlength="4" readonly></td>
                             <td><u>PREG:</u></td><td><input id="preg" type="text" size="8"  value="00000000" maxlength="8" readonly></td></tr></table>
                         <table><tr><td><u>REGA:</u></td><td><input id="rega" type="text" size="8"  value="00000000" maxlength="8" readonly></td>
-                            <td><u>REGB:</u></td><td><input id="regb" type="text" size="8" value="00000000" maxlength="8" readonly></td></tr></table>
+                            <td>
+<!--                              <u>REGB:</u></td><td> -->
+<!--                              <div class="input"> -->
+<!--                                <input id="regb" type="text" size="8" value="00000000" maxlength="8" readonly /> -->
+<!--                                <span class="tooltip">Info</span> -->
+<!--                              <div> -->
+                            </td></tr></table>
 
                         <font size="2">
-                        <br />Instruction set
+                        <br /><u>Instruction Set</u>
                         <br />&nbsp;&nbsp;&lt;x&gt; is a 4-bit memory address
                         <br />&nbsp;&nbsp;0000 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- NOP (Do nothing)
                         <br />&nbsp;&nbsp;0001 &lt;x&gt; -- GET value at &lt;x&gt; and put in REGA
-                        <br />&nbsp;&nbsp;0010 &lt;x&gt; -- ADD value at &lt;x&gt; to REGA
-                        <br />&nbsp;&nbsp;0011 &lt;x&gt; -- PUT value in REGA at  &lt;x&gt;
-                        <br />&nbsp;&nbsp;1000 &lt;x&gt; -- PRINT value at  &lt;x&gt;
+                        <br />&nbsp;&nbsp;0010 &lt;x&gt; -- PUT value in REGA at  &lt;x&gt;
+                        <br />&nbsp;&nbsp;0011 &lt;x&gt; -- ADD value at &lt;x&gt; to REGA
+                        <br />&nbsp;&nbsp;0100 &lt;x&gt; -- SUB value at  &lt;x&gt; from REGA
+                        <br />&nbsp;&nbsp;0101 &lt;x&gt; -- MUL REG by value at  &lt;x&gt;
+                        <br />&nbsp;&nbsp;0110 &lt;x&gt; -- DIV REGA by value at  &lt;x&gt;
                         <br />&nbsp;&nbsp;1001 &lt;x&gt; -- INPUT keyboard to  &lt;x&gt;
                         <br />
                         </font>
 		      </div>
 		    </td>
 		  </tr>
+                 </div> <!-- end of boxes -->
 		</table> <!-- end of RAM & CPU table -->
               </td>
 	    </tr>
             <tr>
               <td>
                <button type="button" id="reset" onclick="reset()">Reset</input>
-               <button type="button" id="step" onclick="step()">Step</input>
-               <button type="button" id="run" onclick="fetchExecute()">Run</input>
+               <button type="button" id="fetch" onclick="fetchNextInstruction()">Fetch</input>
+               <button type="button" id="exec" onclick="executeCurrentInstruction()" disabled>Execute</input>
+               <button type="button" id="run" onclick="fetchExecute()" disabled>Run</input>
               </td>
             <tr>
           
