@@ -98,7 +98,6 @@
      function resetVisual() {
        document.getElementById('exec').disabled=true;
        document.getElementById('fetch').disabled=false;
-       document.getElementById('run').disabled=true;
 
        document.getElementById("pctr").value = pad(decToBinary(pcounter), 4);
        document.getElementById("preg").value = pad(decToBinary(pregister), 8);
@@ -144,7 +143,17 @@
      }
 
      function fetchExecute() {
-       alert("Running...");
+       updateState();
+       pcounter = 0;
+       document.getElementById("pctr").value = pad(decToBinary(pcounter),8);
+       fetchNextInstruction();
+       executeCurrentInstruction();
+       var instrcode = pad(decToBinary(pregister),8).substring(0,4);
+       while (binaryToDecimal(instrcode) != 0) {
+         fetchNextInstruction();
+         executeCurrentInstruction();
+         instrcode = pad(decToBinary(pregister),8).substring(0,4);
+       }
      }
 
      function step() {
@@ -340,7 +349,7 @@
                <button type="button" id="reset" onclick="reset()">Reset</button>
                <button type="button" id="fetch" onclick="fetchNextInstruction()">Fetch</button>
                <button type="button" id="exec" onclick="executeCurrentInstruction()" disabled>Execute</button>
-               <button type="button" id="run" onclick="fetchExecute()" disabled>Run</button>
+               <button type="button" id="run" onclick="fetchExecute()">Run</button>
                <a target="_blank" href="https://docs.google.com/document/d/1Z0iEBNOJgflhYXm28ki6ZiWLCGtPgUm_yEWuvzjInv4"><button type="button" style="float:right">Help</button></a>
              </td>
             </tr>
