@@ -102,7 +102,6 @@
        document.getElementById("pctr").value = pad(decToBinary(pcounter), 4);
        document.getElementById("preg").value = pad(decToBinary(pregister), 8);
        document.getElementById("rega").value = pad(decToBinary(registerA), 8);
-//       document.getElementById("regb").value = pad(decToBinary(registerB), 8);
        for (var i=0; i < 16; i++) {
          var id = "m" + pad(decToBinary(i), 4);
          document.getElementById(id).value = pad(decToBinary(ram[i]), 8);
@@ -127,11 +126,13 @@
      function handleRAM(textfield, event) {
        console.log("keycode=" + event.keyCode);
        textfield.value = textfield.value.replace(/[^0-1]/,'');
-       if (event.keyCode == 13) {
-         var id = textfield.id;
-         var addr = binaryToDecimal(id.substring(1));
-         ram[addr] = binaryToDecimal(textfield.value);
-       }
+       var id = textfield.id;
+       var addr = binaryToDecimal(id.substring(1));
+       ram[addr] = binaryToDecimal(textfield.value);
+       
+//       if (event.keyCode == 13) {
+//         ram[addr] = binaryToDecimal(textfield.value);
+//       }
      }
 
      // Copy all input elements to memory
@@ -183,6 +184,7 @@
         var instr = binaryToDecimal(preg.substring(0,4));
         var addrbin = preg.substring(4)
         var addr = binaryToDecimal(addrbin);
+        var operand = ram[addr];
       
        if (instr == 1)  {   // GET x and put in registerA
           registerA = ram[addr];
@@ -194,23 +196,19 @@
           document.getElementById("m"+addrbin).value = pad(decToBinary(ram[addr]),8);
        }
        if (instr == 3)  {   // Add x to register
-          var operand = ram[addr];
-          registerA = registerA + operand;
+          registerA = (registerA + operand)  % 256;
           document.getElementById("rega").value = pad(decToBinary(registerA),8);
        }
        if (instr == 4)  {   // Sub x from register
-          var operand = ram[addr];
-          registerA = registerA - operand;
+          registerA = (registerA - operand) % 256;
           document.getElementById("rega").value = pad(decToBinary(registerA),8);
        }
        if (instr == 5)  {   // Mult  register by x
-          var operand = ram[addr];
-          registerA = registerA * operand;
+          registerA = (registerA * operand) % 256;
           document.getElementById("rega").value = pad(decToBinary(registerA),8);
        }
        if (instr == 6)  {   // Div  register by x
-          var operand = ram[addr];
-          registerA = Math.floor(registerA / operand);
+          registerA = (Math.floor(registerA / operand)) % 256;
           document.getElementById("rega").value = pad(decToBinary(registerA),8);
        }
        if (instr == 8)  {   // Print x
@@ -218,9 +216,11 @@
           monitor.value = monitor.value + ram[addr] + "\n" ;
        }
        if (instr == 9)  {   // Read keyboard into x and echo it
-          var keyboard = document.getElementById("keyboard").value;
+          var input = prompt("Input a number at the keyboard: ");
+          input = input % 256;
+          var keyboard = document.getElementById("keyboard").value = input;
           var monitor = document.getElementById("monitor");
-          monitor.value = keyboard + "\n";
+          monitor.value = monitor.value + ">" + keyboard + "\n";
           ram[addr] = keyboard;
           document.getElementById("m"+addrbin).value = pad(decToBinary(ram[addr]),8);
        }
@@ -260,12 +260,11 @@
                       <tr>
                         <td>
                           <font color="red">Keyboard</font><br />
- 			  <input id="keyboard" type="text" maxlenvth="40" size="40" onkeydown="handleKeyboardInput()"></input>
+ 			  <input id="keyboard" type="text" maxlenvth="40" size="40" onkeydown="handleKeyboardInput()" disabled></input>
                         </td>
                       </tr>
                     </table>
 		  </div>
-		  <!-- 		      &nbsp;&nbsp;<INPUT ID="submit" TYPE="button" disabled VALUE="Submit" onClick='download()'> -->
 		</CENTER>
 	      </TD>
 	    </TR>
