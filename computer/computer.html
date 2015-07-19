@@ -12,6 +12,11 @@
     <!-- Tipped  See http://www.tippedjs.com/  and http://www.tippedjs.com/license -->
     <script type="text/javascript" src="./tipped.js"></script>
     <link rel="stylesheet" type="text/css" href="./tipped.css" />
+    <style>
+    body {
+       font-family:"Times";
+    }
+    </style>
 
     <script type='text/javascript'>
     $(document).ready(function() {
@@ -75,6 +80,7 @@
 
       var op = ["NOP", "GET", "PUT", "ADD", "SUB", "MUL", "DIV", "UND","PRN", "INP", "UND","UND","UND","UND","UND","UND"];
 
+   
       //  Reset the computer -- like restarting
       function reset() {
         alert("Restarting...");
@@ -97,7 +103,7 @@
        document.getElementById("pctr").value = pad(decToBinary(pcounter), 4);
        document.getElementById("preg").value = pad(decToBinary(pregister), 8);
        document.getElementById("rega").value = pad(decToBinary(registerA), 8);
-       document.getElementById("regb").value = pad(decToBinary(registerB), 8);
+//       document.getElementById("regb").value = pad(decToBinary(registerB), 8);
        for (var i=0; i < 16; i++) {
          var id = "m" + pad(decToBinary(i), 4);
          document.getElementById(id).value = pad(decToBinary(ram[i]), 8);
@@ -118,7 +124,9 @@
      }
 
      // Restricts input in memory textfields to 0s and 1s
-     function handleRAM(textfield) {
+     // NOTE: Chrome, Firefox, and Safari may handle keyCode differently
+     function handleRAM(textfield, event) {
+       console.log("keycode=" + event.keyCode);
        textfield.value = textfield.value.replace(/[^0-1]/,'');
        if (event.keyCode == 13) {
          var id = textfield.id;
@@ -208,15 +216,15 @@
           document.getElementById("m"+addrbin).value = pad(decToBinary(ram[addr]),8);
        }
      }
+ 
+     function init() {
+        document.getElementById("monitor").cols = "60";
+        document.getElementById("keyboard").size = "75";
+     }
+
    </script>
   </head>
-  <body onload=''>
-
-<!-- <p> -->
-<!--   <a id='example-callback' href='#' title='Hello World'>Hover over me</a> -->
-<!-- </p> -->
-
-<!-- <div class='caption'>Callback example:</div> -->
+  <body onload='init()'>
     <table width="550" align="center" border="1" frame="box" rules="none">  <!-- Main Container -->
       <tr>
 	<td>
@@ -237,13 +245,13 @@
                       <tr>
                         <td>
                           <font color="red">Monitor</font><br />
- 			  <textarea id="monitor" rows="12" columns="60" readonly></textarea>
+ 			  <textarea id="monitor" rows="10" col="60" readonly></textarea>
                         </td>
                       </tr>
                       <tr>
                         <td>
                           <font color="red">Keyboard</font><br />
- 			  <input id="keyboard" type="text" width="8" onkeydown="handleKeyboardInput()"></input>
+ 			  <input id="keyboard" type="text" maxlenvth="40" size="40" onkeydown="handleKeyboardInput()"></input>
                         </td>
                       </tr>
                     </table>
@@ -264,30 +272,30 @@
                         <table><tr><td><u>INST</u></td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                             <td><u>DATA</u></td><td>&nbsp;</td></tr></table>
 
-                        <table><tr><td>0000:</td><td><span class='instr' data-id="0"><input onkeyup="handleRAM(this)" id="m0000" type="text" size="8" value="00000000" maxlength="8"></span></td>
-                            <td>1000:</td><td><span class='data' data-id="8"><input id="m1000"  onkeyup="handleRAM(this)" type="text" size="8" value="00000000" maxlength="8"></span></td></tr>
+                        <table><tr><td>0000:</td><td><span class='instr' data-id="0"><input onkeyup="handleRAM(this,event)" id="m0000" type="text" size="8" value="00000000" maxlength="8"></span></td>
+                            <td>1000:</td><td><span class='data' data-id="8"><input id="m1000"  onkeyup="handleRAM(this,event)" type="text" size="8" value="00000000" maxlength="8"></span></td></tr>
                         </table>
 
-                        <table><tr><td>0001:</td><td><span class='instr' data-id="1"><input id="m0001"  onkeyup="handleRAM(this)" type="text" size="8" value="00000000" maxlength="8"></span></td>
-                            <td>1001:</td><td><span class='data' data-id="9"><input id="m1001"  onkeyup="handleRAM(this)" type="text" size="8" value="00000000" maxlength="8"></span></td></tr>
+                        <table><tr><td>0001:</td><td><span class='instr' data-id="1"><input id="m0001"  onkeyup="handleRAM(this,event)" type="text" size="8" value="00000000" maxlength="8"></span></td>
+                            <td>1001:</td><td><span class='data' data-id="9"><input id="m1001"  onkeyup="handleRAM(this,event)" type="text" size="8" value="00000000" maxlength="8"></span></td></tr>
                         </table>
-                        <table><tr><td>0010:</td><td><span class='instr' data-id="2"><input id="m0010"  onkeyup="handleRAM(this)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
-                            <td>1010:</td><td><span class='data' data-id="10"><input id="m1010"  onkeyup="handleRAM(this)" type="text" size="8" value="00000000" maxlength="8" ></span></td></tr>
+                        <table><tr><td>0010:</td><td><span class='instr' data-id="2"><input id="m0010"  onkeyup="handleRAM(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
+                            <td>1010:</td><td><span class='data' data-id="10"><input id="m1010"  onkeyup="handleRAM(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td></tr>
                         </table>
-                        <table><tr><td>0011:</td><td><span class='instr' data-id="3"><input id="m0011"  onkeyup="handleRAM(this)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
-                            <td>1011:</td><td><span class='data' data-id="11"><input id="m1011"  onkeyup="handleRAM(this)" type="text" size="8" value="00000000" maxlength="8" ></span></td></tr>
+                        <table><tr><td>0011:</td><td><span class='instr' data-id="3"><input id="m0011"  onkeyup="handleRAM(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
+                            <td>1011:</td><td><span class='data' data-id="11"><input id="m1011"  onkeyup="handleRAM(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td></tr>
                         </table>
-                        <table><tr><td>0100:</td><td><span class='instr' data-id="4"><input id="m0100"  onkeyup="handleRAM(this)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
-                            <td>1100:</td><td><span class='data' data-id="12"><input id="m1100"  onkeyup="handleRAM(this)" type="text" size="8" value="00000000" maxlength="8" ></span></td></tr>
+                        <table><tr><td>0100:</td><td><span class='instr' data-id="4"><input id="m0100"  onkeyup="handleRAM(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
+                            <td>1100:</td><td><span class='data' data-id="12"><input id="m1100"  onkeyup="handleRAM(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td></tr>
                         </table>
-                        <table><tr><td>0101:</td><td><span class='instr' data-id="5"><input id="m0101"  onkeyup="handleRAM(this)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
-                            <td>1101:</td><td><span class='data' data-id="13"><input id="m1101" onkeyup="handleRAM(this)"  type="text" size="8" value="00000000" maxlength="8" ></span></td></tr>
+                        <table><tr><td>0101:</td><td><span class='instr' data-id="5"><input id="m0101"  onkeyup="handleRAM(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
+                            <td>1101:</td><td><span class='data' data-id="13"><input id="m1101" onkeyup="handleRAM(this,event)"  type="text" size="8" value="00000000" maxlength="8" ></span></td></tr>
                         </table>
-                        <table><tr><td>0110:</td><td><span class='instr' data-id="6"><input id="m0110"  onkeyup="handleRAM(this)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
-                            <td>1110:</td><td><span class='data' data-id="14"><input id="m1110"  onkeyup="handleRAM(this)" type="text" size="8" value="00000000" maxlength="8" ></span></td></tr>
+                        <table><tr><td>0110:</td><td><span class='instr' data-id="6"><input id="m0110"  onkeyup="handleRAM(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
+                            <td>1110:</td><td><span class='data' data-id="14"><input id="m1110"  onkeyup="handleRAM(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td></tr>
                         </table>
-                        <table><tr><td>0111:</td><td><span class='instr' data-id="7"><input id="m0111"  onkeyup="handleRAM(this)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
-                            <td>1111:</td><td><span class='data' data-id="15"><input id="m1111"  onkeyup="handleRAM(this)" type="text" size="8" value="00000000" maxlength="8" ></span></td></tr>
+                        <table><tr><td>0111:</td><td><span class='instr' data-id="7"><input id="m0111"  onkeyup="handleRAM(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
+                            <td>1111:</td><td><span class='data' data-id="15"><input id="m1111"  onkeyup="handleRAM(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td></tr>
                         </table>
                         <br /><br />
 		      </div>
@@ -316,6 +324,7 @@
                         <br />&nbsp;&nbsp;0100 &lt;x&gt; -- SUB value at  &lt;x&gt; from REGA
                         <br />&nbsp;&nbsp;0101 &lt;x&gt; -- MUL REG by value at  &lt;x&gt;
                         <br />&nbsp;&nbsp;0110 &lt;x&gt; -- DIV REGA by value at  &lt;x&gt;
+                        <br />&nbsp;&nbsp;1000 &lt;x&gt; -- PRINT &lt;x&gt; to Monitor
                         <br />&nbsp;&nbsp;1001 &lt;x&gt; -- INPUT keyboard to  &lt;x&gt;
                         <br />
                         </font>
@@ -328,13 +337,13 @@
 	    </tr>
             <tr>
               <td>
-               <button type="button" id="reset" onclick="reset()">Reset</input>
-               <button type="button" id="fetch" onclick="fetchNextInstruction()">Fetch</input>
-               <button type="button" id="exec" onclick="executeCurrentInstruction()" disabled>Execute</input>
-               <button type="button" id="run" onclick="fetchExecute()" disabled>Run</input>
-              </td>
-            <tr>
-          
+               <button type="button" id="reset" onclick="reset()">Reset</button>
+               <button type="button" id="fetch" onclick="fetchNextInstruction()">Fetch</button>
+               <button type="button" id="exec" onclick="executeCurrentInstruction()" disabled>Execute</button>
+               <button type="button" id="run" onclick="fetchExecute()" disabled>Run</button>
+               <a target="_blank" href="https://docs.google.com/document/d/1Z0iEBNOJgflhYXm28ki6ZiWLCGtPgUm_yEWuvzjInv4"><button type="button" style="float:right">Help</button></a>
+             </td>
+            </tr>
 	  </table> <!-- end of computer table -->
 	</td>
       </tr>
