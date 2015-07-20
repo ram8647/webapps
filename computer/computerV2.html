@@ -75,19 +75,23 @@
       var pregister = 0;
       var registerA = 0;
       var registerB = 0;
-
       var ram = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+
+      // Pointers to the start of the data and prog segments of RAM
       var dataIndex = 0;   // Data segment 0..7
       var progIndex = 8;   // Prog segment 8..15
+      var DATA_SEG = 8;
+      var INSTR_SEG = 0;
 
+      // List of assembly language op names
       var op = ["NOP", "GET", "PUT", "ADD", "SUB", "MUL", "DIV", "UND","PRN", "INP", "UND","UND","UND","UND","UND","UND"];
+
+      // Symbol table and pointer needed to keep track of where to load instructions and data
       var symboltable = [];
       var symbolctr = 0;
       var instrctr = 0;
-      var DATA_SEG = 8;
-      var INSTR_SEG = 0;
    
-      //  Reset the computer -- like restarting
+      //  Reset the computer -- like restarting -- resets the registers and memory
       function reset() {
         alert("Restarting...");
         pcounter = 0;
@@ -100,7 +104,7 @@
 	resetVisual();
       }
 
-     // Display the current state of the computer after reset
+     // Display the current visible state of the computer after reset
      function resetVisual() {
        document.getElementById('exec').disabled=true;
        document.getElementById('fetch').disabled=false;
@@ -114,6 +118,7 @@
        }
      }
 
+     // Parse a assembly language instruction given its decimal value
      function parseInstr(n) {
         var str = pad(decToBinary(n), 8);
         var instr = binaryToDecimal(str.substring(0,4));
@@ -121,13 +126,7 @@
         return op[instr] + " " + addr;
      }
 
-     function handleKeyboardInput() {
-       if (event.keyCode == 13) {
-        // alert(document.getElementById('keyboard').value);        
-       }
-     }
-
-     // Restricts input in memory textfields to 0s and 1s
+     // Updates RAM as user types. Restricts input to 0s and 1s.
      // NOTE: Chrome, Firefox, and Safari may handle keyCode differently
      function handleRAM(textfield, event) {
        console.log("keycode=" + event.keyCode);
@@ -135,13 +134,10 @@
        var id = textfield.id;
        var addr = binaryToDecimal(id.substring(1));
        ram[addr] = binaryToDecimal(textfield.value);
-       
-//       if (event.keyCode == 13) {
-//         ram[addr] = binaryToDecimal(textfield.value);
-//       }
      }
 
-     // Copy all input elements to memory
+     // Copy all input elements to memory. Invoked before Run
+     // May no longer be needed given handleRAM() now.
      function updateState() {
        for (var i=0; i < 16; i++) {
          var id = "m" + pad(decToBinary(i), 4);
@@ -149,6 +145,9 @@
        }
      }
 
+     // Loads the program currently typed into the Editor, parsing
+     //  both VAR declarations and executable statements. 
+     //  TODO: Separate assemble and load
      function loadProgram() {
         var code = document.getElementById("editor").value;
         symboltable = [];
@@ -182,6 +181,8 @@
        }
      }
 
+     // Parses an assembly language instruction, op, in line.
+     // Ctr gives the current line number for error messages.
      function parseInstruction(line, op, ctr) {
        var opcode = getOpCode(op);
        if (opcode == -1) {
@@ -204,23 +205,26 @@
        return true;
      }
 
+     // Looks up the address of a symbolic operand returning its 4-bit addr.
      function getOperandAddr(operand) {
        for (var i = 0; i < symboltable.length; i++) {
           if (symboltable[i][0] == operand) {
             return symboltable[i][1];
           }
        }
-       return -1;
+       return -1;   // Error, symbol not found
      }     
 
+     // Looks up the opcode of a symbolic operator (e.g., GET)
      function getOpCode(opstr) {
        for (var i = 0; i < op.length; i++) {
           if (op[i] == opstr)
             return i;
        }
-       return -1;
+       return -1;  // Error, illegal opcode
      }
 
+     // Parses assembly language variable declaractions: VAR A = 52 
      function parseVarDeclaration(line, ctr) {
        var assignment = line.substring(3).trim();
        var op = assignment.indexOf('=');
@@ -244,6 +248,8 @@
        return true;
      }
 
+     // Implements the fetch/execute cycle.  Called when the Run button is clicked.
+     // Programs start a ram[0]
      function fetchExecute() {
        updateState();
        pcounter = 0;
@@ -258,11 +264,7 @@
        }
      }
 
-     function step() {
-       fetchNextInstruction();
-       executeCurrentInstruction();
-     }
-
+     // Fetches the next machine instruction, setting the PCTR and PREG
      function fetchNextInstruction() {
         updateState();
         var pctr = binaryToDecimal(document.getElementById("pctr").value);
@@ -278,6 +280,7 @@
         document.getElementById("exec").disabled=false;
      }
 
+     // Executes the machine instruction in PREG
      function executeCurrentInstruction() {
         document.getElementById("fetch").disabled=false;
         document.getElementById("exec").disabled=true;
@@ -327,6 +330,7 @@
        }
      }
  
+     // Initializes the UI.
      function init() {
         document.getElementById("monitor").cols = "30";
         document.getElementById("editor").cols = "30";
@@ -371,7 +375,7 @@
                       <tr>
                         <td>
                           <font color="red">Keyboard</font><br />
- 			  <input id="keyboard" type="text" maxlenvth="40" size="40" onkeydown="handleKeyboardInput()" disabled></input>
+ 			  <input id="keyboard" type="text" maxlenvth="40" size="40" disabled></input>
                         </td>
                       </tr>
                     </table>
