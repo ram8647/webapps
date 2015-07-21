@@ -83,6 +83,9 @@
       var DATA_SEG = 8;
       var INSTR_SEG = 0;
 
+      // Machine language program, produced by assembler or compiler
+      var machine_prog;
+
       // List of assembly language op names
       var op = ["NOP", "GET", "PUT", "ADD", "SUB", "MUL", "DIV", "UND","PRN", "INP", "UND","UND","UND","UND","UND","UND"];
 
@@ -145,10 +148,42 @@
        }
      }
 
+     // Loads the program currently stored in machine_prog (after compilation)
+     function loadProgram() {
+       instrctr = 0;
+       symbolctr = 0;
+       if (!machine_prog.endsWith('\n')) 
+         machine_prog += '\n'; 
+       var cr = machine_prog.indexOf('\n');
+       var line = machine_prog.substring(0, cr).trim();
+       while (line != "") {
+         var colon = line.indexOf(":");
+         if (colon == -1) {      // It's an INSTR line
+            ram[INSTR_SEG + instrctr] = binaryToDecimal(line);        // Put it in RAM
+            var id = "m" + pad(decToBinary(INSTR_SEG + instrctr), 4); 
+            document.getElementById(id).value = line;
+            instrctr += 1;
+         } else {   // A VAR line
+            var addr = line.substring(0,colon);
+            var id = "m" + addr;
+            var bValue = line.substring(colon).trim();
+            ram[DATA_SEG + symbolctr] = binaryToDecimal(bValue);
+            document.getElementById(id).value = bValue;
+            symbolctr += 1;            
+         }
+         machine_prog = machine_prog.substring(cr+1);
+         cr = machine_prog.indexOf('\n');
+         line = machine_prog.substring(0,cr).trim();
+       }
+       document.getElementById("fetch").disabled = false;
+       document.getElementById("run").disabled = false;
+     }
+
      // Loads the program currently typed into the Editor, parsing
      //  both VAR declarations and executable statements. 
      //  TODO: Separate assemble and load
-     function loadProgram() {
+     function assembleProgram() {
+        machine_prog = "";
         var code = document.getElementById("editor").value;
         symboltable = [];
         symbolctr = 0;
@@ -163,13 +198,24 @@
         while (line != "") {
           var op = line.substring(0,3);
           if (op == "VAR") {
-            if (!parseVarDeclaration(line, ctr)) 
+            var decl = parseVarDeclaration(line, ctr);
+            if (decl == "") {
               return;  // ERROR
-          } else if (op == "NOP") {
-            return;
+            } else {
+              machine_prog += decl + "\n";
+            }
+          } else if (op == "NOP") {              // SUCCESS end of program
+            machine_prog += "00000000" + "\n";
+            displayMachineCode(machine_prog);
+            document.getElementById("load").disabled = false;
+            return;                 
           } else if ("GETPUTADDSUBMULDIVPRNINP".indexOf(op) != -1) {
-            if (!parseInstruction(line, op, ctr)) 
+            var instr = parseInstruction(line, op, ctr);
+            if (instr == "") {
               return;  // ERROR
+            } else {
+              machine_prog += instr + "\n";
+            }
           } else {
             alert("Illegal symbol in line " + ctr);
             return;
@@ -181,28 +227,36 @@
        }
      }
 
+     // Displays the assembled machine language program
+     function displayMachineCode(prog) {
+       var mc = document.getElementById("machinecode");
+       mc.cols = "15";
+       mc.value = prog;
+       mc.style.visibility="visible";
+       document.getElementById("editor").cols = "20";     
+     }
+
      // Parses an assembly language instruction, op, in line.
      // Ctr gives the current line number for error messages.
      function parseInstruction(line, op, ctr) {
+       var bitcode = "";
        var opcode = getOpCode(op);
        if (opcode == -1) {
          alert("Illegal operation:" + op);
-         return false;
+         return "";
        }
        var operand = line.substring(3).trim();
        var addr = getOperandAddr(operand);
        if (addr == -1) {
          alert("Illegal operand: " + operand);
-         return false;
+         return "";
        }
        var bOpcode = pad(decToBinary(opcode),4);
+       bitcode += bOpcode;
        var bAddr = pad(decToBinary(addr), 4);
-       var decInstr = binaryToDecimal(bOpcode+bAddr);
-       ram[INSTR_SEG + instrctr] = decInstr;
-       var id = "m" + pad(decToBinary(INSTR_SEG + instrctr), 4);
-       document.getElementById(id).value = pad(decToBinary(decInstr), 8);
-       instrctr += 1;
-       return true;
+       bitcode += bAddr;
+
+       return bitcode;
      }
 
      // Looks up the address of a symbolic operand returning its 4-bit addr.
@@ -226,26 +280,27 @@
 
      // Parses assembly language variable declaractions: VAR A = 52 
      function parseVarDeclaration(line, ctr) {
+       var bitcode = "";
        var assignment = line.substring(3).trim();
        var op = assignment.indexOf('=');
        if (op == -1) {
          alert("Syntax error in line " + ctr);
-         return false;
+         return "";
        }
        var symbol = assignment.substring(0, op).trim();
        var value = assignment.substring(op + 1).trim();
        value = parseInt(value);
        if (value == NaN) {
          alert("Syntax error in line " + ctr);
-         return false;
+         return "";
        }          
        symboltable.push([symbol, DATA_SEG + symbolctr]);
-       // Put it in memory
-       ram[DATA_SEG + symbolctr] = value;
-       var id = "m" + pad(decToBinary(DATA_SEG + symbolctr), 4);
-       document.getElementById(id).value = pad(decToBinary(value), 8);
+       
+       // Returns something like 1001: 00010001
+       var addr = pad(decToBinary(DATA_SEG + symbolctr), 4);
        symbolctr += 1;
-       return true;
+       bitcode = addr + ": " + pad(decToBinary(value), 8);
+       return bitcode;
      }
 
      // Implements the fetch/execute cycle.  Called when the Run button is clicked.
@@ -332,8 +387,9 @@
  
      // Initializes the UI.
      function init() {
-        document.getElementById("monitor").cols = "30";
+        document.getElementById("monitor").cols = "15";
         document.getElementById("editor").cols = "30";
+        document.getElementById("machinecode").cols = "1";
         document.getElementById("keyboard").size = "75";
      }
 
@@ -361,15 +417,19 @@
                         <td>
                           <table><tr><td>
    			      <font color="red">Monitor</font><br />
-			      <textarea id="monitor" rows="10" col="30" readonly></textarea>
+			      <textarea id="monitor" rows="10" col="15" readonly></textarea>
                             </td><td>
 			      <font color="red">Editor</font><br />
-                              <textarea id="editor" rows="10" col="40"></textarea>
+                              <textarea id="editor" rows="10" col="30"></textarea>
+<!--    			      <font color="red">MachineCode</font> -->
+                              <textarea id="machinecode" rows="10" col="10" style="visibility:hidden" readonly></textarea>
                             </td><td>
-                              <button type="button" id="run" onclick="loadProgram()">Load</button>
+                              <button type="button" id="assemble" onclick="assembleProgram()">Assemble</button><br />
+                              <button type="button" id="load" onclick="loadProgram()" disabled>Load</button>
                             </td>
                           </tr>
                           </table>       
+                          </div>
                         </td>
                       </tr>
                       <tr>
@@ -461,9 +521,9 @@
             <tr>
               <td>
                <button type="button" id="reset" onclick="reset()">Reset</button>
-               <button type="button" id="fetch" onclick="fetchNextInstruction()">Fetch</button>
+               <button type="button" id="fetch" onclick="fetchNextInstruction()" disabled>Fetch</button>
                <button type="button" id="exec" onclick="executeCurrentInstruction()" disabled>Execute</button>
-               <button type="button" id="run" onclick="fetchExecute()">Run</button>
+               <button type="button" id="run" onclick="fetchExecute()" disabled>Run</button>
                <a target="_blank" href="https://docs.google.com/document/d/1_b0sq3gXLB0GZSpjKRX2qjUOvaMxsiHOLhmY1HOoclo"><button type="button" style="float:right">Help</button></a>
              </td>
             </tr>
