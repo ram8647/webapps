@@ -5,12 +5,15 @@
     <meta charset="utf-8">
     <title>4-bit computer</title>
     <script src="./converters.js"></script>
-    <script src="./computer.js"></script>
+    <script src="./hardware.js"></script>
+    <script src="./assembler.js"></script>
+    <script src="./loader.js"></script>
+
     <script src="./edx-jsinput.js"></script>  <!-- For edX -->
     <script src="/static/js/capa/src/jschannel.js"></script>    <!-- For edX -->
+
     <!-- jQuery -->
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-
     <!-- Tipped  See http://www.tippedjs.com/  and http://www.tippedjs.com/license -->
     <script type="text/javascript" src="./tipped.js"></script>
     <link rel="stylesheet" type="text/css" href="./tipped.css" />
@@ -38,7 +41,7 @@
      $(document).ready(function() {
       Tipped.create('.instr', function(element) {
         var addr = $(element).data('id');
-        return "Instruction: " + parseInstr(ram[addr]) ;
+        return "Instruction: " + displayMnemonic(ram[addr]) ;
       }, {
        cache: false
       });
@@ -54,7 +57,7 @@
 
      $(document).ready(function() {
       Tipped.create('#preg', function() {
-        return "Program Register: " + parseInstr(pregister);
+        return "Program Register: " + displayMnemonic(pregister);
       }, {
        cache: false
       });
@@ -70,320 +73,151 @@
     </script>
     <script Language="JavaScript">
       
-      // The computer's internal registers and RAM
-      var pcounter = 0;
-      var pregister = 0;
-      var registerA = 0;
-      var registerB = 0;
-      var ram = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+<!--       // The computer's internal registers and RAM -->
+<!--       var pcounter = 0; -->
+<!--       var pregister = 0; -->
+<!--       var registerA = 0; -->
+<!--       var registerB = 0; -->
+<!--       var ram = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]; -->
 
-      // Pointers to the start of the data and prog segments of RAM
-      var dataIndex = 0;   // Data segment 0..7
-      var progIndex = 8;   // Prog segment 8..15
-      var DATA_SEG = 8;
-      var INSTR_SEG = 0;
-
-      // Machine language program, produced by assembler or compiler
-      var machine_prog;
-
-      // List of assembly language op names
+      // Mnemonics used in hover hints
       var op = ["NOP", "GET", "PUT", "ADD", "SUB", "MUL", "DIV", "UND","PRN", "INP", "UND","UND","UND","UND","UND","UND"];
 
-      // Symbol table and pointer needed to keep track of where to load instructions and data
-      var symboltable = [];
-      var symbolctr = 0;
-      var instrctr = 0;
-   
-      //  Reset the computer -- like restarting -- resets the registers and memory
-      function reset() {
-        alert("Restarting...");
-        pcounter = 0;
-        pregister = 0;
-        registerA = 0;
-        registerB = 0;
-        for (var i=0; i < 16; i++) {
-	  ram[i] = 0;
-        }
-	resetVisual();
+      // Parse a assembly language instruction given its decimal value
+      function displayMnemonic(n) {
+	var str = pad(decToBinary(n), 8);
+	var instr = binaryToDecimal(str.substring(0,4));
+	var addr = str.substring(4);
+	return op[instr] + " " + addr;
       }
 
-     // Display the current visible state of the computer after reset
-     function resetVisual() {
-       document.getElementById('exec').disabled=true;
-       document.getElementById('fetch').disabled=false;
+<!--       //  Reset the computer -- like restarting -- resets the registers and memory -->
+<!--       function reset() { -->
+<!--         alert("Restarting..."); -->
+<!--         pcounter = 0; -->
+<!--         pregister = 0; -->
+<!--         registerA = 0; -->
+<!--         registerB = 0; -->
+<!--         for (var i=0; i < 16; i++) { -->
+<!-- 	  ram[i] = 0; -->
+<!--         } -->
+<!-- 	resetVisual(); -->
+<!--       } -->
 
-       document.getElementById("pctr").value = pad(decToBinary(pcounter), 4);
-       document.getElementById("preg").value = pad(decToBinary(pregister), 8);
-       document.getElementById("rega").value = pad(decToBinary(registerA), 8);
-       for (var i=0; i < 16; i++) {
-         var id = "m" + pad(decToBinary(i), 4);
-         document.getElementById(id).value = pad(decToBinary(ram[i]), 8);
-       }
-     }
+<!--      // Display the current visible state of the computer after reset -->
+<!--      function resetVisual() { -->
+<!--        document.getElementById('exec').disabled=true; -->
+<!--        document.getElementById('fetch').disabled=false; -->
 
-     // Parse a assembly language instruction given its decimal value
-     function parseInstr(n) {
-        var str = pad(decToBinary(n), 8);
-        var instr = binaryToDecimal(str.substring(0,4));
-        var addr = str.substring(4);
-        return op[instr] + " " + addr;
-     }
+<!--        document.getElementById("pctr").value = pad(decToBinary(pcounter), 4); -->
+<!--        document.getElementById("preg").value = pad(decToBinary(pregister), 8); -->
+<!--        document.getElementById("rega").value = pad(decToBinary(registerA), 8); -->
+<!--        for (var i=0; i < 16; i++) { -->
+<!--          var id = "m" + pad(decToBinary(i), 4); -->
+<!--          document.getElementById(id).value = pad(decToBinary(ram[i]), 8); -->
+<!--        } -->
+<!--      } -->
 
-     // Updates RAM as user types. Restricts input to 0s and 1s.
-     // NOTE: Chrome, Firefox, and Safari may handle keyCode differently
-     function handleRAM(textfield, event) {
-       console.log("keycode=" + event.keyCode);
-       textfield.value = textfield.value.replace(/[^0-1]/,'');
-       var id = textfield.id;
-       var addr = binaryToDecimal(id.substring(1));
-       ram[addr] = binaryToDecimal(textfield.value);
-     }
+<!--      // Updates RAM as user types. Restricts input to 0s and 1s. -->
+<!--      // NOTE: Chrome, Firefox, and Safari may handle keyCode differently -->
+<!--      function handleRAM(textfield, event) { -->
+<!--        console.log("keycode=" + event.keyCode); -->
+<!--        textfield.value = textfield.value.replace(/[^0-1]/,''); -->
+<!--        var id = textfield.id; -->
+<!--        var addr = binaryToDecimal(id.substring(1)); -->
+<!--        ram[addr] = binaryToDecimal(textfield.value); -->
+<!--      } -->
 
-     // Copy all input elements to memory. Invoked before Run
-     // May no longer be needed given handleRAM() now.
-     function updateState() {
-       for (var i=0; i < 16; i++) {
-         var id = "m" + pad(decToBinary(i), 4);
-         ram[i] = binaryToDecimal(document.getElementById(id).value);
-       }
-     }
+<!--      // Copy all input elements to memory. Invoked before Run -->
+<!--      // May no longer be needed given handleRAM() now. -->
+<!--      function updateState() { -->
+<!--        for (var i=0; i < 16; i++) { -->
+<!--          var id = "m" + pad(decToBinary(i), 4); -->
+<!--          ram[i] = binaryToDecimal(document.getElementById(id).value); -->
+<!--        } -->
+<!--      } -->
 
-     // Loads the program currently stored in machine_prog (after compilation)
-     function loadProgram() {
-       instrctr = 0;
-       symbolctr = 0;
-       if (!machine_prog.endsWith('\n')) 
-         machine_prog += '\n'; 
-       var cr = machine_prog.indexOf('\n');
-       var line = machine_prog.substring(0, cr).trim();
-       while (line != "") {
-         var colon = line.indexOf(":");
-         if (colon == -1) {      // It's an INSTR line
-            ram[INSTR_SEG + instrctr] = binaryToDecimal(line);        // Put it in RAM
-            var id = "m" + pad(decToBinary(INSTR_SEG + instrctr), 4); 
-            document.getElementById(id).value = line;
-            instrctr += 1;
-         } else {   // A VAR line
-            var addr = line.substring(0,colon);
-            var id = "m" + addr;
-            var bValue = line.substring(colon).trim();
-            ram[DATA_SEG + symbolctr] = binaryToDecimal(bValue);
-            document.getElementById(id).value = bValue;
-            symbolctr += 1;            
-         }
-         machine_prog = machine_prog.substring(cr+1);
-         cr = machine_prog.indexOf('\n');
-         line = machine_prog.substring(0,cr).trim();
-       }
-       document.getElementById("fetch").disabled = false;
-       document.getElementById("run").disabled = false;
-     }
+<!--      // Implements the fetch/execute cycle.  Called when the Run button is clicked. -->
+<!--      // Programs start a ram[0] -->
+<!--      function fetchExecute() { -->
+<!--        updateState(); -->
+<!--        pcounter = 0; -->
+<!--        document.getElementById("pctr").value = pad(decToBinary(pcounter),8); -->
+<!--        fetchNextInstruction(); -->
+<!--        executeCurrentInstruction(); -->
+<!--        var instrcode = pad(decToBinary(pregister),8).substring(0,4); -->
+<!--        while (binaryToDecimal(instrcode) != 0) { -->
+<!--          fetchNextInstruction(); -->
+<!--          executeCurrentInstruction(); -->
+<!--          instrcode = pad(decToBinary(pregister),8).substring(0,4); -->
+<!--        } -->
+<!--      } -->
 
-     // Loads the program currently typed into the Editor, parsing
-     //  both VAR declarations and executable statements. 
-     //  TODO: Separate assemble and load
-     function assembleProgram() {
-        machine_prog = "";
-        var code = document.getElementById("editor").value;
-        symboltable = [];
-        symbolctr = 0;
-        instrctr = 0;
-        code = code.trim();        
-        if (!code.endsWith('\n')) {  // Add a CR if necessary
-           code += '\n';
-        }
-        var ctr = 1;
-        var cr = code.indexOf('\n');
-        var line = code.substring(0, cr).trim();
-        while (line != "") {
-          var op = line.substring(0,3);
-          if (op == "VAR") {
-            var decl = parseVarDeclaration(line, ctr);
-            if (decl == "") {
-              return;  // ERROR
-            } else {
-              machine_prog += decl + "\n";
-            }
-          } else if (op == "NOP") {              // SUCCESS end of program
-            machine_prog += "00000000" + "\n";
-            displayMachineCode(machine_prog);
-            document.getElementById("load").disabled = false;
-            return;                 
-          } else if ("GETPUTADDSUBMULDIVPRNINP".indexOf(op) != -1) {
-            var instr = parseInstruction(line, op, ctr);
-            if (instr == "") {
-              return;  // ERROR
-            } else {
-              machine_prog += instr + "\n";
-            }
-          } else {
-            alert("Illegal symbol in line " + ctr);
-            return;
-          }
-          code = code.substring(cr+1);
-          cr = code.indexOf('\n');
-          line = code.substring(0,cr).trim();
-          ctr += 1;
-       }
-     }
+<!--      // Fetches the next machine instruction, setting the PCTR and PREG -->
+<!--      function fetchNextInstruction() { -->
+<!--         updateState(); -->
+<!--         var pctr = binaryToDecimal(document.getElementById("pctr").value); -->
+<!--         var instr = ram[pctr]; -->
+<!--         document.getElementById("preg").value = pad(decToBinary(instr), 8); -->
+<!--         pregister = instr; -->
+<!--         pctr += 1; -->
+<!--         if (pctr > 7)  -->
+<!--           pctr = 0; -->
+<!--         pcounter = pctr; -->
+<!--         document.getElementById("pctr").value = pad(decToBinary(pctr), 4); -->
+<!--         document.getElementById("fetch").disabled=true; -->
+<!--         document.getElementById("exec").disabled=false; -->
+<!--      } -->
 
-     // Displays the assembled machine language program
-     function displayMachineCode(prog) {
-       var mc = document.getElementById("machinecode");
-       mc.cols = "15";
-       mc.value = prog;
-       mc.style.visibility="visible";
-       document.getElementById("editor").cols = "20";     
-     }
-
-     // Parses an assembly language instruction, op, in line.
-     // Ctr gives the current line number for error messages.
-     function parseInstruction(line, op, ctr) {
-       var bitcode = "";
-       var opcode = getOpCode(op);
-       if (opcode == -1) {
-         alert("Illegal operation:" + op);
-         return "";
-       }
-       var operand = line.substring(3).trim();
-       var addr = getOperandAddr(operand);
-       if (addr == -1) {
-         alert("Illegal operand: " + operand);
-         return "";
-       }
-       var bOpcode = pad(decToBinary(opcode),4);
-       bitcode += bOpcode;
-       var bAddr = pad(decToBinary(addr), 4);
-       bitcode += bAddr;
-
-       return bitcode;
-     }
-
-     // Looks up the address of a symbolic operand returning its 4-bit addr.
-     function getOperandAddr(operand) {
-       for (var i = 0; i < symboltable.length; i++) {
-          if (symboltable[i][0] == operand) {
-            return symboltable[i][1];
-          }
-       }
-       return -1;   // Error, symbol not found
-     }     
-
-     // Looks up the opcode of a symbolic operator (e.g., GET)
-     function getOpCode(opstr) {
-       for (var i = 0; i < op.length; i++) {
-          if (op[i] == opstr)
-            return i;
-       }
-       return -1;  // Error, illegal opcode
-     }
-
-     // Parses assembly language variable declaractions: VAR A = 52 
-     function parseVarDeclaration(line, ctr) {
-       var bitcode = "";
-       var assignment = line.substring(3).trim();
-       var op = assignment.indexOf('=');
-       if (op == -1) {
-         alert("Syntax error in line " + ctr);
-         return "";
-       }
-       var symbol = assignment.substring(0, op).trim();
-       var value = assignment.substring(op + 1).trim();
-       value = parseInt(value);
-       if (value == NaN) {
-         alert("Syntax error in line " + ctr);
-         return "";
-       }          
-       symboltable.push([symbol, DATA_SEG + symbolctr]);
-       
-       // Returns something like 1001: 00010001
-       var addr = pad(decToBinary(DATA_SEG + symbolctr), 4);
-       symbolctr += 1;
-       bitcode = addr + ": " + pad(decToBinary(value), 8);
-       return bitcode;
-     }
-
-     // Implements the fetch/execute cycle.  Called when the Run button is clicked.
-     // Programs start a ram[0]
-     function fetchExecute() {
-       updateState();
-       pcounter = 0;
-       document.getElementById("pctr").value = pad(decToBinary(pcounter),8);
-       fetchNextInstruction();
-       executeCurrentInstruction();
-       var instrcode = pad(decToBinary(pregister),8).substring(0,4);
-       while (binaryToDecimal(instrcode) != 0) {
-         fetchNextInstruction();
-         executeCurrentInstruction();
-         instrcode = pad(decToBinary(pregister),8).substring(0,4);
-       }
-     }
-
-     // Fetches the next machine instruction, setting the PCTR and PREG
-     function fetchNextInstruction() {
-        updateState();
-        var pctr = binaryToDecimal(document.getElementById("pctr").value);
-        var instr = ram[pctr];
-        document.getElementById("preg").value = pad(decToBinary(instr), 8);
-        pregister = instr;
-        pctr += 1;
-        if (pctr > 7) 
-          pctr = 0;
-        pcounter = pctr;
-        document.getElementById("pctr").value = pad(decToBinary(pctr), 4);
-        document.getElementById("fetch").disabled=true;
-        document.getElementById("exec").disabled=false;
-     }
-
-     // Executes the machine instruction in PREG
-     function executeCurrentInstruction() {
-        document.getElementById("fetch").disabled=false;
-        document.getElementById("exec").disabled=true;
-        var preg =  document.getElementById("preg").value;
-        var instr = binaryToDecimal(preg.substring(0,4));
-        var addrbin = preg.substring(4)
-        var addr = binaryToDecimal(addrbin);
-        var operand = ram[addr];
+<!--      // Executes the machine instruction in PREG -->
+<!--      function executeCurrentInstruction() { -->
+<!--         document.getElementById("fetch").disabled=false; -->
+<!--         document.getElementById("exec").disabled=true; -->
+<!--         var preg =  document.getElementById("preg").value; -->
+<!--         var instr = binaryToDecimal(preg.substring(0,4)); -->
+<!--         var addrbin = preg.substring(4) -->
+<!--         var addr = binaryToDecimal(addrbin); -->
+<!--         var operand = ram[addr]; -->
       
-       if (instr == 1)  {   // GET x and put in registerA
-          registerA = ram[addr];
-          document.getElementById("rega").value = pad(decToBinary(ram[addr]),8);
-       }
-       if (instr == 2)  {   // Put regA at x
-          var rega = binaryToDecimal(document.getElementById("rega").value);
-          ram[addr] = rega;
-          document.getElementById("m"+addrbin).value = pad(decToBinary(ram[addr]),8);
-       }
-       if (instr == 3)  {   // Add x to register
-          registerA = (registerA + operand)  % 256;
-          document.getElementById("rega").value = pad(decToBinary(registerA),8);
-       }
-       if (instr == 4)  {   // Sub x from register
-          registerA = (registerA - operand) % 256;
-          document.getElementById("rega").value = pad(decToBinary(registerA),8);
-       }
-       if (instr == 5)  {   // Mult  register by x
-          registerA = (registerA * operand) % 256;
-          document.getElementById("rega").value = pad(decToBinary(registerA),8);
-       }
-       if (instr == 6)  {   // Div  register by x
-          registerA = (Math.floor(registerA / operand)) % 256;
-          document.getElementById("rega").value = pad(decToBinary(registerA),8);
-       }
-       if (instr == 8)  {   // Print x
-          var monitor = document.getElementById("monitor");
-          monitor.value = monitor.value + ram[addr] + "\n" ;
-       }
-       if (instr == 9)  {   // Read keyboard into x and echo it
-          var input = prompt("Input a number at the keyboard: ");
-          input = input % 256;
-          var keyboard = document.getElementById("keyboard").value = input;
-          var monitor = document.getElementById("monitor");
-          monitor.value = monitor.value + ">" + keyboard + "\n";
-          ram[addr] = keyboard;
-          document.getElementById("m"+addrbin).value = pad(decToBinary(ram[addr]),8);
-       }
-     }
+<!--        if (instr == 1)  {   // GET x and put in registerA -->
+<!--           registerA = ram[addr]; -->
+<!--           document.getElementById("rega").value = pad(decToBinary(ram[addr]),8); -->
+<!--        } -->
+<!--        if (instr == 2)  {   // Put regA at x -->
+<!--           var rega = binaryToDecimal(document.getElementById("rega").value); -->
+<!--           ram[addr] = rega; -->
+<!--           document.getElementById("m"+addrbin).value = pad(decToBinary(ram[addr]),8); -->
+<!--        } -->
+<!--        if (instr == 3)  {   // Add x to register -->
+<!--           registerA = (registerA + operand)  % 256; -->
+<!--           document.getElementById("rega").value = pad(decToBinary(registerA),8); -->
+<!--        } -->
+<!--        if (instr == 4)  {   // Sub x from register -->
+<!--           registerA = (registerA - operand) % 256; -->
+<!--           document.getElementById("rega").value = pad(decToBinary(registerA),8); -->
+<!--        } -->
+<!--        if (instr == 5)  {   // Mult  register by x -->
+<!--           registerA = (registerA * operand) % 256; -->
+<!--           document.getElementById("rega").value = pad(decToBinary(registerA),8); -->
+<!--        } -->
+<!--        if (instr == 6)  {   // Div  register by x -->
+<!--           registerA = (Math.floor(registerA / operand)) % 256; -->
+<!--           document.getElementById("rega").value = pad(decToBinary(registerA),8); -->
+<!--        } -->
+<!--        if (instr == 8)  {   // Print x -->
+<!--           var monitor = document.getElementById("monitor"); -->
+<!--           monitor.value = monitor.value + ram[addr] + "\n" ; -->
+<!--        } -->
+<!--        if (instr == 9)  {   // Read keyboard into x and echo it -->
+<!--           var input = prompt("Input a number at the keyboard: "); -->
+<!--           input = input % 256; -->
+<!--           var keyboard = document.getElementById("keyboard").value = input; -->
+<!--           var monitor = document.getElementById("monitor"); -->
+<!--           monitor.value = monitor.value + ">" + keyboard + "\n"; -->
+<!--           ram[addr] = keyboard; -->
+<!--           document.getElementById("m"+addrbin).value = pad(decToBinary(ram[addr]),8); -->
+<!--        } -->
+<!--      } -->
  
      // Initializes the UI.
      function init() {
