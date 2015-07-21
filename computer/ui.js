@@ -5,9 +5,13 @@
 // Initializes the UI.
 function uiInit() {
   document.getElementById("monitor").cols = "15";
-  document.getElementById("editor").cols = "30";
-  document.getElementById("machinecode").cols = "1";
   document.getElementById("keyboard").size = "75";
+  var ed = document.getElementById("editor");
+  if (ed) 
+    ed.cols = "30";
+  var mc = document.getElementById("machinecode");
+  if (mc) 
+    mc.cols = "1";
 }
 
 

@@ -25,6 +25,9 @@
     </style>
 
     <script type='text/javascript'>
+    <!--  This is the Tipped Script. Handles the hover hints -->
+    <!--  See http://www.tippedjs.com/  and http://www.tippedjs.com/license -->
+
     $(document).ready(function() {
       Tipped.create('.boxes .box');
     });
@@ -113,7 +116,6 @@
                             </td><td>
 			      <font color="red">Editor</font><br />
                               <textarea id="editor" rows="10" col="30"></textarea>
-<!--    			      <font color="red">MachineCode</font> -->
                               <textarea id="machinecode" rows="10" col="10" style="visibility:hidden" readonly></textarea>
                             </td><td>
                               <button type="button" id="assemble" onclick="assembleProgram()">Assemble</button><br />
@@ -182,6 +184,7 @@
                             <td><u>PREG:</u></td><td><input id="preg" type="text" size="8"  value="00000000" maxlength="8" readonly></td></tr></table>
                         <table><tr><td><u>REGA:</u></td><td><input id="rega" type="text" size="8"  value="00000000" maxlength="8" readonly></td>
                             <td>
+<!-- Should we have a REGB? -->
 <!--                              <u>REGB:</u></td><td> -->
 <!--                              <div class="input"> -->
 <!--                                <input id="regb" type="text" size="8" value="00000000" maxlength="8" readonly /> -->
