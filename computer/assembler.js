@@ -1,5 +1,23 @@
 /*
  *  assembler.js -- Assembler code for the 4-bit computer.
+ *
+ */
+
+/**
+ *  assembler.js implements the following assembly language for the 4-bit computer:
+ * 
+ *
+	OP  OPCODE
+	NOP 0000
+	GET 0001
+	PUT 0010
+	ADD 0011
+	SUB 0100
+	MUL 0101
+	DIV 0110
+	PRN 1000
+	INP 1001
+ *
  */
 
 // Symbol table and pointer needed to keep track of where to load instructions and data
