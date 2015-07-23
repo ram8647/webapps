@@ -12,6 +12,15 @@ function uiInit() {
   var mc = document.getElementById("machinecode");
   if (mc) 
     mc.cols = "1";
+
+  // Testing the ids of ram elements
+  for (var i=0; i < VIS_RAM_LEN; i++) {
+    var id = "m" + pad(decToBinary(i),ADDR_LEN);
+    document.getElementById(id).value = pad(decToBinary(0),WORD_LEN);
+    document.getElementById(id).size = WORD_LEN;
+    document.getElementById(id).maxlength = WORD_LEN;
+  }
+
 }
 
 
@@ -36,14 +45,14 @@ function uiReset() {
 // Displays the registers and RAM
 function uiUpdateHwDisplay() {
   // CPU
-  document.getElementById("pctr").value = pad(decToBinary(pcounter),4);
-  document.getElementById("preg").value = pad(decToBinary(pregister), 8);
-  document.getElementById("rega").value = pad(decToBinary(registerA),8);
+  document.getElementById("pctr").value = pad(decToBinary(pcounter),ADDR_LEN);
+  document.getElementById("preg").value = pad(decToBinary(pregister), WORD_LEN);
+  document.getElementById("rega").value = pad(decToBinary(registerA),WORD_LEN);
 
   // RAM
-  for (var i=0; i < 16; i++) {
-    var id = "m" + pad(decToBinary(i), 4);
-    document.getElementById(id).value = pad(decToBinary(ram[i]), 8);
+  for (var i=0; i < VIS_RAM_LEN; i++) {
+    var id = "m" + pad(decToBinary(i), ADDR_LEN);
+    document.getElementById(id).value = pad(decToBinary(ram[i]), WORD_LEN);
   }
 }
 

@@ -2,10 +2,6 @@
  *  loader.js -- Loader code for the 4-bit computer
  */
 
-// Pointers to the start of the data and prog segments of RAM
-var DATA_SEG = 8;
-var INSTR_SEG = 0;
-
 // Loads the program currently stored in machine_prog (after compilation)
 function loadProgram() {
   var instrctr = 0;
@@ -18,7 +14,7 @@ function loadProgram() {
     var colon = line.indexOf(":");
     if (colon == -1) {      // It's an INSTR line
       ram[INSTR_SEG + instrctr] = binaryToDecimal(line);        // Put it in RAM
-      var id = "m" + pad(decToBinary(INSTR_SEG + instrctr), 4); 
+      var id = "m" + pad(decToBinary(INSTR_SEG + instrctr), ADDR_LEN); 
       document.getElementById(id).value = line;
       instrctr += 1;
     } else {   // A VAR line

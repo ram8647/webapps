@@ -4,6 +4,16 @@
   <head>
     <meta charset="utf-8">
     <title>4-bit computer</title>
+
+      <script>
+       // Settings that control the architecture.
+       var ADDR_LEN = 4;
+       var INSTR_LEN = 4;
+       var WORD_LEN = ADDR_LEN + INSTR_LEN;  
+       var RAM_LEN = Math.pow(2,ADDR_LEN);
+       var VIS_RAM_LEN = 16;   // Visible RAM 
+      </script>
+
     <script src="./converters.js"></script>
     <script src="./hardware.js"></script>
     <script src="./ui.js"></script>
@@ -82,9 +92,9 @@
 
       // Parse a assembly language instruction given its decimal value
       function displayMnemonic(n) {
-	var str = pad(decToBinary(n), 8);
-	var instr = binaryToDecimal(str.substring(0,4));
-	var addr = str.substring(4);
+	var str = pad(decToBinary(n), WORD_LEN);
+	var instr = binaryToDecimal(str.substring(0,INSTR_LEN));
+	var addr = str.substring(INSTR_LEN);
 	return op[instr] + " " + addr;
       }
 

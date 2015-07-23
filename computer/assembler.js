@@ -25,10 +25,6 @@ var symboltable = [];
 var symbolctr = 0;
 var instrctr = 0;
 
-// Pointers to the start of the data and prog segments of RAM
-var DATA_SEG = 8;
-var INSTR_SEG = 0;
-
 // Machine language program, produced by assembler or compiler
 var machine_prog;
 
@@ -97,9 +93,9 @@ function parseInstruction(line, op, ctr) {
     alert("Illegal operand: " + operand);
     return "";
   }
-  var bOpcode = pad(decToBinary(opcode),4);
+  var bOpcode = pad(decToBinary(opcode),INSTR_LEN);
   bitcode += bOpcode;
-  var bAddr = pad(decToBinary(addr), 4);
+  var bAddr = pad(decToBinary(addr), ADDR_LEN);
   bitcode += bAddr;
   return bitcode;
 }
@@ -142,9 +138,9 @@ function parseVarDeclaration(line, ctr) {
   symboltable.push([symbol, DATA_SEG + symbolctr]);
        
   // Returns something like 1001: 00010001
-  var addr = pad(decToBinary(DATA_SEG + symbolctr), 4);
+  var addr = pad(decToBinary(DATA_SEG + symbolctr), ADDR_LEN);
   symbolctr += 1;
-  bitcode = addr + ": " + pad(decToBinary(value), 8);
+  bitcode = addr + ": " + pad(decToBinary(value), WORD_LEN);
   return bitcode;
 }
 

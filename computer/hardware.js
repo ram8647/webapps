@@ -2,19 +2,24 @@
  *  hardware.js -- Hardware of 4-bit computer
  */
 
-// The computer's internal registers and RAM
-var ADDR_LEN = 4;
+// Settings that control the architecture are in the HTML file
+
 var pcounter = 0;
 var pregister = 0;
 var registerA = 0;
 var registerB = 0;
-var RAM_LEN = Math.pow(2,ADDR_LEN);
-var ram = new Array(RAM_LEN);
+var registerC = 0;
+var registerD = 0;
 
 // RAM
+var ram = new Array(RAM_LEN);
 for (var i = 0; i < RAM_LEN; i++) 
   ram[i] = 0;
-//var ram = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+
+// Pointers to the start of the data and prog segments of RAM
+var INSTR_SEG = 0;
+var DATA_SEG = VIS_RAM_LEN / 2;
+
 
 //  Reset the computer -- like restarting -- resets the registers and memory
 function reset() {
@@ -23,9 +28,8 @@ function reset() {
   pregister = 0;
   registerA = 0;
   registerB = 0;
-  for (var i=0; i < 16; i++) {
-     ram[i] = 0;
-  }
+  registerC = 0;
+  registerD = 0;
   uiReset();
 }
 
@@ -35,11 +39,11 @@ function fetchExecute() {
   pcounter = 0;
   fetchNextInstruction();
   executeCurrentInstruction();
-  var instrcode = pad(decToBinary(pregister),8).substring(0,ADDR_LEN);
+  var instrcode = pad(decToBinary(pregister),WORD_LEN).substring(0,INSTR_LEN);
   while (binaryToDecimal(instrcode) != 0) {
     fetchNextInstruction();
     executeCurrentInstruction();
-    instrcode = pad(decToBinary(pregister),8).substring(0,ADDR_LEN);
+    instrcode = pad(decToBinary(pregister),WORD_LEN).substring(0,INSTR_LEN);
     uiUpdateHwDisplay();
   }
 }
@@ -47,16 +51,16 @@ function fetchExecute() {
 // Fetches the next machine instruction from memory, setting the PCTR and PREG
 function fetchNextInstruction() {
   pregister = ram[pcounter];
-  if (pcounter < 7)          // Stop advance pcounter at the end of PROG SEGMENT
+  if (pcounter < DATA_SEG-1)          // Stop advance pcounter at the end of PROG SEGMENT
     pcounter += 1; 
   uiUpdateAfterFetch();
 }
 
 // Executes the machine instruction in PREG
 function executeCurrentInstruction() {
-  var pregBin = pad(decToBinary(pregister), 8);
-  var instr = binaryToDecimal(pregBin.substring(0,ADDR_LEN));
-  var addrbin = pregBin.substring(ADDR_LEN)
+  var pregBin = pad(decToBinary(pregister), WORD_LEN);
+  var instr = binaryToDecimal(pregBin.substring(0,INSTR_LEN));
+  var addrbin = pregBin.substring(INSTR_LEN)
   var addr = binaryToDecimal(addrbin);
   var operand = ram[addr];
       
@@ -67,16 +71,16 @@ function executeCurrentInstruction() {
     ram[addr] = registerA;
   }
   if (instr == 3)  {   // Add x to register
-    registerA = (registerA + operand)  % 256;
+    registerA = (registerA + operand)  % Math.pow(2,WORD_LEN);
   }
   if (instr == 4)  {   // Sub x from register
-    registerA = (registerA - operand) % 256;
+    registerA = (registerA - operand) % Math.pow(2,WORD_LEN);
   }
   if (instr == 5)  {   // Mult  register by x
-    registerA = (registerA * operand) % 256;
+    registerA = (registerA * operand) % Math.pow(2,WORD_LEN);
   }
   if (instr == 6)  {   // Div  register by x
-    registerA = (Math.floor(registerA / operand)) % 256;
+    registerA = (Math.floor(registerA / operand)) % Math.pow(2,WORD_LEN);
   }
   if (instr == 8)  {   // Print x
     var monitor = uiGetMonitor(); //document.getElementById("monitor");
@@ -84,7 +88,7 @@ function executeCurrentInstruction() {
   }
   if (instr == 9)  {   // Read keyboard into x and echo it
     var input = prompt("Input a number at the keyboard: ");
-    input = input % 256;
+    input = input % Math.pow(2,WORD_LEN);
     uiSetKeyboard(input);
     var monitor = uiGetMonitor(); 
     monitor.value = monitor.value + ">" + input + "\n";
