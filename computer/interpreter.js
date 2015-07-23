@@ -57,12 +57,6 @@ function interpretProgram() {
     } else {  // must be an assignment operator
       ok = parseAssignment(line, ctr);
       if (!ok) return;
-//       var assgn = parseAssignment(line, ctr);
-//       if (assgn == "") {
-//         return;  // ERROR
-//       } else {
-//         machine_prog += assgn + "\n"
-//       }
     }      
     code = code.substring(cr+1);
     cr = code.indexOf('\n');
@@ -102,9 +96,9 @@ function parsePrint(line,ctr) {
   //  and its result is not necessarily in REGA.
   // I guess we need to distinguish print VAR and print EXPR.
 
+  var bAddr = "";
   if (isVariable(expr)) { // Must be pre-declared so in symbol table
     var varaddr = getOperandAddr(expr);
-    var bAddr = "";
 
     if (varaddr == -1) {  // Undeclared variable
       alert("Error: uninitialized variable on line " + ctr);
@@ -112,9 +106,13 @@ function parsePrint(line,ctr) {
     } else {
       bAddr = pad(decToBinary(varaddr),ADDR_LEN);
     }
-    var opcode = pad(decToBinary(opcodes["PRN"]),INSTR_LEN);
-    machine_prog += opcode + bAddr + "\n";  // PRN <x>
-  } 
+  } else {
+    bAddr = traverse(tree,ctr);
+    if (bAddr == "ERR")
+      return false;
+  }
+  var opcode = pad(decToBinary(opcodes["PRN"]),INSTR_LEN);
+  machine_prog += opcode + bAddr + "\n";  // PRN <x>
   return true;
 }
 
