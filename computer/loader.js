@@ -5,7 +5,6 @@
 // Loads the program currently stored in machine_prog (after compilation)
 function loadProgram() {
   var instrctr = 0;
-  var symbolctr = 0;
   if (!machine_prog.endsWith('\n')) 
     machine_prog += '\n'; 
   var cr = machine_prog.indexOf('\n');
@@ -19,11 +18,11 @@ function loadProgram() {
       instrctr += 1;
     } else {   // A VAR line
        var addr = line.substring(0,colon);
+       var dAddr = binaryToDecimal(addr);
        var id = "m" + addr;
        var bValue = line.substring(colon+1).trim();
-       ram[DATA_SEG + symbolctr] = binaryToDecimal(bValue);
+       ram[dAddr] = binaryToDecimal(bValue);
        document.getElementById(id).value = bValue;
-       symbolctr += 1;            
     }
     machine_prog = machine_prog.substring(cr+1);
     cr = machine_prog.indexOf('\n');

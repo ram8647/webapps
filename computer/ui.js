@@ -8,7 +8,7 @@ function uiInit() {
   document.getElementById("keyboard").size = "75";
   var ed = document.getElementById("editor");
   if (ed) 
-    ed.cols = "30";
+    ed.cols = "25";
   var mc = document.getElementById("machinecode");
   if (mc) 
     mc.cols = "1";

@@ -31,6 +31,9 @@ var machine_prog;
 // List of assembly language op names
 var op = ["NOP", "GET", "PUT", "ADD", "SUB", "MUL", "DIV", "UND","PRN", "INP", "UND","UND","UND","UND","UND","UND"];
 
+// Association list of names and opcode
+var opcodes = {"NOP":0, "GET":1, "PUT":2, "ADD":3, "SUB":4, "MUL":5, "DIV":6, "UND":7,"PRN":8, "INP":9, "UND":10,"UND":11,"UND":12,"UND":13,"UND":14,"UND":15};
+
 // Loads the program currently typed into the Editor, parsing
 //  both VAR declarations and executable statements. 
 function assembleProgram() {
@@ -147,7 +150,7 @@ function parseVarDeclaration(line, ctr) {
 // Displays the assembled machine language program
 function displayMachineCode(prog) {
   var mc = document.getElementById("machinecode");
-  mc.cols = "15";
+  mc.cols = "25";
   mc.value = prog;
   mc.style.visibility="visible";
   document.getElementById("editor").cols = "20";     
