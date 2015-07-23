@@ -30,6 +30,10 @@ function reset() {
   registerB = 0;
   registerC = 0;
   registerD = 0;
+
+  for (var i = 0; i < RAM_LEN; i++) 
+    ram[i] = 0;
+  
   uiReset();
 }
 
