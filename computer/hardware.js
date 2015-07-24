@@ -24,6 +24,7 @@ var DATA_SEG = VIS_RAM_LEN / 2;
 //  Reset the computer -- like restarting -- resets the registers and memory
 function reset() {
   alert("Restarting...");
+  instr_counter = 0;  // Counts how many instructions, max = DATA_SEG -1
   pcounter = 0;
   pregister = 0;
   registerA = 0;
@@ -41,10 +42,12 @@ function reset() {
 // Programs start a ram[0]
 function fetchExecute() {
   pcounter = 0;
+  instr_counter = 0;
   fetchNextInstruction();
   executeCurrentInstruction();
   var instrcode = pad(decToBinary(pregister),WORD_LEN).substring(0,INSTR_LEN);
-  while (binaryToDecimal(instrcode) != 0) {
+  while (binaryToDecimal(instrcode) != 0 && instr_counter < DATA_SEG) {
+    instr_counter += 1;
     fetchNextInstruction();
     executeCurrentInstruction();
     instrcode = pad(decToBinary(pregister),WORD_LEN).substring(0,INSTR_LEN);
@@ -55,8 +58,7 @@ function fetchExecute() {
 // Fetches the next machine instruction from memory, setting the PCTR and PREG
 function fetchNextInstruction() {
   pregister = ram[pcounter];
-  if (pcounter < DATA_SEG-1)          // Stop advance pcounter at the end of PROG SEGMENT
-    pcounter += 1; 
+  pcounter += 1; 
   uiUpdateAfterFetch();
 }
 

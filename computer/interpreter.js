@@ -22,6 +22,9 @@ var buffctr = 0;
 // Pointers to the start of the data and prog segments of RAM
 var BUFFER  = Math.pow(2, ADDR_LEN) - 1;    // For partial results, grows downward
 
+// Association list of names and opcode
+var opcodelist = {"+":"ADD", "-":"SUB", "*":"MUL", "/":"DIV"};
+
 // Machine language program, produced by assembler or compiler
 var machine_prog;
 
@@ -181,26 +184,23 @@ function traverse(tree, ctr) {
       return bAddr;
     }
   } else {  // recursive case -- an operator
-    return "ERR";
-//     var op = tree.op;
-//     var addrA = traverse(tree.args[0],assycode);
-//     var buffer = 0;
-//     if (addrA == "REGA") {
-//       buffer = BUFFER - buffctr; 
-//       machine_prog += "0010" + pad(decToBinary(buffer),ADDR_LEN) + "\n"; // PUT BUFFER
-//       buffctr += 1;
-//     } 
-//     var addrB = traverse(tree.args[1],assycode);
-//     if (addrB == "REGA") {
-//       buffer = BUFFER - buffctr; 
-//       machine_prog += "0010" + pad(decToBinary(buffer),ADDR_LEN) + "\n"; // PUT BUFFER
-//     } 
+    var addrA = traverse(tree.args[0], ctr);
+    var addrB = traverse(tree.args[1], ctr);
+    var bOpcode = pad(decToBinary(opcodes["GET"]),INSTR_LEN);
+    machine_prog += bOpcode + addrA + "\n";
 
-//     machine_prog += "0001" + addrA + "\n"; // GET A
-//     machine_prog += "0011" + addrB + "\n"; // ADD B
-//     //    assycode += "0001" + addrA + "\n"; // GET A
-//     //    assycode += "0011" + addrB + "\n"; // ADD B
-//     return "REGA";  // Result left in REGA
+    var op = tree.op;
+    var operator = opcodelist[op];
+    bOpcode = pad(decToBinary(opcodes[operator]),INSTR_LEN);
+    machine_prog += bOpcode + addrB + "\n";
+
+    // Calculate and Store partial result
+    var buffer = BUFFER - buffctr; 
+    var bAddr = pad(decToBinary(buffer),ADDR_LEN);
+    bOpcode = pad(decToBinary(opcodes["PUT"]),INSTR_LEN);
+    machine_prog += bOpcode + bAddr + "\n";
+    buffctr += 1;
+    return bAddr;    
   }
 }
 
