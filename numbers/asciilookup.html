@@ -23,8 +23,13 @@
     //Sets the base from drop-down 
     function setBase(n) {
       base = parseInt(n);
-      value = document.getElementById("inputletter").value.charCodeAt(0);
-      document.getElementById("binary").innerHTML = padForBase(decToAltBase(value, base), base);
+      var decimal = document.getElementById("inputletter").value.charCodeAt(0);
+      if (decimal == NaN) {
+       document.getElementById("binary").innerHTML = "NaN";
+       return;
+     }
+     value = decimal;
+     document.getElementById("binary").innerHTML = padForBase(decToAltBase(value, base), base);
     }
 
 
@@ -32,6 +37,10 @@
     function convert() {
        var input = document.getElementById("inputletter").value;
        var decimal = input.charCodeAt(0);
+       if (decimal == NaN) {
+         document.getElementById("binary").innerHTML = "NaN";
+         return;
+       }
        var conv = decToAltBase(decimal, base);
        document.getElementById("binary").innerHTML = conv;
     }
@@ -53,7 +62,7 @@
     <table class="widget">
       <tr>
 	<td style="width:400px">
-          <input style="height:30px;font-size:1.2em;border:1px;background:#eeeeee"  placeholder="A" type="text" id="inputletter" size="3" onchange="convert()">
+          <input style="height:30px;font-size:1.2em;border:1px;background:#eeeeee"  placeholder="?" type="text" id="inputletter" size="3" value="?" maxlength="1" onchange="convert()">
           <label style="font-size:1.3em" id="binary">1000001</label>
           <select id="bases" onchange="setBase(value)">
            <option value="2" selected>binary</option>

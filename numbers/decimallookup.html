@@ -12,8 +12,24 @@
 
    <script src="./converters.js"></script>
    <script Language="JavaScript">
+
+    base = 2;
+    value = 0;
+
     // Initialization
     function init() {
+    }
+
+    //Sets the base from drop-down 
+    function setBase(n) {
+      base = parseInt(n);
+      var decimal = parseInt(document.getElementById("inputnumber").value);
+      if (decimal == NaN) {
+       document.getElementById("binary").innerHTML = "NaN";
+       return;
+     }
+     value = decimal;
+     document.getElementById("binary").innerHTML = padForBase(decToAltBase(value, base), base);
     }
 
     // Convert input number to binary value
@@ -32,8 +48,8 @@
       <tr>
 	<td>
           <img style="float:left; width:128px;" src="./android_mobilecsp-192.jpg" alt="mobile csp logo">
-          <label style="font-size:1.8em;padding-top:0px;">Decimal Lookup</label>
-	  <br /><br />Type a decimal number in the text field and the <b><i>Enter</i></b> key to get its binary value.<br />&nbsp;
+          <label style="font-size:1.8em;padding-top:0px;">Decimal Converter</label>
+	  <br /><br />Type a decimal number in the text field and the <b><i>Enter</i></b> key to convert it to another base.<br />&nbsp;
 	</td>
       </tr>
     </table>
@@ -42,8 +58,14 @@
       <tr>
 	<td style="width:400px">
           <label style="font-size:1.3em">Number: </label>
-          <input style="height:30px;font-size:1.2em;border:1px;background:#eeeeee"  placeholder="65" type="text" id="inputnumber" size="6" onchange="convert()">
+          <input style="height:30px;font-size:1.2em;border:1px;background:#eeeeee"  placeholder="65" type="text" id="inputnumber" size="8" maxlength="8"onchange="convert()">
           <label style="font-size:1.3em" id="binary"></label>
+          <select id="bases" onchange="setBase(value)">
+           <option value="2" selected>binary</option>
+           <option value="8">octal</option>
+           <option value="10">decimal</option>
+           <option value="16">hexadecimal</option>
+         </select>
         </td>
       </tr>
     </table>
