@@ -1,17 +1,19 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-   "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE HTML>
 <html>
-<head>
-  <title>Binary to Decimal</title>
+ <head>
+  <title>BinToDec</title>
   <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="./widget.css">
 
   <!-- edX This script enables communication between iframe and the platform.
        REQUIRED for edX --- DO NOT REMOVE!! -->
    <script src="/static/js/capa/src/jschannel.js"></script>
    <script src="./edx-jsinput.js"></script>
 
+   <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
    <script src="./converters.js"></script>
-   <script Language="JavaScript">
+   <script type="text/javascript">
+
     // Binary to decimal converter widget
 
     var decimalValue = 0;
@@ -20,9 +22,9 @@
     var nTries = 0;
     var hintNum = 0;
     var hints = [
-	"Write the binary place values above the digits in the number -- 32  16  8  4  2  1.",
-	"Sum the values of those places that contain a '1' digit and ignore those that have a '0' digit.",
-	"The value in a particular position that contains a '1', is 1 times the place value. For example, 1 times 4 or 1 times 8."
+	"Write the binary place values above the digits in the number<br /> -- 32  16  8  4  2  1.",
+	"Sum the values of those places that contain a '1' digit<br /> and ignore those that have a '0' digit.",
+	"The value in a position that contains a '1' is 1 times<br /> the place value. For example, 1 times 4 or 1 times 8."
 	];
 
     // Initialize the widget
@@ -33,7 +35,7 @@
 
     // Give the next hint wrapping around when necessary.
     function hint() {
-       document.getElementById("hinttext").innerHTML = "HINT(" + (hintNum+1) + "): " + hints[hintNum];
+       document.getElementById("hinttext").innerHTML = "HINT #" + (hintNum+1) + ": " + hints[hintNum];
        hintNum = (hintNum + 1) % hints.length;
     }
 
@@ -63,58 +65,41 @@
        } 
     }
    </script>
-</head>
-<body onLoad="init()">
-  <table width="600" align="center" border="1" frame="box" rules="none">
-    <tr>
-      <td>
-	<table>
-	  <tr>
-	    <td>
-	      <img src="./android_CSP-128px.jpg">
-	    </td>
-	  </tr><tr>
-	    <td align="center">
-	      <br><INPUT TYPE="button" STYLE="background-color:magenta" VALUE="Hint" onClick='hint()'>
-	    </td>
-	  </tr>
-	</table>
-      </td>
-      <td>
-	<h3>Converting Binary to Decimal</h3>
-	Type your answer in the text field and click the <b><i>Check</i></b> button.
-	<br><br><font color="#ff00dd" SIZE="3"><LABEL ID="hinttext"></LABEL></FONT>
-	<br><br>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2">
-	<FORM onSubmit="" NAME="odometerdemo">
-	  <CENTER>
-	    <TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
-	      <TR>
-		<TD BGCOLOR="#999999" ALIGN="CENTER">
-		  <font color="#ffffff" SIZE="5"><LABEL>The current number is: </LABEL></FONT>
-		  <font color="#ff0000" SIZE="5"><LABEL id="binary" >00000</LABEL></font>
-		  <br><font color="#ffffff" SIZE="5"><LABEL>What is its decimal (base 10) value?</LABEL></font>
-		</TD>
-	      </TR>
-	      <TR>
-		<TD>
-		  <CENTER>
-		    <INPUT TYPE="text" ID="answer" SIZE="6">
-		    &nbsp;&nbsp;<INPUT TYPE="button" VALUE="Check" onClick='check()'>
-		    &nbsp;&nbsp;&nbsp;&nbsp;<LABEL ID="correct">Correct: 0</LABEL>
+ </head>
+ <body onload="init()">
+   <div class="center" style="width:605px">
 
-		  </CENTER>
-		</TD>
-	      </TR>
-	    </TABLE>
-	  </CENTER>
-	</FORM>
-      </td>
-    </tr>
-  </table>
+     <table class="container" style="width:600px">
+       <tr>
+	 <td>
+           <div class="alignleft" >
+  	     <img src="./android_mobilecsp-192.jpg" alt="mobile csp logo">
+             <br /><input class="button" style="background:#A9C639" onMouseOut="this.style.background='#A9C639'" onMouseOver="this.style.background='#B9D649'" type="button" value="Hints" onclick='hint()'>
+           </div>
+           <br /><label style="font-size:1.8em">Converting Binary to Decimal</label>
+	   <br /><br />Type your answer in the text field and click the <b><i>Check</i></b> button.
+	   <br /><br /><br /><label style="font-size:0.75em" id="hinttext"></label>
+	 </td>
+       </tr>
+     </table>
 
-</body>
+     <table class="widget" style="width:600px">
+       <tr>
+	 <td style="width:400px">
+	   <p style="padding-top:5px"><label >The binary number is: </label>
+	   <label style="font-size:1.5em" id="binary" >00000</label>
+	   <label >What is its decimal (base 10) value?</label></p>
+	   <br /><input style="height:30px;font-size:1.2em;border:1px"  type="text" id="answer" size="10" onchange="check()">
+         </td>
+       </tr>
+       <tr>
+        <td>  
+         <input class="button" type="button" value="Check" onclick='check()'>
+         <label id="correct">correct: 0</label>
+       </td>
+       </tr>
+     </table>
+
+   </div>
+ </body>
 </html>

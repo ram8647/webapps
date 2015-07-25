@@ -1,20 +1,22 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-   "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE HTML>
 <html>
 <head>
-  <title>edX Odometer</title>
+  <title>Multi Odometer</title>
   <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="./widget.css">
 
   <!-- This script enables communication between you iframe and the platform.
        REQUIRED --- DO NOT REMOVE!! -->
    <script src="/static/js/capa/src/jschannel.js"></script>
    <script src="./edx-jsinput.js"></script>
+
    <script src="./converters.js"></script>
-   <script LANGUAGE="JavaScript">
-    // ------------- CUSTOM Odometer Code ---------------
+   <script type="text/javascript">
+
+    // ------------- Multibase Odometer ---------------
     var value = 0;
-    base = 10;
-    var odometer = "00";
+    base = 2;
+    var odometer = "00000000";
 
     //Sets the base from drop-down 
     function setBase(n) {
@@ -36,7 +38,7 @@
       }
       base = n;
       value = 0;
-      document.getElementById("odometer").innerHTML = "00";
+      document.getElementById("odometer").innerHTML = padForBase(decToAltBase(value, base), base);
       document.getElementById("decimal").innerHTML = value;
       document.getElementById("basediv").style.visibility="hidden";
       setOdoLabel(base);
@@ -67,69 +69,61 @@
        document.getElementById("decimal").innerHTML = value;
     }
    </script>
+
+
 </head>
 <body>
-  <table width="400" align="center" border="1" frame="box" rules="none">
-    <tr>
-      <td>
-	<img src="./android_CSP-128px.jpg">
-      </td>
-      <td>
-	Choose a base from the drop-down menu and click the <b><i>Next Number</i></b> button to advance
-	the odometer by 1. You can try bases from 2 to 32.
-	<br><br>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2">
-	<FORM onSubmit="" NAME="odometerdemo">
-	  <CENTER>
-	    <TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
-	      <TR>
-		<TD BGCOLOR="#999999" ALIGN="CENTER">
+  <div class="center" style="width:605px">
 
-		  <TABLE>
-		    <TR>
-		      <TD>
-			<SELECT id="bases" onchange="setBase(value)">
-			  <OPTION value="2">Binary</OPTION>
-			  <OPTION value="8">Octal</OPTION>
-			  <OPTION value="10" selected>Decimal</OPTION>
-			  <OPTION value="16">Hexadecimal</OPTION>
-			  <OPTION value="0">Other</OPTION>
-			</SELECT>
-			<FONT COLOR="#ffffff" FACE="Arial"><B>Odometer</B></FONT>
-		      </TD>
-		      <TD>
-			<DIV ID="basediv" style="visibility:hidden">
-			  <FONT COLOR="#ffffff" FACE="Arial" SIZE="1"><B>Base:</B></FONT>
-			  <INPUT TYPE="text" ID="baseinput" SIZE="2" MAXLENGTH="2" VALUE="4" onchange="setBase(0)">
-			</DIV>
-		      </TD>
-		    </TR>
-		  </TABLE>
+    <table class="container" style="width:600px">
+      <tr>
+	<td>
+          <div class="alignleft" >
+  	    <img src="./android_mobilecsp-192.jpg" alt="mobile csp logo">
+          </div>
+          <br /><label style="font-size:1.8em">Variable Base </label>
+	  <br /><br />	Choose a base from the drop-down menu and click the <b><i>Next Number</i></b> button to advance
+	  the odometer by 1. You can try bases from 2 to 32.
+	</td>
+      </tr>
+    </table>
 
-		  <BR>
-		  <font color="#ffffff" SIZE="1"><LABEL>decimal</LABEL></FONT>
-		  <font color="#ffffff" SIZE="5"><LABEL id="decimal" >0</LABEL></font>
-		</TD>
+    <table class="widget" style="width:600px">
+      <tr>
+	<td style="width:400px">
+          <table>
+            <tr>
+              <td style="width:300px;border:0px" >
+ 		<select id="bases" onchange="setBase(value)">
+		  <option value="2" selected>binary</option>
+		  <option value="8">octal</option>
+		  <option value="10">decimal</option>
+		  <option value="16">hexadecimal</option>
+		  <option value="0">other</option>
+		</select>
+		<label style="font-size:1.8em">Odometer</label>
+              </td>
+              <td style="border:0px;">
+		<div id="basediv" style="visibility:hidden;">
+		  <label style="font-size:1.8em">Base: </label>
+		  <input style="height:30px;font-size:1.2em;border:1px"  type="text" id="baseinput" size="2" maxlength="2" value="4" onchange="setBase(0)">
+		</div>
+              </td>
+            </tr>
+          </table>
+          <br /><label style="font-size:0.75em">decimal</label>
+          <label style="font-size:1.8em" id="decimal" >0</label>
 
-	      </TR>
-	      <TR>
-		<TD>
-		  <CENTER>
-		    <font color="#ffffff" SIZE="1"><LABEL id="odolabel">decimal</LABEL></FONT>
-		    <font color="#fffffff" SIZE="5"><LABEL id="odometer" >00</LABEL></font>
-		    <BR>
-		    <INPUT TYPE="button" VALUE="Next Number" onClick='advance()'>
-		  </CENTER>
-		</TD>
-	      </TR>
-	    </TABLE>
-	  </CENTER>
-	</FORM>
-      </td>
-    </tr>
-  </table>
+	</td>
+      </tr>
+      <tr>
+        <td>  
+          <label style="font-size:0.75em" id="odolabel">binary</label>
+          <label style="font-size:1.8em" id="odometer" >00000000</label>
+          <br /><input class="button" type="button" value="Next Number" onclick='advance()'>
+	</td>
+      </tr>
+    </table>
+  </div>
 </body>
 </html>

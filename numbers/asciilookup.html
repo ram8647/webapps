@@ -1,9 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-   "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE HTML>
 <html>
 <head>
   <title>ASCII Lookup</title>
   <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="./widget.css">
 
   <!-- edX This script enables communication between  iframe and the platform.
        REQUIRED for edX --- DO NOT REMOVE!! -->
@@ -12,55 +12,59 @@
 
    <script src="./converters.js"></script>
    <script LANGUAGE="JavaScript">
+
+    base = 2;
+    value = 0;
+
     // Initialization
     function init() {
     }
+
+    //Sets the base from drop-down 
+    function setBase(n) {
+      base = parseInt(n);
+      value = document.getElementById("inputletter").value.charCodeAt(0);
+      document.getElementById("binary").innerHTML = padForBase(decToAltBase(value, base), base);
+    }
+
 
     // Converts an input letter to is ascii code
     function convert() {
        var input = document.getElementById("inputletter").value;
        var decimal = input.charCodeAt(0);
-	document.getElementById("binary").innerHTML = decToBinary(decimal);
+       var conv = decToAltBase(decimal, base);
+       document.getElementById("binary").innerHTML = conv;
     }
    </script>
 </head>
 <body onLoad="init()">
+  <div class="center" style="width:605">
 
-  <table width="600" align="center" border="1" frame="box" rules="none">
-    <tr>
-      <td>
-	<table>
-	  <tr>
-	    <td>
-	      <img src="./android_CSP-128px.jpg">
-	    </td>
-	  </tr>
-	</table>
-      <td>
-	<h3>ASCII Lookup</h3>
-	Input a letter in the text field and click the <b><i>Convert</i></b> button
-	to get its ASCII code in binary.
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2">
-	<FORM onSubmit="" NAME="asciilookup">
-	  <CENTER>
-	    <TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
-	      <TR>
-		<TD BGCOLOR="#999999" ALIGN="CENTER">
-		  <font color="#ffffff" SIZE="7"><LABEL>Letter:  </LABEL>
-		    <INPUT TYPE="text" ID="inputletter" SIZE="6">
-		    &nbsp;&nbsp;<INPUT TYPE="button" VALUE="Convert" onClick='convert()'>
-		    <LABEL id="binary"></LABEL></FONT>
-		</TD>
-	      </TR>
-	    </TABLE>
-	  </CENTER>
-	</FORM>
-      </td>
-    </tr>
-  </table>
+    <table class="container" style="width:600">
+      <tr>
+	<td>
+          <img style="float:left; width:128px" src="./android_mobilecsp-192.jpg" alt="mobile csp logo">
+          <br /><label style="font-size:1.8em">ASCII Lookup</label>
+	  <br /><br />Type a letter in the text field and the <b><i>Enter</i></b> key to get its ASCII code.
+	</td>
+      </tr>
+    </table>
 
+    <table class="widget">
+      <tr>
+	<td style="width:400px">
+          <input style="height:30px;font-size:1.2em;border:1px;background:#eeeeee"  placeholder="A" type="text" id="inputletter" size="3" onchange="convert()">
+          <label style="font-size:1.3em" id="binary">1000001</label>
+          <select id="bases" onchange="setBase(value)">
+           <option value="2" selected>binary</option>
+           <option value="8">octal</option>
+           <option value="10">decimal</option>
+           <option value="16">hexadecimal</option>
+         </select>
+
+        </td>
+      </tr>
+    </table>
+</div>
 </body>
 </html>

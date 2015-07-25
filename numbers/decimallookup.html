@@ -1,9 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-   "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE HTML>
 <html>
 <head>
   <title> Decimal Lookup</title>
   <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="./widget.css">
 
   <!-- edX: This script enables communication between you iframe and the platform.
        REQUIRED for edX --- DO NOT REMOVE!! -->
@@ -26,50 +26,26 @@
    </script>
 </head>
 <body onLoad="init()">
-  <table width="600" align="center" border="1" frame="box" rules="none">
-    <tr>
-      <td>
-	<table>
-	  <tr>
-	    <td>
-	      <img src="./android_CSP-128px.jpg">
-	    </td>
-	  </tr>
-	</table>
-      </td>
-      <td>
-	<h3>Decimal Lookup</h3>
-	Type a decimal number in the text field and click the <b><i>Convert</i></b> button
-	to see its binary equivalent.
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2">
-	<FORM onSubmit="" NAME="odometerdemo">
-	  <CENTER>
-	    <TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
-	      <TR>
-		<TD BGCOLOR="#999999" ALIGN="CENTER">
-		  <font size="6">
-		    <LABEL>Number: </LABEL>
-		    <INPUT TYPE="text" ID="inputnumber" SIZE="6">
-		    &nbsp;&nbsp;<INPUT TYPE="button" VALUE="Convert" onClick='convert()'>
-		    &nbsp;&nbsp;&nbsp;&nbsp;<LABEL ID="binary"></LABEL></font>
-		</TD>
-	      </TR>
-	      <TR>
-		<TD>
-		  <CENTER>
+  <div class="center" style="width:605">
 
-		  </CENTER>
-		</TD>
-	      </TR>
-	    </TABLE>
-	  </CENTER>
-	</FORM>
-      </td>
-    </tr>
-  </table>
+    <table class="container" style="width:600">
+      <tr>
+	<td>
+          <img style="float:left; width:128px;" src="./android_mobilecsp-192.jpg" alt="mobile csp logo">
+          <label style="font-size:1.8em;padding-top:0px;">Decimal Lookup</label>
+	  <br /><br />Type a decimal number in the text field and the <b><i>Enter</i></b> key to get its binary value.<br />&nbsp;
+	</td>
+      </tr>
+    </table>
 
+    <table class="widget">
+      <tr>
+	<td style="width:400px">
+          <label style="font-size:1.3em">Number: </label>
+          <input style="height:30px;font-size:1.2em;border:1px;background:#eeeeee"  placeholder="65" type="text" id="inputnumber" size="6" onchange="convert()">
+          <label style="font-size:1.3em" id="binary"></label>
+        </td>
+      </tr>
+    </table>
 </body>
 </html>
