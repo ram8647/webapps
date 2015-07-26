@@ -1,114 +1,107 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-   "http://www.w3.org/TR/html4/strict.dtd">
-<html lang="en">
+<!DOCTYPE HTML>
+<html>
   <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="./widget.css">
+
     <title>BMP Editor</title>
-    <!-- 	<link rel="stylesheet" href="style.css"> -->
     <script src="converters.js"></script>
     <script src="bitmap-editor.js"></script>
   </head>
-  <body onload="">
-    <table width="500" align="center" border="1" frame="box" rules="none">
-      <tr>
-	<td>
-	  <img src="./android_CSP-128px.jpg">
-	</td>
-	<td>
-	  <h3>Bitmap Editor</h3>
-	  Upload your bitmap image. Then to hide your three initials (or any 3-letter string) 
-	  in the image edit the first 24 bytes -- first 3 rows -- modifying the rightmost
-	  bit of each byte with a bit from your initials.  Then click 'Submit'.
-	  <br><br>
-	</td>
-      </tr>
-      <tr>
-	<td colspan="2">
-	  <FORM onSubmit="" NAME="bmpeditor">
-	    <CENTER>
-	      <TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
-		<TR>
-		  <TD BGCOLOR="#999999" ALIGN="CENTER">
-		    <div>
-		      Select a BMP file:
-		      <input type="file" id="fileInput" onchange="fileChangeHandler()">
-		    </div>
-		    <div id="fileDisplayArea"></div>
-		  </TD>
-		</TR>
-		<TR>
-		  <TD>
-		    <CENTER>
-		      <div id="page-wrapper">
-			<textarea id="editor" rows="12" columns="40"></textarea>
-		      </div>
-		      &nbsp;&nbsp;<INPUT ID="submit" TYPE="button" disabled VALUE="Submit" onClick='download()'>
-		    </CENTER>
-		  </TD>
-		</TR>
+  <body>
+    <div class="center" style="width:605px">
+      <table class="container" style="width:600px">
+	<tr>
+	  <td>
+            <div class="alignleft" >
+  	      <img src="./android_mobileCSP-192.jpg" alt="mobile csp logo">
+            </div>
+            <br /><label style="font-size:1.8em">Steganography Bitmap Editor</label>
+	    <br /><br />Upload a bitmap image. <br />Hide your initials in the image.
+	  </td>
+	</tr>
+      </table>
 
-		<tr>
-		  <td colspan="2">
-		    <FORM onSubmit="" NAME="asciilookup">
-		      <CENTER>
-			<TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
-			  <TR>
-			    <TD BGCOLOR="#999999" ALIGN="CENTER">
-			      <font color="#ffffff" SIZE="5"><LABEL>Letter:  </LABEL>
-				<INPUT TYPE="text" ID="inputletter" SIZE="6">
-				&nbsp;&nbsp;<INPUT TYPE="button" VALUE="Convert" onClick='convertAscii()'>
-				<LABEL id="binary"></LABEL></FONT>
-			    </TD>
-			  </TR>
-			</TABLE>
-		    </FORM>
-		  </TD>
-		</tr>
+      <table class="widget" style="width:600px; border:1px">
+	<tr>
+	  <td colspan="2" style="border:0px">
+	    <div>
+	      Select a BMP file:
+	      <input type="file" id="fileInput" onchange="fileChangeHandler()">
+	    </div>
+	    <div id="filedisplayarea"></div>
+            <hr />
+	  </td>
+	</tr>
+	<tr>
+	  <td colspan="2" style="border:0px">
+	    <div id="page-wrapper" style="text-align:left">
+              <label style="font-size:0.75em; text-align:left">Image data editor. Change the rightmost bit in each<br />  byte with bits from your initials.</label><br />
+	      <textarea id="editor" rows="12" cols="40"></textarea>
+	      <input class="button" id="submit" type="button" disabled value="Hide Message" onclick='download()'>
+            </div>
+	  </td>
+	</tr>
+	<tr>
+	  <td colspan="2" style="border:0px; text-align:left">
+            <hr />
+	    <label style="font-size:0.75em;">Helpers: Convert letters and numbers to binary.</label>
+	  </td>
+	</tr>
+	<tr>
+	  <td style="border:0px">
+	    <table>
+	      <tr>
+		<td style="border:0px">
+		  <label style="font-size:1.5em">Letter:  </label>
+		  <input style="height:30px;font-size:1.2em;border:1px" type="text" id="inputletter" size="2" maxlength="1" onchange="convertAscii()">
+		  <label  style="font-size:1.5em" id="binary"></label>
+		</td>
+	      </tr>
+	    </table>
+            <hr />
+	  </td>
+	  <td style="border:0px">
+	    <table>
+	      <tr>
+   		<td style="border:0px">
+		  <label style="font-size:1.5em">Number: </label>
+		  <input style="height:30px;font-size:1.2em;border:1px" type="text" id="inputnumber" size="6" onchange="convertDecimal()">
+		  <label  style="font-size:1.5em" id="decbinary"></label>
+		</td>
+	      </tr>
+	    </table>
+            <hr />
+	  </td>
 
-		<tr>
-		  <td colspan="2">
-		    <FORM onSubmit="" NAME="decimallookup">
-		      <CENTER>
-			<TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
-			  <TR>
-			    <TD BGCOLOR="#999999" ALIGN="CENTER">
-			      <font color="#ffffff" size="5">
-				<LABEL>Number: </LABEL>
-				<INPUT TYPE="text" ID="inputnumber" SIZE="6">
-				&nbsp;&nbsp;<INPUT TYPE="button" VALUE="Convert" onClick='convertDecimal()'>
-				&nbsp;&nbsp;&nbsp;&nbsp;<LABEL ID="decbinary"></LABEL></font>
-			    </TD>
-			  </TR>
-			</TABLE>
-		    </FORM>
-		  </TD>
-		</tr>
+	</tr>
 
-		<tr>
-		  <td>
-		    <table>
-		      <tr>
-			<td>
-			  <div id="rawimgdiv" style="visibility:hidden">
-			    Original<br />
-			    <img id="rawimg" src="" alt='MyImage'>
-			  </div>
-			</td>
-			<td>
-			  &nbsp;&nbsp;
-			</td>
-			<td>
-			  <div id="stegimgdiv" style="visibility:hidden">
-			    Stego<br />
-			    <img id="stegimg" src="" alt='MyImage'> (Right click on the image to download it.)
-			  </div>
-			</td>
-		      </tr>
-		  </td>
-		</tr>
-		</table>
-	  </FORM>
-	  </TABLE>
-	  </CENTER>
+	<tr>
+	  <td colspan="2" style="border:0px">
+	    <table>
+	      <tr>
+		<td style="border:0px">
+		  <div id="rawimgdiv" style="visibility:hidden">
+		    <label style="font-size:0.75em">Original image</label><br />
+		    <img id="rawimg" src="placeholder"  alt='myimage'><br />
+		    <label style="font-size:0.75em"></label><br />
+		  </div>
+		</td>
+		<td style="border:0px">
+		  &nbsp;&nbsp;
+		</td>
+		<td style="border:0px">
+		  <div id="stegimgdiv" style="visibility:hidden">
+		    <label style="font-size:0.75em">Stego image</label><br />
+		    <img id="stegimg" src="placeholder" alt='myimage'><br />
+		    <label style="font-size:0.75em">(Right click to download.)</label><br />
+		  </div>
+		</td>
+	      </tr>
+            </table>
+	  </td>
+	</tr>
+      </table>
+    </div>
   </body>
 </html>
