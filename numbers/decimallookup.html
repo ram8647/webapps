@@ -23,20 +23,19 @@
     //Sets the base from drop-down 
     function setBase(n) {
       base = parseInt(n);
-      var decimal = parseInt(document.getElementById("inputnumber").value);
-      if (decimal == NaN) {
-       document.getElementById("binary").innerHTML = "NaN";
-       return;
-     }
-     value = decimal;
-     document.getElementById("binary").innerHTML = padForBase(decToAltBase(value, base), base);
+      convert(document.getElementById("inputnumber").value);
     }
 
-    // Convert input number to binary value
-    function convert() {
-       var input = document.getElementById("inputnumber").value;
-       var binary = decToBinary(input);
-       document.getElementById("binary").innerHTML = binary;
+    // Convert input number to binary value and display it
+    function convert(input) {
+      var decimal  = parseInt(input);
+      if (decimal == NaN) {      
+        document.getElementById("binary").innerHTML = "NaN";
+        return;
+      }
+      value = decimal;
+      var result = padForBase(decToAltBase(decimal,base),base);
+      document.getElementById("binary").innerHTML = result;
     }
     // end hide -->
    </script>
@@ -58,7 +57,7 @@
       <tr>
 	<td style="width:400px">
           <label style="font-size:1.3em">Number: </label>
-          <input style="height:30px;font-size:1.2em;border:1px;background:#eeeeee"  placeholder="65" type="text" id="inputnumber" size="8" maxlength="8"onchange="convert()">
+          <input style="height:30px;font-size:1.2em;border:1px;background:#eeeeee"  placeholder="65" type="text" id="inputnumber" size="8" maxlength="8"onchange="convert(this.value)">
           <label style="font-size:1.3em" id="binary"></label>
           <select id="bases" onchange="setBase(value)">
            <option value="2" selected>binary</option>
