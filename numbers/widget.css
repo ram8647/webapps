@@ -45,6 +45,16 @@ table.widget th, td {
   padding:10px;
 }
 
+table.ramcell {
+  font-family: Arial;
+  border: 0px;
+}
+
+table.ramcell th, td {
+  border: 0px;
+  padding: 0;
+}
+
 .button {
   height: 30px;
   width: 150px;
@@ -58,3 +68,17 @@ table.widget th, td {
 .button:hover {
   background:lightgrey;
 }
+
+.button2 {
+  height: 20px;
+  width: 65px;
+  background: darkgrey;
+  border: 2px solid black;
+  border-radius: 50px;
+  font-size: 0.8em;
+  color: black;
+}
+.button2:hover {
+  background:lightgrey;
+}
+
