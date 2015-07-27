@@ -4,14 +4,16 @@
 
 // Initializes the UI.
 function uiInit() {
-  document.getElementById("monitor").cols = "15";
+  document.getElementById("monitor").cols = "10";
   document.getElementById("keyboard").size = "75";
   var ed = document.getElementById("editor");
   if (ed) 
-    ed.cols = "25";
+    ed.cols = "15";
   var mc = document.getElementById("machinecode");
-  if (mc) 
+  if (mc) {
     mc.cols = "1";
+    document.getElementById("monitor").cols = "10";
+  }
 
   // Testing the ids of ram elements
   for (var i=0; i < VIS_RAM_LEN; i++) {

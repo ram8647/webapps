@@ -79,6 +79,9 @@ function assembleProgram() {
     line = code.substring(0,cr).trim();
     ctr += 1;
   }
+  displayMachineCode(machine_prog);      // SUCCESS
+  document.getElementById("load").disabled = false;
+
 }
 
 // Parses an assembly language instruction, op, in line.
@@ -150,8 +153,8 @@ function parseVarDeclaration(line, ctr) {
 // Displays the assembled machine language program
 function displayMachineCode(prog) {
   var mc = document.getElementById("machinecode");
-  mc.cols = "25";
+  mc.cols = "20";
   mc.value = prog;
   mc.style.visibility="visible";
-  document.getElementById("editor").cols = "20";     
+  document.getElementById("editor").cols = "15";     
 }
