@@ -14,7 +14,18 @@
  * limitations under the License.
  */
 
+/*
+ *  NOTE:  Not sure if this will work on all BMP files, beacuase it assumes
+ *   the image data starts at the same location in every image.  An 
+ *  improvement would be to read this information from the bitmap header.
+ *  See 
+ *    http://www.i-programmer.info/projects/36-web/6234-reading-a-bmp-file-in-javascript.html?start=1
+ *  for a detailed of bitmap file structure.  
+ */
+
 /**
+ * 
+ *
  *  Steganography widget. Support functions for bitmap-editor.html and 
  *  bmpdecoder.html.  
  *
