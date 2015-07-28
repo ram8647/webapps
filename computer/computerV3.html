@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
     <meta charset="utf-8">
-      <title>6-bit computer</title>
+    <link rel="stylesheet" type="text/css" href="./widget.css">
+      <title>6-bit V3</title>
 
       <script>
        // Settings that control the architecture.
@@ -44,7 +45,7 @@
 	<!--  See http://www.tippedjs.com/  and http://www.tippedjs.com/license -->
 
 	$(document).ready(function() {
-	Tipped.create('.boxes .box');
+        Tipped.create('.simple-tooltip');
 	});
       </script>
       <script type="text/javascript">
@@ -53,7 +54,8 @@
         var addr = $(element).data('id');
         return "Data: " + ram[addr] ;
 	}, {
-	cache: false
+	cache: false,
+        position: 'right'
 	});
 	});
 
@@ -62,7 +64,8 @@
         var addr = $(element).data('id');
         return "Instruction: " + displayMnemonic(ram[addr]) ;
 	}, {
-	cache: false
+	cache: false,
+        position: 'right'
 	});
 	});
 
@@ -70,7 +73,8 @@
 	Tipped.create('#pctr', function() {
         return "Program Counter: " + pcounter ;
 	}, {
-	cache: false
+	cache: false,
+        position: 'right'
 	});
 	});
 
@@ -78,7 +82,8 @@
 	Tipped.create('#preg', function() {
         return "Program Register: " + displayMnemonic(pregister);
 	}, {
-	cache: false
+	cache: false,
+        position: 'right'
 	});
 	});
 
@@ -86,7 +91,8 @@
 	Tipped.create('#rega', function() {
         return "RegisterA: " + registerA ;
 	}, {
-	cache: false
+	cache: false,
+        position: 'right'
 	});
 	});
       </script>
@@ -106,202 +112,173 @@
       </script>
   </head>
   <body onload='uiInit()'>
-    <table width="550" align="center" border="1" frame="box" rules="none">  <!-- Main Container -->
-      <!-- Title -->
-      <tr><td align="left"><img src="./android_CSP-128px.jpg"></td><td align="center"> <h1>6-Bit Computer Simulator</h1></td> </tr>
+    <div class="center" style="width:525px">
+      <table class="container" style="width:520px;">
+	<tr>
+	  <td style="text-align:left">
+            <div class="alignleft" style="width:128px;">
+  	      <img style="width:128px;" src="./android_mobileCSP-192.jpg" alt="mobile csp logo">
+            </div>
+            <br /><label style="font-size:1.8em">6-Bit Computer Simulator</label>
+	  </td>
+	</tr>
+      </table>
 
-      <tr>  <!-- Computer -->
-	<td colspan="2">
-	  <TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">  <!-- Computer table -->
-	    <TR>   <!-- User interface:  monitor, editor -->
-	      <td>
-                <center>
-		  <div id="userinterface">
-                    <table border="0">
+      <table class="widget" style="width:520px; border:1px">
+	<tr>   <!-- User interface:  monitor, editor -->
+	  <td style="padding-left:10px">
+	    <div id="userinterface">
+              <table style="border:0px;">
+                <tr>
+                  <td style="border:0px; text-align:left;">
+                    <table>
                       <tr>
-			<td>
-                          <table><tr><td>
-   				<font color="red">Monitor</font><br />
-				<textarea id="monitor" rows="10" cols="15" readonly></textarea>
-                              </td><td>
-				<font color="red">Editor</font><br />
-				<textarea id="editor" rows="10" cols="30"></textarea>
-				<textarea id="machinecode" rows="10" cols="10" style="visibility:hidden"></textarea>  <!-- readonly -->
-                              </td><td>
-				<button type="button" id="assemble" onclick="assembleProgram()">Assemble</button><br />
-				<button type="button" id="interpret" onclick="interpretProgram()">Interpret</button><br />
-				<button type="button" id="load" onclick="loadProgram()" disabled>Load</button>
-                              </td>
-                            </tr>
-                          </table>       
-                  </div>
+                        <td style="border:0px; text-align:left; width:100px">
+			  <label style="color:red">Monitor</label><br />
+			  <textarea id="monitor" rows="10" cols="10" readonly></textarea>
+                        </td>
+                        <td style="border:0px; text-align:left; width:550px">
+                          <label style="color:red">Editor</label><br />
+			  <textarea id="editor" rows="10" cols="10"></textarea>
+			  <textarea id="machinecode" rows="10" cols="1" style="visibility:hidden"></textarea>  <!-- readonly -->
+                        </td>
+                        <td style="text-align:right; width:50x">
+			  <button class="button2" type="button" id="assemble" style="width:72px" onclick="assembleProgram()">Assemble</button><br /><br />
+			  <button class="button2" type="button" id="interpret" style="width:72px" onclick="interpretProgram()">Interpret</button><br /><br />
+			  <button class="button2" type="button" id="load" style="width:72px" onclick="loadProgram()" disabled>Load</button>
+                        </td>
+                      </tr>
+                    </table>       
+     		  </td>
+	        </tr>
+
+		<tr>   <!-- Keyboard row -->
+		  <td style="border:0px; text-align:left;">
+		    <label style="color:red">Keyboard</label><br />
+ 		    <input id="keyboard" type="text" maxlength="40" size="40" disabled>
 		  </td>
-		  </tr>
+		</tr>
+	      </table>
+            </div>
+	  </TD>
+	</TR>
 
-		  <tr>   <!-- Keyboard row -->
-		    <td>
-                      <font color="red">Keyboard</font><br />
- 		      <input id="keyboard" type="text" maxlenvth="40" size="40" disabled></input>
-		    </td>
-		  </tr>
-		  </table>
+	<tr>  <!-- CPU and RAM Row -->
+	  <td>
+	    <div class='simple-tooltip'>  <!-- start of boxes for tipped -->
+   	      <table style="border:0px;padding-left:5px">  <!-- RAM and CPU table -->
 
-		  <!-- </div> -->
-		</CENTER>
-	      </TD>
-	    </TR>
+		<tr>  <!-- CPU Row -->
+   		  <td style="border: 1px solid red; text-align:left; width:270px;  padding-left:5px">
+		    <label style="color:red">CPU</label><br />
+		    <div id="cpu" style="visibility:visible">
+		      <table><tr><td style="text-align:left"><u>PCTR:</u></td><td style="text-align:left"><input id="pctr" type="text" size="6" value="000000" maxlength="6" readonly></td>
+			  <td style="text-align:left"><u>PREG:</u></td><td style="text-align:left"><input id="preg" type="text" size="10"  value="0000000000" maxlength="10" readonly></td>
+			  <!--                          </tr></table>
+ 							<table><tr> -->
+			  <td style="text-align:left"><u>REGA:</u></td><td style="text-align:left"><input id="rega" type="text" size="10"  value="0000000000" maxlength="10" readonly></td>
+		      </tr></table>
+		    </div>
+		  </td>
+		</tr>
 
-	    <tr>  <!-- CPU and RAM Row -->
-	      <td>
-		<div class='boxes position'>  <!-- start of boxes for tipped -->
-		  <table border="1">  <!-- RAM and CPU table -->
+		<tr>  <!-- RAM row -->
+   		  <td style="border: 1px solid red; text-align:left; width:270px;  padding-left:5px">
+		    <label style="color:red">RAM</label><br />
+		    <table><tr><td style="text-align:left"><u>INST</u></td>
+			<td>
+			</td>
+			<td style="text-align:left"><u>DATA</u></td><td>&nbsp;</td>
+		      </tr>
+                    </table>
 
-		    <tr>  <!-- CPU Row -->
-		      <td>
-			<font color="red">CPU</font><br />
-			<div id="cpu" style="visibility:visible">
-			  <table><tr><td><u>PCTR:</u>&nbsp;</td><td><input id="pctr" type="text" size="6" value="000000" maxlength="6" readonly></td>
-                               <td> &nbsp;&nbsp;&nbsp;&nbsp;<u>PREG:</u></td><td><input id="preg" type="text" size="10"  value="0000000000" maxlength="10" readonly></td></tr></table>
-			  <table><tr>
-                              <td><u>REGA:</u></td><td><input id="rega" type="text" size="10"  value="0000000000" maxlength="10" readonly></td>
-<!--			      <td><u>REGB:</u></td><td><input id="regb" type="text" size="8" value="00000000" maxlength="8" readonly /></td>
-			      <td><u>REGC:</u></td><td><input id="regc" type="text" size="8" value="00000000" maxlength="8" readonly /></td>
-			      <td><u>REGD:</u></td><td><input id="regd" type="text" size="8" value="00000000" maxlength="8" readonly /></td> -->
-                          </tr></table>
-			</div>
-		      </td>
-		    </tr>
+		    <table>
+		      <tr>
+			<td>00000:</td><td><span class='instr' data-id="0"><input id="m000000" onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8"></span></td>
+			<td>01000:</td><td><span class='data' data-id="8"><input  id="m001000"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8"></span></td>
+			<td>10000:</td><td><span class='data' data-id="16"><input id="m010000"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8"></span></td>
+			<td>11000:</td><td><span class='data' data-id="24"><input id="m011000"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8"></span></td>
+		      </tr>
+		    </table>
 
-		    <tr>  <!-- RAM row -->
-		      <td>
-			<div id="ram" style="visibility:visible">
-			  <font color="red">RAM</font><br />
-			  <div>
-			    <table><tr><td><u>INST</u></td>
-                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                </td>
-				<td><u>DATA</u></td><td>&nbsp;</td>
-                              </tr>
-                            </table>
+		    <table>
+		      <tr>
+			<td>00001:</td><td><span class='instr' data-id="1"><input id="m000001"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8"></span></td>
+			<td>01001:</td><td><span class='data' data-id="9"><input  id="m001001"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8"></span></td>
+			<td>10001:</td><td><span class='data' data-id="17"><input id="m010001"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8"></span></td>
+			<td>11001:</td><td><span class='data' data-id="25"><input id="m011001"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8"></span></td>
+		      </tr>
+		    </table>
 
-			    <table>
-                              <tr>
-                                <td>00000:</td><td><span class='instr' data-id="0"><input id="m000000" onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8"></span></td>
-				<td>01000:</td><td><span class='data' data-id="8"><input  id="m001000"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8"></span></td>
-				<td>10000:</td><td><span class='data' data-id="16"><input id="m010000"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8"></span></td>
-				<td>11000:</td><td><span class='data' data-id="24"><input id="m011000"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8"></span></td>
-                              </tr>
-			    </table>
+		    <table>
+		      <tr>
+			<td>00010:</td><td><span class='instr' data-id="2"><input id="m000010"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
+			<td>01010:</td><td><span class='data' data-id="10"><input id="m001010"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
+			<td>10010:</td><td><span class='data' data-id="18"><input id="m010010"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
+			<td>11010:</td><td><span class='data' data-id="26"><input id="m011010"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
+		      </tr>
+		    </table>
 
-			    <table>
-                              <tr>
-                                <td>00001:</td><td><span class='instr' data-id="1"><input id="m000001"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8"></span></td>
-				<td>01001:</td><td><span class='data' data-id="9"><input  id="m001001"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8"></span></td>
-				<td>10001:</td><td><span class='data' data-id="17"><input id="m010001"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8"></span></td>
-				<td>11001:</td><td><span class='data' data-id="25"><input id="m011001"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8"></span></td>
-                              </tr>
-			    </table>
+		    <table>
+		      <tr>
+			<td>00011:</td><td><span class='instr' data-id="3"><input id="m000011"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
+			<td>01011:</td><td><span class='data' data-id="11"><input id="m001011"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
+			<td>10011:</td><td><span class='data' data-id="19"><input id="m010011"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
+			<td>11011:</td><td><span class='data' data-id="27"><input id="m011011"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
+		      </tr>
+		    </table>
 
-			    <table>
-                              <tr>
-                                <td>00010:</td><td><span class='instr' data-id="2"><input id="m000010"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
-				<td>01010:</td><td><span class='data' data-id="10"><input id="m001010"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
-				<td>10010:</td><td><span class='data' data-id="18"><input id="m010010"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
-				<td>11010:</td><td><span class='data' data-id="26"><input id="m011010"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
-                              </tr>
-			    </table>
+		    <table>
+		      <tr>
+			<td>00100:</td><td><span class='instr' data-id="4"><input id="m000100"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
+			<td>01100:</td><td><span class='data' data-id="12"><input id="m001100"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
+			<td>10100:</td><td><span class='data' data-id="20"><input id="m010100"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
+			<td>11100:</td><td><span class='data' data-id="28"><input id="m011100"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
+		      </tr>
+		    </table>
 
-			    <table>
-                              <tr>
-                                <td>00011:</td><td><span class='instr' data-id="3"><input id="m000011"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
-				<td>01011:</td><td><span class='data' data-id="11"><input id="m001011"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
-				<td>10011:</td><td><span class='data' data-id="19"><input id="m010011"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
-				<td>11011:</td><td><span class='data' data-id="27"><input id="m011011"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
-                              </tr>
-			    </table>
+		    <table>
+		      <tr>
+			<td>00101:</td><td><span class='instr' data-id="5"><input id="m000101"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
+			<td>01101:</td><td><span class='data' data-id="13"><input id="m001101" onkeyup="uiHandleRamDisplay(this,event)"  type="text" size="8" value="00000000" maxlength="8" ></span></td>
+			<td>10101:</td><td><span class='data' data-id="21"><input id="m010101" onkeyup="uiHandleRamDisplay(this,event)"  type="text" size="8" value="00000000" maxlength="8" ></span></td>
+			<td>11101:</td><td><span class='data' data-id="29"><input id="m011101" onkeyup="uiHandleRamDisplay(this,event)"  type="text" size="8" value="00000000" maxlength="8" ></span></td>
+		      </tr>
+		    </table>
 
-			    <table>
-                              <tr>
-                                <td>00100:</td><td><span class='instr' data-id="4"><input id="m000100"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
-				<td>01100:</td><td><span class='data' data-id="12"><input id="m001100"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
-				<td>10100:</td><td><span class='data' data-id="20"><input id="m010100"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
-				<td>11100:</td><td><span class='data' data-id="28"><input id="m011100"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
-                              </tr>
-			    </table>
+		    <table>
+		      <tr>
+			<td>00110:</td><td><span class='instr' data-id="6"><input id="m000110"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
+			<td>01110:</td><td><span class='data' data-id="14"><input id="m001110"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
+			<td>10110:</td><td><span class='data' data-id="22"><input id="m010110"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
+			<td>11110:</td><td><span class='data' data-id="30"><input id="m011110"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
+		      </tr>
+		    </table>
 
-			    <table>
-                              <tr>
-                                <td>00101:</td><td><span class='instr' data-id="5"><input id="m000101"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
-				<td>01101:</td><td><span class='data' data-id="13"><input id="m001101" onkeyup="uiHandleRamDisplay(this,event)"  type="text" size="8" value="00000000" maxlength="8" ></span></td>
-				<td>10101:</td><td><span class='data' data-id="21"><input id="m010101" onkeyup="uiHandleRamDisplay(this,event)"  type="text" size="8" value="00000000" maxlength="8" ></span></td>
-				<td>11101:</td><td><span class='data' data-id="29"><input id="m011101" onkeyup="uiHandleRamDisplay(this,event)"  type="text" size="8" value="00000000" maxlength="8" ></span></td>
-                              </tr>
-			    </table>
-
-			    <table>
-                              <tr>
-                                <td>00110:</td><td><span class='instr' data-id="6"><input id="m000110"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
-				<td>01110:</td><td><span class='data' data-id="14"><input id="m001110"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
-				<td>10110:</td><td><span class='data' data-id="22"><input id="m010110"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
-				<td>11110:</td><td><span class='data' data-id="30"><input id="m011110"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
-                              </tr>
-			    </table>
-
-			    <table>
-                              <tr>
-                                <td>00111:</td><td><span class='instr' data-id="7"><input id="m000111"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
-				<td>01111:</td><td><span class='data' data-id="15"><input id="m001111"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
-				<td>10111:</td><td><span class='data' data-id="23"><input id="m010111"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
-				<td>11111:</td><td><span class='data' data-id="31"><input id="m011111"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
-                              </tr>
-			    </table>
-			  </div>
-			</div>
-		      </td>
-		    </tr>
-		</div> <!-- end of boxes -->
-		</table> <!-- end of RAM & CPU table -->
-	      </td>
-	    </tr>
-	    <tr>
-	      <td>
-		<button type="button" id="reset" onclick="reset()">Reset</button>
-		<button type="button" id="fetch" onclick="fetchNextInstruction()" disabled>Fetch</button>
-		<button type="button" id="exec" onclick="executeCurrentInstruction()" disabled>Execute</button>
-		<button type="button" id="run" onclick="fetchExecute()" disabled>Run</button>
-		<a target="_blank" href="https://docs.google.com/document/d/1_b0sq3gXLB0GZSpjKRX2qjUOvaMxsiHOLhmY1HOoclo"><button type="button" style="float:right">Help</button></a>
-	      </td>
-	    </tr>
-	  </table> <!-- end of computer table -->
-	</td>
-      </tr>
-    </table>  <!-- end of main container -->
+		    <table>
+		      <tr>
+			<td>00111:</td><td><span class='instr' data-id="7"><input id="m000111"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
+			<td>01111:</td><td><span class='data' data-id="15"><input id="m001111"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
+			<td>10111:</td><td><span class='data' data-id="23"><input id="m010111"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
+			<td>11111:</td><td><span class='data' data-id="31"><input id="m011111"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8" ></span></td>
+		      </tr>
+		    </table>
+		  </td>
+		</tr>
+	      </table> <!-- end of RAM & CPU table -->
+	    </div> <!-- end of boxes -->
+	  </td>
+	</tr>
+	<tr>
+   	  <td style="text-align:left; padding-left:10px; padding-top:5px; padding-bottom:5px">
+   	    <button class="button2" type="button" id="reset" onclick="reset()">Reset</button>
+	    <button class="button2" type="button" id="fetch" onclick="fetchNextInstruction()">Fetch</button>
+	    <button class="button2" type="button" id="exec" onclick="executeCurrentInstruction()" disabled>Execute</button>
+	    <button class="button2" type="button" id="run" onclick="fetchExecute()">Run</button>
+ 	    <a class="button2" style="text-align:center; float:right;"  target="_blank" href="https://docs.google.com/document/d/1Z0iEBNOJgflhYXm28ki6ZiWLCGtPgUm_yEWuvzjInv4">Help</a>
+	  </td>
+	</tr>
+      </table>  <!-- end of main container -->
+    </div>
   </body>
 </html>
-
-
-
-<!--                         <font size="2"> -->
-<!--                         <br /><u>Instruction Set</u> -->
-<!--                         <br />&nbsp;&nbsp;&lt;x&gt; is a 4-bit memory address -->
-<!--                         <br />&nbsp;&nbsp;0000 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- NOP (Do nothing) -->
-<!--                         <br />&nbsp;&nbsp;0001 &lt;x&gt; -- GET value at &lt;x&gt; and put in REGA -->
-<!--                         <br />&nbsp;&nbsp;0010 &lt;x&gt; -- PUT value in REGA at  &lt;x&gt; -->
-<!--                         <br />&nbsp;&nbsp;0011 &lt;x&gt; -- ADD value at &lt;x&gt; to REGA -->
-<!--                         <br />&nbsp;&nbsp;0100 &lt;x&gt; -- SUB value at  &lt;x&gt; from REGA -->
-<!--                         <br />&nbsp;&nbsp;0101 &lt;x&gt; -- MUL REG by value at  &lt;x&gt; -->
-<!--                         <br />&nbsp;&nbsp;0110 &lt;x&gt; -- DIV REGA by value at  &lt;x&gt; -->
-<!--                         <br />&nbsp;&nbsp;1000 &lt;x&gt; -- PRINT &lt;x&gt; to Monitor -->
-<!--                         <br />&nbsp;&nbsp;1001 &lt;x&gt; -- INPUT keyboard to  &lt;x&gt; -->
-<!--                         <br /> -->
-<!--                         </font> -->
-
-<!-- Should we have a REGB? -->
-<!--                              <u>REGB:</u></td><td> -->
-<!--                              <div class="input"> -->
-<!--                                <input id="regb" type="text" size="8" value="00000000" maxlength="8" readonly /> -->
-<!--                                <span class="tooltip">Info</span> -->
-<!--                              <div> -->

@@ -50,7 +50,8 @@
         var addr = $(element).data('id');
         return "Data: " + ram[addr] ;
       }, {
-       cache: false
+       cache: false,
+       position: 'right'
       });
      });
 
@@ -59,7 +60,8 @@
         var addr = $(element).data('id');
         return "Instruction: " + displayMnemonic(ram[addr]) ;
       }, {
-       cache: false
+       cache: false,
+       position: 'right'
       });
      });
 
@@ -67,7 +69,8 @@
       Tipped.create('#pctr', function() {
         return "Program Counter: " + pcounter ;
       }, {
-       cache: false
+       cache: false,
+       position: 'right'
       });
      });
 
@@ -75,7 +78,8 @@
       Tipped.create('#preg', function() {
         return "Program Register: " + displayMnemonic(pregister);
       }, {
-       cache: false
+       cache: false,
+       position: 'right'
       });
      });
 
@@ -83,7 +87,8 @@
       Tipped.create('#rega', function() {
         return "RegisterA: " + registerA ;
       }, {
-       cache: false
+       cache: false,
+       position: 'right'
       });
      });
     </script>
