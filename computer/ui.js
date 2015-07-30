@@ -23,6 +23,16 @@ function uiInit() {
     document.getElementById(id).maxlength = WORD_LEN;
   }
 
+  // For generation 0 we put a program in memory
+  if (GEN == 0) {
+    ram[8] = 1;  // A
+    ram[9] = 2;  // B
+    ram[0] = 24; // GET A
+    ram[1] = 57; //  ADD B
+    ram[2] = 42; // PUT C 
+    ram[3] = 138 // PRN C
+    uiUpdateHwDisplay();
+  }
 }
 
 
