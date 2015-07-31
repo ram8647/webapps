@@ -29,7 +29,7 @@ var opcodelist = {"+":"ADD", "-":"SUB", "*":"MUL", "/":"DIV"};
 var machine_prog;
 
 // List of assembly language op names
-var op = ["NOP", "GET", "PUT", "ADD", "SUB", "MUL", "DIV", "UND","PRN", "INP", "UND","UND","UND","UND","UND","UND"];
+var op = ["NOP", "LDA", "STA", "ADD", "SUB", "MUL", "DIV", "UND","PRN", "INP", "UND","UND","UND","UND","UND","UND"];
 
 // Dictionary to store variables and values
 var scope = {};
@@ -93,12 +93,6 @@ function parsePrint(line,ctr) {
   var expr = line.substring(line.indexOf(" ")).trim();
   var tree = math.parse(expr);
 
-  // Can we only print a Var? THe result of
-  // any expression will be in REGA. The assembler
-  //  does PRN <var> so pulls directly from a ram[addr]
-  //  and its result is not necessarily in REGA.
-  // I guess we need to distinguish print VAR and print EXPR.
-
   var bAddr = "";
   if (isVariable(expr)) { // Must be pre-declared so in symbol table
     var varaddr = getOperandAddr(expr);
@@ -131,10 +125,10 @@ function parseAssignment(line, ctr) {
   var rhsAddr = traverse(tree, ctr);
   if (rhsAddr == "ERR") 
     return false;  
-  var opcode = pad(decToBinary(opcodes["GET"]),INSTR_LEN);
+  var opcode = pad(decToBinary(opcodes["LDA"]),INSTR_LEN);
   machine_prog += opcode + rhsAddr + "\n";
 
-  // GET LHS, should be a variable, including initializer
+  // LDA LHS, should be a variable, including initializer
   var varname = line.substring(0, eq).trim();
   var varaddr = getOperandAddr(varname);
   var bAddr = "";
@@ -146,7 +140,7 @@ function parseAssignment(line, ctr) {
     bAddr = pad(decToBinary(varaddr),ADDR_LEN);
   }
 
-  opcode = pad(decToBinary(opcodes["PUT"]),INSTR_LEN);
+  opcode = pad(decToBinary(opcodes["STA"]),INSTR_LEN);
   machine_prog += opcode + bAddr + "\n";
   return true;
 }
@@ -186,7 +180,7 @@ function traverse(tree, ctr) {
   } else {  // recursive case -- an operator
     var addrA = traverse(tree.args[0], ctr);
     var addrB = traverse(tree.args[1], ctr);
-    var bOpcode = pad(decToBinary(opcodes["GET"]),INSTR_LEN);
+    var bOpcode = pad(decToBinary(opcodes["LDA"]),INSTR_LEN);
     machine_prog += bOpcode + addrA + "\n";
 
     var op = tree.op;
@@ -197,7 +191,7 @@ function traverse(tree, ctr) {
     // Calculate and Store partial result
     var buffer = BUFFER - buffctr; 
     var bAddr = pad(decToBinary(buffer),ADDR_LEN);
-    bOpcode = pad(decToBinary(opcodes["PUT"]),INSTR_LEN);
+    bOpcode = pad(decToBinary(opcodes["STA"]),INSTR_LEN);
     machine_prog += bOpcode + bAddr + "\n";
     buffctr += 1;
     return bAddr;    

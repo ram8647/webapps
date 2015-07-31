@@ -4,9 +4,9 @@
 
 // Settings that control the architecture are in the HTML file
 
-var pcounter = 0;
-var pregister = 0;
-var registerA = 0;
+var icounter = 0;
+var iregister = 0;
+var accumulator = 0;
 var registerB = 0;
 var registerC = 0;
 var registerD = 0;
@@ -25,9 +25,9 @@ var DATA_SEG = VIS_RAM_LEN / 2;
 function reset() {
   alert("Restarting...");
   instr_counter = 0;  // Counts how many instructions, max = DATA_SEG -1
-  pcounter = 0;
-  pregister = 0;
-  registerA = 0;
+  icounter = 0;
+  iregister = 0;
+  accumulator = 0;
   registerB = 0;
   registerC = 0;
   registerD = 0;
@@ -41,52 +41,52 @@ function reset() {
 // Implements the fetch/execute cycle.  Called when the Run button is clicked.
 // Programs start a ram[0]
 function fetchExecute() {
-  pcounter = 0;
+  icounter = 0;
   instr_counter = 0;
   fetchNextInstruction();
   executeCurrentInstruction();
-  var instrcode = pad(decToBinary(pregister),WORD_LEN).substring(0,INSTR_LEN);
+  var instrcode = pad(decToBinary(iregister),WORD_LEN).substring(0,INSTR_LEN);
   while (binaryToDecimal(instrcode) != 0 && instr_counter < DATA_SEG) {
     instr_counter += 1;
     fetchNextInstruction();
     executeCurrentInstruction();
-    instrcode = pad(decToBinary(pregister),WORD_LEN).substring(0,INSTR_LEN);
+    instrcode = pad(decToBinary(iregister),WORD_LEN).substring(0,INSTR_LEN);
     uiUpdateHwDisplay();
   }
 }
 
-// Fetches the next machine instruction from memory, setting the PCTR and PREG
+// Fetches the next machine instruction from memory, setting the ICTR and IREG
 function fetchNextInstruction() {
-  pregister = ram[pcounter];
-  pcounter += 1; 
+  iregister = ram[icounter];
+  icounter += 1; 
   uiUpdateAfterFetch();
 }
 
-// Executes the machine instruction in PREG
+// Executes the machine instruction in IREG
 function executeCurrentInstruction() {
-  var pregBin = pad(decToBinary(pregister), WORD_LEN);
+  var pregBin = pad(decToBinary(iregister), WORD_LEN);
   var instr = binaryToDecimal(pregBin.substring(0,INSTR_LEN));
   var addrbin = pregBin.substring(INSTR_LEN)
   var addr = binaryToDecimal(addrbin);
   var operand = ram[addr];
       
-  if (instr == 1)  {   // GET x and put in registerA
-    registerA = ram[addr];
+  if (instr == 1)  {   // GET x and put in accumulator
+    accumulator = ram[addr];
   }
   if (instr == 2)  {   // Put regA at x
-    ram[addr] = registerA;
+    ram[addr] = accumulator;
   }
   if (instr == 3)  {   // Add x to register
-    registerA = (registerA + operand)  % Math.pow(2,WORD_LEN);
+    accumulator = (accumulator + operand)  % Math.pow(2,WORD_LEN);
   }
   if (instr == 4)  {   // Sub x from register
-    registerA = (registerA - operand) % Math.pow(2,WORD_LEN);
+    accumulator = (accumulator - operand) % Math.pow(2,WORD_LEN);
   }
   if (instr == 5)  {   // Mult  register by x
-    registerA = (registerA * operand) % Math.pow(2,WORD_LEN);
+    accumulator = (accumulator * operand) % Math.pow(2,WORD_LEN);
   }
   if (instr == 6)  {   // Div  register by x
-    registerA = (Math.floor(registerA / operand)) % Math.pow(2,WORD_LEN);
+    accumulator = (Math.floor(accumulator / operand)) % Math.pow(2,WORD_LEN);
   }
   if (instr == 8)  {   // Print x
     var monitor = uiGetMonitor(); //document.getElementById("monitor");

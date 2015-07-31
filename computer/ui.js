@@ -27,9 +27,9 @@ function uiInit() {
   if (GEN == 0) {
     ram[8] = 1;  // A
     ram[9] = 2;  // B
-    ram[0] = 24; // GET A
+    ram[0] = 24; // LDA A
     ram[1] = 57; //  ADD B
-    ram[2] = 42; // PUT C 
+    ram[2] = 42; // STA C 
     ram[3] = 138 // PRN C
     uiUpdateHwDisplay();
   }
@@ -57,9 +57,9 @@ function uiReset() {
 // Displays the registers and RAM
 function uiUpdateHwDisplay() {
   // CPU
-  document.getElementById("pctr").value = pad(decToBinary(pcounter),ADDR_LEN);
-  document.getElementById("preg").value = pad(decToBinary(pregister), WORD_LEN);
-  document.getElementById("rega").value = pad(decToBinary(registerA),WORD_LEN);
+  document.getElementById("pctr").value = pad(decToBinary(icounter),ADDR_LEN);
+  document.getElementById("preg").value = pad(decToBinary(iregister), WORD_LEN);
+  document.getElementById("rega").value = pad(decToBinary(accumulator),WORD_LEN);
 
   // RAM
   for (var i=0; i < VIS_RAM_LEN; i++) {

@@ -9,8 +9,8 @@
  *
 	OP  OPCODE
 	NOP 0000
-	GET 0001
-	PUT 0010
+	LDA 0001
+	STA 0010
 	ADD 0011
 	SUB 0100
 	MUL 0101
@@ -29,10 +29,10 @@ var instrctr = 0;
 var machine_prog;
 
 // List of assembly language op names
-var op = ["NOP", "GET", "PUT", "ADD", "SUB", "MUL", "DIV", "UND","PRN", "INP", "UND","UND","UND","UND","UND","UND"];
+var op = ["NOP", "LDA", "STA", "ADD", "SUB", "MUL", "DIV", "UND","PRN", "INP", "UND","UND","UND","UND","UND","UND"];
 
 // Association list of names and opcode
-var opcodes = {"NOP":0, "GET":1, "PUT":2, "ADD":3, "SUB":4, "MUL":5, "DIV":6, "UND":7,"PRN":8, "INP":9, "UND":10,"UND":11,"UND":12,"UND":13,"UND":14,"UND":15};
+var opcodes = {"NOP":0, "LDA":1, "STA":2, "ADD":3, "SUB":4, "MUL":5, "DIV":6, "UND":7,"PRN":8, "INP":9, "UND":10,"UND":11,"UND":12,"UND":13,"UND":14,"UND":15};
 
 // Loads the program currently typed into the Editor, parsing
 //  both VAR declarations and executable statements. 
@@ -63,7 +63,7 @@ function assembleProgram() {
       displayMachineCode(machine_prog);
       document.getElementById("load").disabled = false;
       return;                 
-    } else if ("GETPUTADDSUBMULDIVPRNINP".indexOf(op) != -1) {
+    } else if ("LDASTAADDSUBMULDIVPRNINP".indexOf(op) != -1) {
       var instr = parseInstruction(line, op, ctr);
       if (instr == "") {
         return;  // ERROR
@@ -116,7 +116,7 @@ function getOperandAddr(operand) {
   return -1;   // Error, symbol not found
 }     
 
-// Looks up the opcode of a symbolic operator (e.g., GET)
+// Looks up the opcode of a symbolic operator (e.g., LDA)
 function getOpCode(opstr) {
   for (var i = 0; i < op.length; i++) {
      if (op[i] == opstr)
@@ -129,13 +129,15 @@ function getOpCode(opstr) {
 function parseVarDeclaration(line, ctr) {
   var bitcode = "";
   var assignment = line.substring(3).trim();
-  var op = assignment.indexOf('=');
-  if (op == -1) {
+
+  var space = assignment.indexOf(' ');  // Getting rid of =
+  if (space == -1) {
     alert("Syntax error in line " + ctr);
     return "";
   }
-  var symbol = assignment.substring(0, op).trim();
-  var value = assignment.substring(op + 1).trim();
+  
+  var symbol = assignment.substring(0, space).trim();
+  var value = assignment.substring(space + 1).trim();
   value = parseInt(value);
   if (value == NaN) {
     alert("Syntax error in line " + ctr);

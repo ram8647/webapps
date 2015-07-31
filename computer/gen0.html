@@ -70,7 +70,7 @@
 
      $(document).ready(function() {
       Tipped.create('#pctr', function() {
-        return "Program Counter: " + pcounter ;
+        return "Instruction Counter: " + icounter ;
       }, {
        cache: false,
        position: 'right'
@@ -79,7 +79,7 @@
 
      $(document).ready(function() {
       Tipped.create('#preg', function() {
-        return "Program Register: " + displayMnemonic(pregister);
+        return "Instruction Register: " + displayMnemonic(iregister);
       }, {
        cache: false,
        position: 'right'
@@ -88,7 +88,7 @@
 
      $(document).ready(function() {
       Tipped.create('#rega', function() {
-        return "RegisterA: " + registerA ;
+        return "Accumulator: " + accumulator ;
       }, {
        cache: false,
        position: 'right'
@@ -98,7 +98,7 @@
     <script>
       
       // Mnemonics used in hover hints
-      var op = ["NOP", "GET", "PUT", "ADD", "SUB", "MUL", "DIV", "UND","PRN", "INP", "UND","UND","UND","UND","UND","UND"];
+      var op = ["NOP", "LDA", "STA", "ADD", "SUB", "MUL", "DIV", "UND","PRN", "INP", "UND","UND","UND","UND","UND","UND"];
 
       // Parse a assembly language instruction given its decimal value
       function displayMnemonic(n) {
@@ -193,14 +193,14 @@
 			  <div id="cpu" style="visibility:visible">
                             <table>
                               <tr>
-				<td style="text-align:left"><u>PCTR:</u>&nbsp;</td>
+				<td style="text-align:left"><u>ICTR:</u>&nbsp;</td>
 				<td style="text-align:left"><input id="pctr" type="text" size="4" value="0000" maxlength="4" readonly></td>
-				<td><u>PREG:</u></td><td><input id="preg" type="text" size="8"  value="00000000" maxlength="8" readonly></td>
+				<td><u>IREG:</u></td><td><input id="preg" type="text" size="8"  value="00000000" maxlength="8" readonly></td>
                               </tr>
                             </table>
                             <table>
                               <tr>
-				<td style="text-align:left"><u>REGA:</u></td>
+				<td style="text-align:left"><u>ACC:</u></td>
 				<td style="text-align:left"><input id="rega" type="text" size="8"  value="00000000" maxlength="8" readonly></td>
 				<td>&nbsp;</td>
                               </tr>
@@ -210,12 +210,12 @@
                               <br /><span style="color:red"><u>Instruction Set</u></span>
                               <br />&nbsp;&nbsp;&lt;x&gt; is a 4-bit memory address
                               <br />&nbsp;&nbsp;0000 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- NOP (Do nothing)
-                              <br />&nbsp;&nbsp;0001 &lt;x&gt; -- GET value at &lt;x&gt; put in REGA
-                              <br />&nbsp;&nbsp;0010 &lt;x&gt; -- PUT value in REGA at  &lt;x&gt;
-                              <br />&nbsp;&nbsp;0011 &lt;x&gt; -- ADD value at &lt;x&gt; to REGA
-                              <br />&nbsp;&nbsp;0100 &lt;x&gt; -- SUB value at  &lt;x&gt; from REGA
-                              <br />&nbsp;&nbsp;0101 &lt;x&gt; -- MUL REG by value at  &lt;x&gt;
-                              <br />&nbsp;&nbsp;0110 &lt;x&gt; -- DIV REGA by value at  &lt;x&gt;
+                              <br />&nbsp;&nbsp;0001 &lt;x&gt; -- LOAD value at &lt;x&gt; to ACC
+                              <br />&nbsp;&nbsp;0010 &lt;x&gt; -- STORE value in ACC at  &lt;x&gt;
+                              <br />&nbsp;&nbsp;0011 &lt;x&gt; -- ADD value at &lt;x&gt; to ACC
+                              <br />&nbsp;&nbsp;0100 &lt;x&gt; -- SUB value at  &lt;x&gt; from ACC
+                              <br />&nbsp;&nbsp;0101 &lt;x&gt; -- MUL ACC by value at  &lt;x&gt;
+                              <br />&nbsp;&nbsp;0110 &lt;x&gt; -- DIV ACC by value at  &lt;x&gt;
                               <br />&nbsp;&nbsp;1000 &lt;x&gt; -- PRINT &lt;x&gt; to Monitor
                               <br />&nbsp;&nbsp;1001 &lt;x&gt; -- INPUT keyboard to  &lt;x&gt;
                               <br />
