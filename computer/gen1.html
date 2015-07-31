@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="./widget.css">
 
-    <title>4-bit computer</title>
+    <title>4-bit V2</title>
 
       <script>
        var GEN = 1;      // Generation number
@@ -15,7 +15,6 @@
        var WORD_LEN = ADDR_LEN + INSTR_LEN;  
        var RAM_LEN = Math.pow(2,ADDR_LEN);
        var VIS_RAM_LEN = 16;   // Visible RAM 
-
       </script>
 
     <script src="./converters.js"></script>
@@ -25,14 +24,14 @@
     <script src="./loader.js"></script>
 
     <script src="./edx-jsinput.js"></script>  <!-- For edX -->
-    <script src="/static/js/capa/src/jschannel.js"></script>  <!-- For edX -->
+    <script src="/static/js/capa/src/jschannel.js"></script>    <!-- For edX -->
 
     <!-- jQuery -->
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-
     <!-- Tipped  See http://www.tippedjs.com/  and http://www.tippedjs.com/license -->
     <script type="text/javascript" src="./tipped.js"></script>
     <link rel="stylesheet" type="text/css" href="./tipped.css" />
+
     <style>
     body {
        font-family:"Times";
@@ -44,9 +43,10 @@
     <!--  See http://www.tippedjs.com/  and http://www.tippedjs.com/license -->
 
     $(document).ready(function() {
-      Tipped.create('.boxes .box');
+      Tipped.create('.simple-tooltip');
     });
     </script>
+
     <script type="text/javascript">
      $(document).ready(function() {
       Tipped.create('.data', function(element) {
@@ -102,21 +102,21 @@
 
       // Parse a assembly language instruction given its decimal value
       function displayMnemonic(n) {
-	var str = pad(decToBinary(n), 8);
-	var instr = binaryToDecimal(str.substring(0,4));
-	var addr = str.substring(4);
+	var str = pad(decToBinary(n), WORD_LEN);
+	var instr = binaryToDecimal(str.substring(0,INSTR_LEN));
+	var addr = str.substring(INSTR_LEN);
 	return op[instr] + " " + addr;
       }
+
    </script>
   </head>
   <body onload='uiInit()'>
     <div class="center" style="width:500px">
-
       <table class="container" style="width:495px;">
 	<tr>
 	  <td style="text-align:left">
             <div class="alignleft" style="width:128px;">
-  	      <img style="width:128px;" src="./android_mobilecsp-192.jpg" alt="mobile csp logo">
+  	      <img style="width:128px;" src="./android_mobileCSP-192.jpg" alt="mobile csp logo">
             </div>
             <br /><label style="font-size:1.8em">4-Bit Computer Simulator</label>
 	  </td>
@@ -130,37 +130,49 @@
 	      <tr>
 		<td style="padding-left:10px">
 		  <div id="userinterface">
-                    <table style="border:0px">
+                    <table style="border:0px;">
                       <tr>
                         <td style="border:0px; text-align:left;">
-                          <label style="color:red">Monitor</label><br />
- 			  <textarea id="monitor" rows="10" cols="60" readonly></textarea>
+                          <table >
+                            <tr >
+                              <td style="border:0px; text-align:left; width:100px">
+				<label style="color:red">Monitor</label><br />
+				<textarea id="monitor" rows="10" cols="10" readonly></textarea>
+                              </td>
+                              <td style="border:0px; text-align:left; width:550px">
+				<label style="color:red">Editor</label><br />
+				<textarea id="editor" rows="10" cols="10"></textarea>
+                              </td>
+                              <td style="text-align:right; width:50x">
+				<button class="button2" type="button" id="load" style="width:72px" onclick="loadProgram()">Load</button>
+                              </td>
+                            </tr>
+                          </table>       
                         </td>
                       </tr>
                       <tr>
                         <td style="border:0px; text-align:left;">
-                          <label style="color:red">Keyboard</label><br />
- 			  <input id="keyboard" type="text" maxlength="40" size="40" onkeydown="handleKeyboardInput()" disabled />
+                          <label style="color:red">Editor</label><br />
+ 			  <input id="keyboard" type="text" maxlength="40" size="40" disabled>
                         </td>
                       </tr>
                     </table>
 		  </div>
-                  <hr />
-		</TD>
-	      </TR>
+		</td>
+	      </tr>
 
 	      <tr>
 		<td>
-		  <div class='boxes position'>  <!-- start of boxes for tipped -->
-		    <table style="border:0px;padding-left:5px">  <!-- RAM and CPU table -->
+		  <div class='simple-tooltip'>  <!-- start of boxes for tipped  -->
+   	            <table style="border:0px;padding-left:5px">  <!-- RAM and CPU table -->
 		      <tr>
-			<td style="border: 1px solid red; text-align:left; width:270px;  padding-left:5px">
+   			<td style="border: 1px solid red; text-align:left; width:270px;  padding-left:5px">
 			  <div id="ram" style="visibility:visible; border:1px">
-			    <label style="color:red">RAM</label><br />
-                            <table><tr><td style="text-align:left"><u>INST</u></td><td>&nbsp;</td>
+                            <label style="color:red">RAM</label><br />
+                            <table><tr><td style="text-align:left"><u>INST</u></td><td></td>
 				<td style="text-align:left"><u>DATA</u></td><td>&nbsp;</td></tr></table>
 
-                            <table class="ramcell"><tr><td>0000:</td><td><span class='instr' data-id="0"><input onkeyup="uiHandleRamDisplay(this,event)" id="m0000" type="text" size="8" value="00000000" maxlength="8"></span></td>
+                            <table><tr><td>0000:</td><td><span class='instr' data-id="0"><input onkeyup="uiHandleRamDisplay(this,event)" id="m0000" type="text" size="8" value="00000000" maxlength="8"></span></td>
 				<td>1000:</td><td><span class='data' data-id="8"><input id="m1000"  onkeyup="uiHandleRamDisplay(this,event)" type="text" size="8" value="00000000" maxlength="8"></span></td></tr>
                             </table>
 
@@ -188,29 +200,20 @@
                             <br /><br />
 			  </div>
 			</td>
-			<td style="border:1px solid red; text-align:left;width:420px; padding-left:5px">
-   			  <label style="color:red">CPU</label><br />
+ 			<td style="border:1px solid red; text-align:left; width:420px; padding-left:5px;">
+			  <label style="color:red">CPU</label><br />
 			  <div id="cpu" style="visibility:visible">
-                            <table>
-                              <tr>
-				<td style="text-align:left"><u>PCTR:</u>&nbsp;</td>
-				<td style="text-align:left"><input id="pctr" type="text" size="4" value="0000" maxlength="4" readonly></td>
-				<td><u>PREG:</u></td><td><input id="preg" type="text" size="8"  value="00000000" maxlength="8" readonly></td>
-                              </tr>
-                            </table>
-                            <table>
-                              <tr>
-				<td style="text-align:left"><u>REGA:</u></td>
-				<td style="text-align:left"><input id="rega" type="text" size="8"  value="00000000" maxlength="8" readonly></td>
-				<td>&nbsp;</td>
-                              </tr>
-                            </table>
+                            <table><tr><td style="text-align:left"><u>PCTR:</u>&nbsp;</td><td style="text-align:left"><input id="pctr" type="text" size="4" value="0000" maxlength="4" readonly></td>
+				<td style="text-align:left"><u>PREG:</u></td><td><input id="preg" type="text" size="8"  value="00000000" maxlength="8" readonly></td></tr></table>
+                            <table><tr><td style="text-align:left"><u>REGA:</u></td><td style="text-align:left"><input id="rega" type="text" size="8"  value="00000000" maxlength="8" readonly></td>
+				<td>
+                            </td></tr></table>
 
                             <p style="font-size:0.74em">
                               <br /><span style="color:red"><u>Instruction Set</u></span>
                               <br />&nbsp;&nbsp;&lt;x&gt; is a 4-bit memory address
                               <br />&nbsp;&nbsp;0000 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- NOP (Do nothing)
-                              <br />&nbsp;&nbsp;0001 &lt;x&gt; -- GET value at &lt;x&gt; put in REGA
+                              <br />&nbsp;&nbsp;0001 &lt;x&gt; -- GET val at &lt;x&gt; put in REGA
                               <br />&nbsp;&nbsp;0010 &lt;x&gt; -- PUT value in REGA at  &lt;x&gt;
                               <br />&nbsp;&nbsp;0011 &lt;x&gt; -- ADD value at &lt;x&gt; to REGA
                               <br />&nbsp;&nbsp;0100 &lt;x&gt; -- SUB value at  &lt;x&gt; from REGA
@@ -224,8 +227,7 @@
 			</td>
 		      </tr>
 		    </table> <!-- end of RAM & CPU table -->
-		  </div> <!-- end of boxes -->
-		  <hr />
+                  </div> <!-- end of boxes -->
 		</td>
 	      </tr>
               <tr>

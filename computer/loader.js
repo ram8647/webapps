@@ -3,7 +3,13 @@
  */
 
 // Loads the program currently stored in machine_prog (after compilation)
+// But for Gen1, it sets machine_prog from the Editor.
+
 function loadProgram() {
+  if (GEN == 1) {  // i.e., no assembler involved
+    machine_prog = document.getElementById('editor').value;
+  }
+
   var instrctr = 0;
   if (!machine_prog.endsWith('\n')) 
     machine_prog += '\n'; 
