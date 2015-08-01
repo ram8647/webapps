@@ -1,106 +1,98 @@
+<!DOCTYPE HTML>
 <html>
 <head>
-</head>
-<body>
-<SCRIPT LANGUAGE="JavaScript">
-<!-- ;
-// Binary Guessing Game 
-// In this version the person guesses
+  <title>Binary Search</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="./widget.css">
 
-var nGuesses = 0;
-var max = 100;
-var nMaxGuesses = 7; // For max = 100
-var guess = 0;
-var low = 0;
-var high = 100;
-var prompt='You guess my secret number (1-100)';
-var secret = 0;
+  <script>
+  // Binary Guessing Game 
+  // In this version the person guesses
 
-function log2(val) {
-  return Math.log(val)/Math.LN2;
-}
+  var nGuesses = 0;
+  var max = 100;
+  var nMaxGuesses = 7; // For max = 100
+  var guess = 0;
+  var low = 0;
+  var high = 100;
+  var prompt='You guess my secret number (1-100)';
+  var secret = 0;
 
-// This starts and ends the game.  
-// It is controlled by the label on the 'go' button.
-function go() {
-  var label = document.forms.guessquiz.gobutton.value;
-  if (label == 'Let\'s play!') {
-    max = parseInt(document.forms.guessquiz.max.value);
-    nMaxGuesses = Math.ceil(log2(max));
-    secret = 1 + Math.round(Math.random()*(max-1));
-    low = 1;
-    high = max;
-    guess = Math.floor((low + high) / 2);
-    prompt="I'm thinking of a number between 1 and " + max + ".<br> Can you guess it within " + nMaxGuesses + " guesses?"
-    nGuesses = 0;
-    document.getElementById('promptlabel').innerHTML=prompt;
-    document.getElementById('nguesslabel').innerHTML="So far, you've had " + nGuesses + " guesses.";
-    document.getElementById('response').innerHTML="";
-    document.forms.guessquiz.gobutton.value="Make guess";
-  } else { // Label is 'Make guess!'
-    var guess = document.forms.guessquiz.guess.value;
-    ++nGuesses;
-    document.getElementById('nguesslabel').innerHTML="So far, you've had " + nGuesses + " guesses.";
-    if (guess < secret) {
-        document.getElementById('response').innerHTML="That guess was too low.";
-    } else if (guess > secret) {
-        document.getElementById('response').innerHTML="That guess was too high.";
-    } else {
-        document.getElementById('response').innerHTML="Congratulations. You guessed my secret in " + nGuesses + " guesses.";
-        document.forms.guessquiz.gobutton.value="Let's play!";
+  function log2(val) {
+    return Math.log(val)/Math.LN2;
+  }
+
+  // This starts and ends the game.  
+  // It is controlled by the label on the 'go' button.
+  function go() {
+    var label = document.getElementById("gobutton").value;
+    if (label.startsWith("Let")) {
+      max = parseInt(document.getElementById("max").value);
+      nMaxGuesses = Math.ceil(log2(max));
+      secret = 1 + Math.round(Math.random()*(max-1));
+      low = 1;
+      high = max;
+      guess = Math.floor((low + high) / 2);
+      prompt="<br />I'm thinking of a number between 1 and " + max + ".<br> Can you guess it within " + nMaxGuesses + " guesses?<br />"
+      nGuesses = 0;
+      document.getElementById('promptlabel').innerHTML=prompt;
+      document.getElementById('nguesslabel').innerHTML="So far, you've had " + nGuesses + " guesses.";
+      document.getElementById('response').innerHTML="";
+      document.getElementById("gobutton").value = "Make guess";
+    } else { // Label is 'Make guess!'
+      var guess = document.getElementById("guess").value;
+      ++nGuesses;
+      document.getElementById('nguesslabel').innerHTML="So far, you've had " + nGuesses + " guesses.";
+      if (guess < secret) {
+	  document.getElementById('response').innerHTML="That guess was too low.<br />";
+      } else if (guess > secret) {
+	  document.getElementById('response').innerHTML="That guess was too high.<br />";
+      } else {
+          var guessstr = (nGuesses <= 1) ? " guess." : " guesses.";
+	  document.getElementById('response').innerHTML="Congratulations. You guessed my secret in " + nGuesses + guessstr + ".<br />";
+	  document.getElementById("gobutton").value = "Let's play!";
+      }
     }
   }
-}
-
-// end hide -->
-</SCRIPT>
-
-<table width="400" align="center" border="1" frame="box" rules="none">
-<tr>
-<td>
-<img src="./android_CSP-128px.jpg">
-</td>
-<td>
-I'm thinking of a secret number between 1 and <i><b>max</b></i>. You can
-set the max up to 9999.  Can you guess the number? I'll tell you whether
-your guesses are <i><b>too high</b></i> or <i><b>too
-low</b></i> or <i><b>just right</b></i>.
-<br><br>
-Click the <b><i>Let's Play</i></b> button to start.
-</td>
-</tr>
-<tr>
-<td colspan="2">
-<FORM onSubmit="" NAME="guessquiz">
-<CENTER>
-<TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
-<TR>
-<TD BGCOLOR="#999999">
-<FONT COLOR="#ffffff" FACE="Arial"><B>I'll pick a secret number between 1 and </B></FONT>
-<INPUT TYPE="text" NAME="max" SIZE="4" MAXLENGTH="4" VALUE="100">
-</TD>
-</TR>
-<TR>
-<TD>
-<CENTER>
-<font color="#ffffff"><LABEL id="promptlabel" for="prompt"></LABEL></font>
-<BR>
-<font color="#FFFFFF"><LABEL id="nguesslabel" for="nguesses"></LABEL></font> 
-<BR>
-<hr>
-<font color="#FFFFFF"><LABEL id="response" for="response"></LABEL></font> 
-<BR>
-Your guess: <INPUT TYPE="text" NAME="guess" SIZE="4" MAXLENGTH="4" VALUE="0">
-<INPUT TYPE="button" NAME="gobutton" VALUE="Let's play!" onClick='go()'>
-</CENTER>
-</TD>
-</TR>
-</TABLE>
-</CENTER>
-</FORM>
-</td>
-</tr>
-</table>
-
+  </script>
+ </head>
+<body>
+  <div class="center" style="width:500px">
+    <table class="container" style="width:500px; border:1px;">
+      <tr>
+	<td>
+	  <img style="float:left; width:128px" src="./android_mobileCSP-192.jpg" alt="Mobile CSP logo">
+	  <label style="font-size:1em">
+	    I'm thinking of a secret number between 1 and <i><b>max</b></i>. You can
+	    set the max up to 9999.  Can you guess the number? I'll tell you whether
+	    your guesses are <i><b>too high</b></i> or <i><b>too
+		low</b></i> or <i><b>just right</b></i>.
+	  </label>
+          <hr />
+	</td>
+    </table>
+    <table class="widget" style="width:500px">
+      <tr>
+	<td>
+	  <br />
+	  <label><B>I'll pick a secret number between 1 and </B></label>
+	  <input type="text" id="max" size="4" maxlength="4" value="100">
+	</td>
+      </tr>
+      <tr>
+	<td>
+	  <label id="promptlabel"></label>
+	  <br />
+	  <label id="nguesslabel"></label>
+	  <br />
+	  <hr>
+	  <label id="response"></label>
+	  <br />
+	  <b>Your guess:</b> <input type="text" id="guess" size="4" maxlength="4" value="0" onchange='go()'>
+	  <input class="button" type="button" id="gobutton" value="Let's Play!" onclick='go()'>
+	</td>
+      </tr>
+    </table>
+  </div>
 </body>
 </html>
