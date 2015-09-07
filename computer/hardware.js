@@ -76,14 +76,23 @@ function fetchExecute() {
 }
 
 // Fetches the next machine instruction from memory, setting the ICTR and IREG
+// NOTE: To allow hovering over all buttons, we no longer disable fetch and
+//  execute. We just change their background color. grey==disabled
 function fetchNextInstruction() {
-  iregister = ram[icounter];
-  icounter += 1; 
-  uiUpdateAfterFetch();
+  var btn = document.getElementById("fetch");
+  if (btn.style.backgroundColor != "grey") { // Grey would be disabled
+    iregister = ram[icounter];
+    icounter += 1; 
+    uiUpdateAfterFetch();
+  }
 }
 
 // Executes the machine instruction in IREG
 function executeCurrentInstruction() {
+  var btn = document.getElementById("exec");
+  if (btn.style.backgroundColor == "grey") {
+    return;
+  }
   var pregBin = pad(decToBinary(iregister), WORD_LEN);
   var instr = binaryToDecimal(pregBin.substring(0,INSTR_LEN));
   var addrbin = pregBin.substring(INSTR_LEN)
