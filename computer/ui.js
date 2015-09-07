@@ -35,8 +35,6 @@ function uiInit() {
   }
 }
 
-
-
 //  Returns link to Monitor element
 function uiGetMonitor() {
   return document.getElementById("monitor");
@@ -52,6 +50,7 @@ function uiReset() {
   document.getElementById('exec').disabled=true;
   document.getElementById('fetch').disabled=false;
   uiUpdateHwDisplay();
+  document.getElementById("monitor").value = "";
 }
 
 // Displays the registers and RAM

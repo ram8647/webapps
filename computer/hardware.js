@@ -21,21 +21,41 @@ var INSTR_SEG = 0;
 var DATA_SEG = VIS_RAM_LEN / 2;
 
 
-//  Reset the computer -- like restarting -- resets the registers and memory
-function reset() {
-  alert("Restarting...");
-  instr_counter = 0;  // Counts how many instructions, max = DATA_SEG -1
-  icounter = 0;
-  iregister = 0;
-  accumulator = 0;
-  registerB = 0;
-  registerC = 0;
-  registerD = 0;
+//Resets the CPU without resetting RAM
+function reset () {
+  var result = prompt("Resetting the CPU.  This will restart your program. It will not reset RAM. \n\nAre you sure (Y/N)?");
+  if (result == 'Y' || result == 'y') {
+    //    alert("Resetting the CPU ...");
+    instr_counter = 0;  // Counts how many instructions, max = DATA_SEG -1
+    icounter = 0;
+    iregister = 0;
+    accumulator = 0;
+    registerB = 0;
+    registerC = 0;
+    registerD = 0;
 
-  for (var i = 0; i < RAM_LEN; i++) 
-    ram[i] = 0;
-  
-  uiReset();
+    uiReset();
+  }
+}
+
+//  Restart the computer  resets the registers and memory
+function restart() {
+  var result = prompt('This will perform a complete restart, reinitializing RAM and CPU. All data and instructions will be lost. \n\nAre you sure (Y/N)?');
+  if (result=='Y' || result=='y') {
+    //    alert("Restarting...");
+    instr_counter = 0;  // Counts how many instructions, max = DATA_SEG -1
+    icounter = 0;
+    iregister = 0;
+    accumulator = 0;
+    registerB = 0;
+    registerC = 0;
+    registerD = 0;
+
+    for (var i = 0; i < RAM_LEN; i++) 
+      ram[i] = 0;
+
+    uiReset();
+  }
 }
 
 // Implements the fetch/execute cycle.  Called when the Run button is clicked.

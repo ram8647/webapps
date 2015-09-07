@@ -202,7 +202,8 @@
                               <tr>
 				<td style="text-align:left"><u>ACC:</u></td>
 				<td style="text-align:left"><input id="rega" type="text" size="8"  value="00000000" maxlength="8" readonly></td>
-				<td>&nbsp;</td>
+   		                <td><button class="button2" type="button" id="reset" onclick="reset()">Reset</button></td>
+<!-- 				<td>&nbsp;</td> -->
                               </tr>
                             </table>
 
@@ -230,7 +231,7 @@
 	      </tr>
               <tr>
 		<td style="text-align:left; padding-left:10px; padding-top:5px; padding-bottom:5px">
-		  <button class="button2" type="button" id="reset" onclick="reset()">Reset</button>
+		  <button class="button2" type="button" id="restart" onclick="restart()">Restart</button>
 		  <button class="button2" type="button" id="fetch" onclick="fetchNextInstruction()">Fetch</button>
 		  <button class="button2" type="button" id="exec" onclick="executeCurrentInstruction()" disabled>Execute</button>
 		  <button class="button2" type="button" id="run" onclick="fetchExecute()">Run</button>
