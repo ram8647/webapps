@@ -47,8 +47,6 @@ function uiSetKeyboard(val) {
 
 // Display the current visible state of the computer after reset
 function uiReset() {
-  //  document.getElementById('exec').disabled=true;
-  //  document.getElementById('fetch').disabled=false;
   document.getElementById('exec').backgroundColor = "grey";  // disabled
   document.getElementById('fetch').backgroundColor = "lightgrey"; // enabled;
   uiUpdateHwDisplay();
@@ -65,7 +63,7 @@ function uiUpdateHwDisplay() {
   nibblefy(field);
   field = document.getElementById("rega");
   field.value = pad(decToBinary(accumulator),WORD_LEN);
-  nibblefy(field);
+  //  nibblefy(field);
 
   // RAM
   for (var i=0; i < VIS_RAM_LEN; i++) {

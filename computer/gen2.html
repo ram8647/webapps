@@ -51,7 +51,7 @@
      $(document).ready(function() {
       Tipped.create('.data', function(element) {
         var addr = $(element).data('id');
-        return "Data: " + ram[addr] ;
+        return "Data @ address " + addr +  ": " +  ram[addr] ;
       }, {
        cache: false,
        position: 'right'
@@ -61,7 +61,7 @@
      $(document).ready(function() {
       Tipped.create('.instr', function(element) {
         var addr = $(element).data('id');
-        return "Instruction: " + displayMnemonic(ram[addr]) ;
+        return "Instr @ address " + addr + ": " + displayMnemonic(ram[addr]) ;
       }, {
        cache: false,
        position: 'right'
@@ -94,6 +94,91 @@
        position: 'right'
       });
      });
+
+     $(document).ready(function() {
+      Tipped.create('#rega', function() {
+        return "Accumulator: " + accumulator ;
+      }, {
+       cache: false,
+       position: 'right'
+      });
+     });
+
+     $(document).ready(function() {
+      Tipped.create('#restart', function() {
+        return "Restart the computer, reinitializing RAM and CPU.";
+      }, {
+       cache: false,
+       position: 'right'
+      });
+     });
+
+
+     $(document).ready(function() {
+      Tipped.create('#fetch', function() {
+        return "Fetch: Put the instruction at memory location given by ICTR in the IREG.";
+      }, {
+       cache: false,
+       position: 'right'
+      });
+     });
+
+
+     $(document).ready(function() {
+      Tipped.create('#exec', function() {
+        return "Execute: Execute the instruction currently in the IREG. ";
+      }, {
+       cache: false,
+       position: 'right'
+      });
+     });
+
+     $(document).ready(function() {
+      Tipped.create('#run', function() {
+        return "Run : Run the program in RAM starting with the instruction at 0000. ";
+      }, {
+       cache: false,
+       position: 'right'
+      });
+     });
+
+
+     $(document).ready(function() {
+      Tipped.create('#reset', function() {
+        return "Reset : Reset the CPU by setting the ICTR to 0000 and IREG and ACC to 00000000. ";
+      }, {
+       cache: false,
+       position: 'right'
+      });
+     });
+
+     $(document).ready(function() {
+      Tipped.create('#help', function() {
+        return "Help: Display the documentation in a separate tab.";
+      }, {
+       cache: false,
+       position: 'right'
+      });
+     });
+
+     $(document).ready(function() {
+      Tipped.create('#load', function() {
+        return "Load: Load the machine language program in the editor into RAM.";
+      }, {
+       cache: false,
+       position: 'right'
+      });
+     });
+
+     $(document).ready(function() {
+      Tipped.create('#assemble', function() {
+        return "Assemble: Assemble the program in the editor into machine language.";
+      }, {
+       cache: false,
+       position: 'right'
+      });
+     });
+
     </script>
     <script>
       
@@ -111,8 +196,27 @@
    </script>
   </head>
   <body onload='uiInit()'>
-    <div class="center" style="width:500px">
-      <table class="container" style="width:495px;">
+
+   <div class="alignright" style="width:350px">
+    <h3>Assembly Language Table</h3>
+
+    <table><tr><th>Opcode Symbol</th><th>Machine Code</th><th>Example</th></tr>
+    <tr><td>NOP</td><td>0000</td><td style="text-align:left">No operation; do nothing.  Stops the program.</td></tr>
+    <tr><td>LDA</td><td>0001</td><td style="text-align:left">LDA A  --  Load A into the ACC</td></tr>
+    <tr><td>STA</td><td>0010</td><td style="text-align:left">STA C  --  Store the ACC into C</td></tr>
+    <tr><td>ADD</td><td>0011</td><td style="text-align:left">ADD B   -- Add  B to the ACC</td></tr>
+    <tr><td>SUB</td><td>0100</td><td style="text-align:left">SUB B  -- Subtract B from the ACC</td></tr>
+    <tr><td>MUL</td><td>0101</td><td style="text-align:left">MUL B -- Multiply the ACC by B</td></tr>
+    <tr><td>DIV</td><td>0110</td><td style="text-align:left">DIV B  -- Divide the ACC by B</td></tr>
+    <tr><td>PRN</td><td>1000</td><td style="text-align:left">PRN C  -- Print the value C</td></tr>
+    <tr><td>INP</td><td>1001</td><td style="text-align:left">INP D   -- Input a value from the keyboard into D</td></tr>
+    <tr><td>VAR</td><td>&nbsp;</td><td style="text-align:left">VAR A 10 -- Variable declaration</td></tr>
+    </table>
+
+   </div>
+
+    <div class="center" style="width:600px">
+      <table class="container" style="width:595px;">
 	<tr>
 	  <td style="text-align:left">
             <div class="alignleft" style="width:128px;">
@@ -123,7 +227,7 @@
 	</tr>
       </table>
 
-      <table class="widget" style="width:495px; border:1px">
+      <table class="widget" style="width:595px; border:1px">
 	<tr>
 	  <td>
 	    <table class="widget">  <!-- computer table -->
@@ -141,13 +245,13 @@
                               </td>
                               <td style="border:0px; text-align:left; width:550px">
 				<label style="color:red">Editor</label><br />
-				<textarea id="editor" rows="10" cols="10"></textarea>
+				<textarea id="editor" rows="10" cols="20"></textarea>
 				<textarea id="machinecode" rows="10" cols="1" style="visibility:hidden" readonly></textarea>
                               </td>
                               <td style="text-align:right; width:50x">
 				<button class="button2" type="button" id="assemble" style="width:72px" onclick="assembleProgram()">Assemble</button><br />
 				<br />
-				<button class="button2" type="button" id="load" style="width:72px" onclick="loadProgram()" disabled>Load</button>
+				<button class="button2" type="button" id="load" style="width:72px" onclick="loadProgram()">Load</button>
                               </td>
                             </tr>
                           </table>       
@@ -203,27 +307,35 @@
                             <br /><br />
 			  </div>
 			</td>
- 			<td style="border:1px solid red; text-align:left; width:420px; padding-left:5px;">
+ 			<td style="border:1px solid red; text-align:left; width:320px; padding-left:5px;">
 			  <label style="color:red">CPU</label><br />
 			  <div id="cpu" style="visibility:visible">
-                            <table><tr><td style="text-align:left"><u>ICTR:</u>&nbsp;</td><td style="text-align:left"><input id="pctr" type="text" size="4" value="0000" maxlength="4" readonly></td>
-				<td style="text-align:left"><u>IREG:</u></td><td><input id="preg" type="text" size="8"  value="00000000" maxlength="8" readonly></td></tr></table>
-                            <table><tr><td style="text-align:left"><u>ACC:</u></td><td style="text-align:left"><input id="rega" type="text" size="8"  value="00000000" maxlength="8" readonly></td>
-				<td>
-                            </td></tr></table>
+                            <table>
+                              <tr>
+                               <td style="text-align:left"><u>ICTR:</u>&nbsp;</td><td style="text-align:left"><input id="pctr" type="text" size="4" value="0000" maxlength="4" readonly></td>
+			       <td style="text-align:left"><u>IREG:</u></td><td><input id="preg" type="text" size="10"  value="00000000" maxlength="10" readonly></td>
+                              </tr>
+                            </table>
+                            <table>
+                             <tr>
+                              <td style="text-align:left"><u>ACC:</u></td>
+                              <td style="text-align:left"><input id="rega" type="text" size="10"  value="00000000" maxlength="10" readonly></td>
+ 		              <td><button class="button2" type="button" id="reset" onclick="reset()">Reset</button></td>
+                              </tr>
+                            </table>
 
                             <p style="font-size:0.74em">
                               <br /><span style="color:red"><u>Instruction Set</u></span>
                               <br />&nbsp;&nbsp;&lt;x&gt; is a 4-bit memory address
-                              <br />&nbsp;&nbsp;0000 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- NOP (Do nothing)
-                              <br />&nbsp;&nbsp;0001 &lt;x&gt; -- LOAD val at &lt;x&gt; to ACC
-                              <br />&nbsp;&nbsp;0010 &lt;x&gt; -- STORE value in ACC at  &lt;x&gt;
-                              <br />&nbsp;&nbsp;0011 &lt;x&gt; -- ADD value at &lt;x&gt; to ACC
-                              <br />&nbsp;&nbsp;0100 &lt;x&gt; -- SUB value at  &lt;x&gt; from ACC
-                              <br />&nbsp;&nbsp;0101 &lt;x&gt; -- MUL ACC by value at  &lt;x&gt;
-                              <br />&nbsp;&nbsp;0110 &lt;x&gt; -- DIV ACC by value at  &lt;x&gt;
-                              <br />&nbsp;&nbsp;1000 &lt;x&gt; -- PRINT &lt;x&gt; to Monitor
-                              <br />&nbsp;&nbsp;1001 &lt;x&gt; -- INPUT keyboard to  &lt;x&gt;
+                              <br />&nbsp;&nbsp;<span style="color:red">0000</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- NOP (Do nothing)
+                              <br />&nbsp;&nbsp;<span style="color:red">0001</span> &lt;x&gt; -- LOAD value at &lt;x&gt; to ACC
+                              <br />&nbsp;&nbsp;<span style="color:red">0010</span> &lt;x&gt; -- STORE value in ACC at  &lt;x&gt;
+                              <br />&nbsp;&nbsp;<span style="color:red">0011</span> &lt;x&gt; -- ADD value at &lt;x&gt; to ACC
+                              <br />&nbsp;&nbsp;<span style="color:red">0100</span> &lt;x&gt; -- SUB value at  &lt;x&gt; from ACC
+                              <br />&nbsp;&nbsp;<span style="color:red">0101</span> &lt;x&gt; -- MUL ACC by value at  &lt;x&gt;
+                              <br />&nbsp;&nbsp;<span style="color:red">0110</span> &lt;x&gt; -- DIV ACC by value at  &lt;x&gt;
+                              <br />&nbsp;&nbsp;<span style="color:red">1000</span> &lt;x&gt; -- PRINT &lt;x&gt; to Monitor
+                              <br />&nbsp;&nbsp;<span style="color:red">1001</span> &lt;x&gt; -- INPUT keyboard to  &lt;x&gt;
                               <br />
                             </p>
 			  </div>
@@ -235,11 +347,11 @@
 	      </tr>
               <tr>
 		<td style="text-align:left; padding-left:10px; padding-top:5px; padding-bottom:5px">
-		  <button class="button2" type="button" id="reset" onclick="reset()">Reset</button>
+		  <button class="button2" type="button" id="restart" onclick="restart()">Restart</button>
 		  <button class="button2" type="button" id="fetch" onclick="fetchNextInstruction()">Fetch</button>
-		  <button class="button2" type="button" id="exec" onclick="executeCurrentInstruction()" disabled>Execute</button>
+		  <button class="button2" type="button" id="exec" onclick="executeCurrentInstruction()" style="background-color:grey">Execute</button>
 		  <button class="button2" type="button" id="run" onclick="fetchExecute()">Run</button>
-		  <a class="button2" style="text-align:center; float:right;"  target="_blank" href="https://docs.google.com/document/d/1_b0sq3gXLB0GZSpjKRX2qjUOvaMxsiHOLhmY1HOoclo">Help</a>
+		  <a class="button2" id="help" style="text-align:center; float:right;"  target="_blank" href="https://docs.google.com/document/d/1_b0sq3gXLB0GZSpjKRX2qjUOvaMxsiHOLhmY1HOoclo">Help</a>
 		</td>
               </tr>
 	    </table> <!-- end of computer table -->
