@@ -220,12 +220,16 @@ function fileChangeHandler() {
       if (decode)
          decode.disabled = false;
 
-      document.getElementById("stegimgdiv").style.visibility="hidden";
-      var decstr = getDataBlock(rawData);
-      var editor = document.getElementById("editor");
-      if (editor) {
-         editor.value = decstr;
-         editor.cols = "50";
+      var stegimg = document.getElementById("stegimgdiv");
+      if (stegimg) {
+        stegimg.style.visibility="hidden";
+	//      document.getElementById("stegimgdiv").style.visibility="hidden";
+        var decstr = getDataBlock(rawData);
+        var editor = document.getElementById("editor");
+        if (editor) {
+           editor.value = decstr;
+           editor.cols = "50";
+        }
       }
     }
     reader.readAsBinaryString(file);
