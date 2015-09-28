@@ -60,6 +60,10 @@ function getDataBlock(raw) {
   var str = "";
   var ctr = 0;
   var whitespace = "  ";
+
+  START = raw.charCodeAt(10);  // The 10th byte gives start of data segment
+  alert('START = ' + START);
+  //  START = 0; 
   for (var i = START; i < START+LEN; ++i) {
      whitespace = "  ";     
      ++ctr;
