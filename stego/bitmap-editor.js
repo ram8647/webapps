@@ -32,13 +32,41 @@ var START = 54;  // Start of stego block in image
 var LEN = 24;    // Length of stego block in image
 var bmphdr = "data:image/bmp;base64";
 
+
+/**
+ *  
+ */
+function init() {
+  document.getElementById('inputletter').onkeypress = function(e){
+    if (!e) e = window.event;
+    var keyCode = e.keyCode || e.which;
+    if (keyCode == '13'){
+      //      alert('keypressed = ' + e.keyCode);
+      convertAscii();
+      return false;
+    }
+  }
+
+  document.getElementById('inputnumber').onkeypress = function(e){
+    if (!e) e = window.event;
+    var keyCode = e.keyCode || e.which;
+    if (keyCode == '13'){
+      convertDecimal();
+      return false;
+    }
+  }
+}
+
 /**
  * Converts inputletter (textfield) to its ascii code in binary
  */
 function convertAscii() {
    var input = document.getElementById("inputletter").value;
    var decimal = input.charCodeAt(0);
-   document.getElementById("binary").innerHTML = pad(decToBinary(decimal), 8);
+   if (decimal >= 48 && decimal <= 57 || decimal >= 65 && decimal <= 90 || decimal >= 97 && decimal <= 122)
+     document.getElementById("binary").innerHTML = pad(decToBinary(decimal), 8);
+   else 
+     alert('Sorry. The only characters you can convert are A-Z, a-z, 0-9.');
 }
 
 /**
@@ -46,8 +74,13 @@ function convertAscii() {
  */
 function convertDecimal() {
    var input = document.getElementById("inputnumber").value;
-   var binary = decToBinary(input);
-   document.getElementById("decbinary").innerHTML = pad(binary,8);
+   if (input >= 0 && input <= 255) {
+     var binary = decToBinary(input);
+     document.getElementById("decbinary").innerHTML = pad(binary,8);
+   } else {
+     alert('Sorry, the number must be between 0 and 255.');
+   }
+
 }
 
 /**
@@ -62,7 +95,7 @@ function getDataBlock(raw) {
   var whitespace = "  ";
 
   START = raw.charCodeAt(10);  // The 10th byte gives start of data segment
-  alert('START = ' + START);
+  //  alert('START = ' + START);
   //  START = 0; 
   for (var i = START; i < START+LEN; ++i) {
      whitespace = "  ";     
