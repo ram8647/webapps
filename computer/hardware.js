@@ -23,7 +23,7 @@ var DATA_SEG = VIS_RAM_LEN / 2;
 
 //Resets the CPU without resetting RAM
 function reset () {
-  var result = prompt("Resetting the CPU.  This will restart your program. It will not reset RAM. \n\nAre you sure (Y/N)?");
+  var result = prompt("Resetting the CPU.  This will restart your program. It will not reset RAM. To reset everything, refresh your browser page. \n\nAre you sure (Y/N)?");
   if (result == 'Y' || result == 'y') {
     //    alert("Resetting the CPU ...");
     instr_counter = 0;  // Counts how many instructions, max = DATA_SEG -1
