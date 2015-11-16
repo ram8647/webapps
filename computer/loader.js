@@ -11,7 +11,9 @@ function loadProgram() {
   }
 
   var instrctr = 0;
-  if (!machine_prog.endsWith('\n')) 
+  // Safari 8.0 doesn't support endsWith, only 9.0
+  //  if (!machine_prog.endsWith('\n')) 
+  if (machine_prog.indexOf('\n') != machine_prog.length)
     machine_prog += '\n'; 
   var cr = machine_prog.indexOf('\n');
   var line = machine_prog.substring(0, cr).trim();
