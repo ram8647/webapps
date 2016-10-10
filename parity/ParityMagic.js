@@ -41,10 +41,10 @@ function generate()
 	  else // last column
 	    {
 	      if(rows%2==0){
-		if((count+1)%2 == 0) img = androidBack;
+		if((count+1)%2 != 0) img = androidBack;
 		else img = androidFront;
 	      }else{
-		if((count+1)%2 == 0) img = androidFront;
+		if((count+1)%2 != 0) img = androidFront;
 		else img = androidBack;
 	      }
 	      cell.innerHTML = img;
@@ -59,7 +59,7 @@ function generate()
 	if(table.rows[j].cells[i].innerHTML == androidFront)
 	  counter++;							
 		
-      if(counter%2 == 1)			
+      if(counter%2 == 0)			
 	table.rows[rows].cells[i].innerHTML = androidBack;		
       else					
 	table.rows[rows].cells[i].innerHTML = androidFront;		
