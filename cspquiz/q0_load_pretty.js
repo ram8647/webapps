@@ -231,7 +231,7 @@ var quiz_data = [
         "description": "AP CS P Exam Prep Replacing Text Algorithm",
         "permute": false,
         "question": "<b>College Board Sample Question: Algorithms.</b> A programmer completes the user manual for a video game she has developed and realizes she has reversed the roles of goats and sheep throughout the text. Consider the programmer\u2019s goal of changing all occurrences of \u201cgoats\u201d to \u201csheep,\u201d and all occurrences of \u201csheep\u201d to \u201cgoats.\u201d The programmer will use the fact that the word \u201cfoxes\u201d does not appear anywhere in the original text.\n<br>\nWhich of the following algorithms can be used to accomplish the programmer\u2019s goal?",
-        "hint": "To help see the correct algorithm, try each algorithm on a list containing multiple occurrences of \"sheep\" and \"goats\.", 
+        "hint": "To help see the correct algorithm, try each algorithm on a list containing multiple occurrences of \"sheep\" and \"goats\".", 
         "type": 0,
         "wrongfeedback": ""
     },
@@ -253,7 +253,7 @@ var quiz_data = [
                 "text": "uses a different for every transaction."
             },
             {
-                "feedback": "Correct. An asymmetric cipher uses different keys for encryption and decryption, which allows for one of the keys to remain private while the other is public. The Diffie-Hellman algorithm was the first asymmetric cipher to solve the key exchange problem. RSA is widely used today to solve the key exchange problem for Internet transations.",
+                "feedback": "Correct. An asymmetric cipher uses different keys for encryption and decryption, which allows for one of the keys to remain private while the other is public. The Diffie-Hellman cipher was the first asymmetric cipher to solve the key exchange problem. RSA is widely used today to solve the key exchange problem for Internet transations.",
                 "score": 1,
                 "text": "Can be used to solve the <i>key exchange problem</i>."
             }

@@ -9,21 +9,30 @@
 
 <title>CSP Quiz</title>
 
-<!-- <script type="text/javascript" src="./load_quiz_data.js"></script> -->
+<!-- Quiz Data:  Sets the global variable quiz_data --> 
 <script type="text/javascript" src="./q0_load_pretty.js"></script>
 
 <script>
   // Quiz data are stored in global quiz_data as a json array
-  var q_index = 0;
+  var q_index = 0;         // Pointer into the quiz_index
+  var q_id = 0;            // Pointer into the quiz_data 
+  var quiz_index = [];     // Array of quiz numbers
   var curr_question;
   var choices;          // Multiple choices text, score, feedback
   var user_choice = -1; // Set when user clicks answer choice; 
+  
 
   function initQuizData() {
     console.log('Starting');
-    curr_question = quiz_data[q_index];
-    console.log(curr_question['description']);
+
+    // Create a default index (non-filtered)
+    for (var k = 0; k < quiz_data.length; k++) {
+      quiz_index.push(k);
+
+    curr_question = quiz_data[quiz_index[q_index]];
+//    console.log(curr_question['description']);
     displayQuestion();
+    }
   }
 
   function setChoice(n) {
@@ -83,6 +92,9 @@
   }
 
   function displayQuestion() {
+    if (curr_question['type'] != 0) {
+      nextQuestion();
+    }
     user_choice = -1;
     document.getElementById('hint-div').style.visibility="hidden";
     document.getElementById('hint').innerHTML="";
@@ -96,24 +108,36 @@
     }
   }
  
+  /*
+   *  Uses quiz_index to select the previous question from quiz_data, wrapping
+   *   around if necessary.
+   *  By default the index contains the quiz numbers for all quizzes in quiz_data.
+   *  Filtering changes the index.
+   */ 
   function previousQuestion() {
     q_index -= 1;
     if (q_index < 0) {
-      q_index = quiz_data.length -1;
+      q_index = quiz_index.length -1;
     }
-    curr_question = quiz_data[q_index];
+    curr_question = quiz_data[quiz_index[q_index]];
     if (curr_question['type'] != 0) {
       previousQuestion();
     }
     displayQuestion();
   }
 
+  /*
+   *  Uses quiz_index to select the next question from quiz_data, wrapping around
+   *   it necessary. 
+   *  By default the index contains the quiz numbers for all quizzes in quiz_data.
+   *  Filtering changes the index.
+   */ 
   function nextQuestion() {
      q_index += 1;
-     if (q_index >= quiz_data.length) {
+     if (q_index >= quiz_index.length) {
        q_index = 0;
      }
-    curr_question = quiz_data[q_index];
+    curr_question = quiz_data[quiz_index[q_index]];
     if (curr_question['type'] != 0) {
       nextQuestion();
     } else {
@@ -131,6 +155,65 @@
       hint.innerHTML = 'Sorry, no hint available.';
     }
   }
+
+  /*
+   *  Handles the filter select component. 
+   */
+  function filter() {
+    var option = document.getElementById('filter').value;
+    if (option == "keyword") {
+        document.getElementById('keyword-span').style.visibility="visible";
+        return;
+    }
+    if (option == "unfilter") {
+        quiz_index = [];
+        for (var k = 0; k < quiz_data.length; k++) {
+          quiz_index.push(k);
+        }
+    }
+    if (option == "random") {
+      var len = quiz_index.length;
+      // Shuffle the index
+      for (var k = 1; k < len / 2; k++) {
+        var i1 = Math.floor(Math.random() * len);
+        var i2 = Math.floor(Math.random() * len);
+        var temp = quiz_index[i1];
+        quiz_index[i1] = quiz_index[i2];
+        quiz_index[i2] = temp;   
+      }
+    }
+    q_index = 0;
+    curr_question = quiz_data[quiz_index[q_index]];
+    displayQuestion();
+    document.getElementById('keyword-span').style.visibility="hidden";
+  }
+
+  /*
+   *  Handles the keyword filter.  Searches the quiz_data JSON object
+   *   for a case-insensitive keyword match.  The entire JSON question is
+   *   converted to string and all of its fields are included in the search.
+   */
+  function keyword_filter() {
+    var keyword = document.getElementById('keyword-input').value.toLowerCase();
+    var new_index = [];
+    // Search each quiz_data question object, including all its fields
+    for (var k = 0; k < quiz_data.length; k++) {
+      var question = JSON.stringify(quiz_data[k]).toLowerCase(); 
+      if (question.indexOf(keyword) != -1) {
+        new_index.push(k);
+      }    
+    }
+    if (new_index.length > 0) {
+      quiz_index = [];
+      quiz_index = new_index;
+      q_index = 0;
+      curr_question = quiz_data[quiz_index[q_index]];
+      displayQuestion();
+    } else {
+      alert('Sorry, no matches were found for keyword ' + keyword + '.');
+    }
+  }
+
 </script>
 
 </head>
@@ -144,12 +227,26 @@
     </td><td>
      <h1 id="heading" >The CS Principles Quiz App</h1>
    </td></tr></table>
+   <div id="filter-div" style="display:inline">
+     <select id="filter" onchange="filter()">
+      <option value="filter">Filtering Options</option>      
+      <option value="keyword">Keyword Filter</option>      
+      <option value="random">Randomize</option>      
+      <option value="unfilter">Remove all filters</option>      
+     </select>
+     <span id="keyword-span" style="visibility:hidden"> 
+       Keyword: <input type="text" id="keyword-input" > &nbsp;
+       <input type="submit" onclick="keyword_filter()" value="Submit">
+     </span>
+   </div>
+   <br>
+   <br>
    <div id="controls">
        <button class="gcb-button" id="prev_button_1" onclick="previousQuestion()"><< Previous</button>
        <button class="gcb-button" id="next_button_1" onclick="nextQuestion()">Next >></button>
        &nbsp;&nbsp;|&nbsp;&nbsp;
        <button class="gcb-button" id="hint_button" onclick="giveHint()">Hint</button>
-       <div id="hint-div"><span id="hint"></span></div>
+       <div id="hint-div" style="display:inline"><span id="hint"></span></div>
    </div>
   </div>
   <div id="quizbody"> 
