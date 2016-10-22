@@ -1,0 +1,174 @@
+<html>
+<head>
+
+<link type="text/css" rel="stylesheet" href="main.css">
+<link href="main.mobile.css" rel="stylesheet" type="text/css" media="only screen and (max-device-width: 800px)" />
+
+<style type="text/css">
+</style>
+
+<title>CSP Quiz</title>
+
+<!-- <script type="text/javascript" src="./load_quiz_data.js"></script> -->
+<script type="text/javascript" src="./q0_load_pretty.js"></script>
+
+<script>
+  // Quiz data are stored in global quiz_data as a json array
+  var q_index = 0;
+  var curr_question;
+  var choices;          // Multiple choices text, score, feedback
+  var user_choice = -1; // Set when user clicks answer choice; 
+
+  function initQuizData() {
+    console.log('Starting');
+    curr_question = quiz_data[q_index];
+    console.log(curr_question['description']);
+    displayQuestion();
+  }
+
+  function setChoice(n) {
+    user_choice = n;
+  }
+ 
+  function processAnswer() {
+    if (user_choice == -1)    // No choice selected
+      return;
+    var feedback_element = document.getElementById("feedback");
+    feedback_element.style.visibility="visible";
+    var choice = choices[user_choice];
+    var score = choice['score'];
+    var feedback = choice['feedback'];
+    var feedback_txt = "";
+    if (feedback != "") {
+      feedback_txt = feedback;
+    } else if (score >= 1) {
+      feedback_txt = "Correct -- good job!";
+    } else {
+      feedback_txt = "Sorry, that's not correct -- try again!";
+    }
+    var feedback_div = document.getElementById('feedback-div');
+    feedback_div.style.visibility="visible";
+    if (score >= 1) {
+      feedback_div.style.backgroundColor="#ADCF2F";
+    } else {
+      feedback_div.style.backgroundColor="#FFCCCC";
+    }
+    feedback_element.innerHTML = feedback_txt;
+    window.scrollTo(0,document.body.scrollHeight);
+  }
+
+  function displayChoices() {
+     document.getElementById('choices_container').style.visibility="visible";
+     choices = curr_question['choices'];
+     var choice_form = '';
+     choice_form += '<hr>';
+     choice_form += '<i>Select the <u>best</u> choice.</i><br />';
+     for (var i=0; i < choices.length; i++) {
+       choice_form += '<input type="radio" name="choice"  value="' + i + '"';
+       choice_form += ' onclick=setChoice(' + i  + ') >';
+       choice_form += '&nbsp;<span class="radio_text">' + choices[i]["text"] + '</span>';
+       choice_form += '<br />';
+     }
+     choice_form += '<hr>';
+     var choice_table = document.getElementById('choices_table');
+     choice_table.innerHTML = choice_form;
+     var choice_controls = document.getElementById('choice-controls');
+     var controls = '<br>';
+     controls += '<button class="gcb-button" id="answer_button" onclick="processAnswer()">Check Answer</button>';
+     controls += '&nbsp;';
+     controls += '<button class="gcb-button" id="prev_button_2" onclick="previousQuestion()"><< Previous </button>';
+     controls += '&nbsp;';
+     controls += '<button class="gcb-button" id="next_button_2" onclick="nextQuestion()">Next >></button>';
+     choice_controls.innerHTML = controls;
+  }
+
+  function displayQuestion() {
+    user_choice = -1;
+    document.getElementById('hint-div').style.visibility="hidden";
+    document.getElementById('hint').innerHTML="";
+    document.getElementById('feedback-div').style.visibility="hidden";
+    var feedback = document.getElementById("feedback");
+    feedback.style.visibility="hidden";
+    var question = document.getElementById('question');
+    question.innerHTML = curr_question['question'];
+    if (curr_question['type'] == 0) {  // multiple choices
+        displayChoices();
+    }
+  }
+ 
+  function previousQuestion() {
+    q_index -= 1;
+    if (q_index < 0) {
+      q_index = quiz_data.length -1;
+    }
+    curr_question = quiz_data[q_index];
+    if (curr_question['type'] != 0) {
+      previousQuestion();
+    }
+    displayQuestion();
+  }
+
+  function nextQuestion() {
+     q_index += 1;
+     if (q_index >= quiz_data.length) {
+       q_index = 0;
+     }
+    curr_question = quiz_data[q_index];
+    if (curr_question['type'] != 0) {
+      nextQuestion();
+    } else {
+      displayQuestion();
+    }
+  }
+
+  function giveHint() {
+    document.getElementById('hint-div').style.visibility="visible";
+    document.getElementById('hint-div').style.backgroundColor="#ADCF2F";
+    var hint = document.getElementById('hint');
+    if (curr_question['hint']  != undefined) {
+      hint.innerHTML = curr_question['hint'];
+    } else {
+      hint.innerHTML = 'Sorry, no hint available.';
+    }
+  }
+</script>
+
+</head>
+
+<body onload="initQuizData()">
+
+ <div id="quiz_section">
+  <div id="quiz_heading">
+   <table><tr><td>
+     <img class="logo" src="./Mobile-CSP-Logo-3C-398x200.png" width="100px"/>
+    </td><td>
+     <h1 id="heading" >The CS Principles Quiz App</h1>
+   </td></tr></table>
+   <div id="controls">
+       <button class="gcb-button" id="prev_button_1" onclick="previousQuestion()"><< Previous</button>
+       <button class="gcb-button" id="next_button_1" onclick="nextQuestion()">Next >></button>
+       <button class="gcb-button" id="hint_button" onclick="giveHint()">Hint</button>
+       <div id="hint-div"><span id="hint"></span></div>
+   </div>
+  </div>
+  <div id="quizbody"> 
+    <br />
+    <div style="overflow-y: scroll; max-height:400px;">
+     <span id="question"></span>
+    </div>
+    <br />
+    <div id="choices_container" style="overflow-y:scroll; max-height:400px; background-color: #ADCF2F; visibility:hidden">
+     <span id="choices_table"></span>
+   </div>
+   <div id="choice-controls">
+   </div>
+    <br />
+    <div id="feedback-div">
+      <span><label id="feedback"></label></span>
+    </div>
+   <div>
+ </div>
+ 
+
+</body>
+</html>
