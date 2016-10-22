@@ -74,11 +74,11 @@
      choice_table.innerHTML = choice_form;
      var choice_controls = document.getElementById('choice-controls');
      var controls = '<br>';
-     controls += '<button class="gcb-button" id="answer_button" onclick="processAnswer()">Check Answer</button>';
-     controls += '&nbsp;';
      controls += '<button class="gcb-button" id="prev_button_2" onclick="previousQuestion()"><< Previous </button>';
      controls += '&nbsp;';
      controls += '<button class="gcb-button" id="next_button_2" onclick="nextQuestion()">Next >></button>';
+     controls += '&nbsp;&nbsp; | &nbsp;&nbsp;';
+     controls += '<button class="gcb-button" id="answer_button" onclick="processAnswer()">Check Answer</button>';
      choice_controls.innerHTML = controls;
   }
 
@@ -147,17 +147,20 @@
    <div id="controls">
        <button class="gcb-button" id="prev_button_1" onclick="previousQuestion()"><< Previous</button>
        <button class="gcb-button" id="next_button_1" onclick="nextQuestion()">Next >></button>
+       &nbsp;&nbsp;|&nbsp;&nbsp;
        <button class="gcb-button" id="hint_button" onclick="giveHint()">Hint</button>
        <div id="hint-div"><span id="hint"></span></div>
    </div>
   </div>
   <div id="quizbody"> 
     <br />
-    <div style="overflow-y: scroll; max-height:400px;">
+<!--    <div style="overflow-y: scroll; max-height:400px;">-->
+    <div >
      <span id="question"></span>
     </div>
     <br />
-    <div id="choices_container" style="overflow-y:scroll; max-height:400px; background-color: #ADCF2F; visibility:hidden">
+<!--     <div id="choices_container" style="overflow-y:scroll; max-height:400px; background-color: #ADCF2F; visibility:hidden"> -->
+    <div id="choices_container" style="background-color: #ADCF2F; visibility:hidden">
      <span id="choices_table"></span>
    </div>
    <div id="choice-controls">
