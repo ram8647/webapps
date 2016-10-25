@@ -1,10 +1,51 @@
 <html>
 <head>
+<meta charset="UTF-8">
+<meta name="description" content="Free Quiz App for the CS Principles Course">
+<meta name="keywords" content="HTML,CSS,JavaScript">
+<meta name="author" content="ralph.morelli@trincoll.edu">
 
 <link type="text/css" rel="stylesheet" href="main.css">
 <link href="main.mobile.css" rel="stylesheet" type="text/css" media="only screen and (max-device-width: 800px)" />
 
 <style type="text/css">
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 33%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
 </style>
 
 <title>CSP Quiz</title>
@@ -13,6 +54,15 @@
 <script type="text/javascript" src="./q0_load_pretty.js"></script>
 
 <script>
+  /*
+    The JavaScript code in this page is free software: you can redistribute 
+    it and/or modify it under the terms of the GNU General Public License 
+    (GNU GPL) as published by the Free Software Foundation, either version 3 
+    of the License, or (at your option) any later version.  The code is distributed 
+    WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+    or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+  */
+
   // Quiz data are stored in global quiz_data as a json array
   var IDEAS = ["creativity", "abstraction", "data", "algorithms", "programming", "internet", "impact"];
   var COURSES = ["mcsp", "cb"];  // Could be expanded to other curricula -- e.g., bjc, uteach
@@ -232,7 +282,7 @@
       curr_question = quiz_data[quiz_index[q_index]];
       displayQuestion();
     } else {
-      alert('Sorry, no matches were found for keyword ' + keyword + '.');
+      open_modal("Sorry, no matches were found for keyword <i>" + keyword + "</i>."); 
     }
   }
 
@@ -255,7 +305,7 @@
       curr_question = quiz_data[quiz_index[q_index]];
       displayQuestion();
     } else {
-      alert('Sorry, no matches were found for big idea ' + idea + '.');
+      open_modal("Sorry, no matches were found for Big Idea <i>" + idea + "</i>."); 
     }
   }
 
@@ -278,8 +328,39 @@
       curr_question = quiz_data[quiz_index[q_index]];
       displayQuestion();
     } else {
-      alert('Sorry, no matches were found for big idea ' + idea + '.');
+      open_modal("Sorry, no matches were found for Course <i>" + course + "</i>."); 
     }
+  }
+
+
+  function open_modal(html) {
+    var modal = document.getElementById('myModal');
+    var span = document.getElementsByClassName("close")[0];
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+
+    modal.style.display = "block";
+    var msg = document.getElementById("msg");
+    msg.innerHTML = html;
+  }
+
+  /*
+   * Information about the app.
+   */
+  function about() {
+    var msg = "A free quiz app for the CS Principles course.<br />";
+    msg += "Created by the Mobile CSP Project.<br />";
+    msg += "Visit us at <a target='_blank' href='http://mobile-csp.org'>http:mobile-csp.org</a> ";
+    open_modal(msg);
   }
 
 </script>
@@ -291,7 +372,7 @@
  <div id="quiz_section">
   <div id="quiz_heading">
    <table><tr><td>
-     <img class="logo" src="./Mobile-CSP-Logo-3C-398x200.png" width="100px"/>
+     <img class="logo" src="./Mobile-CSP-Logo-3C-398x200.png" width="100px" onclick="about()"/>
     </td><td>
      <h1 id="heading" >The CS Principles Quiz</h1>
    </td></tr></table>
@@ -351,7 +432,17 @@
     </div>
    <div>
  </div>
- 
+
+<!-- Custom Modal-->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">x</span>
+    <p id="msg"></p>
+  </div>
+
+</div>
 
 </body>
 </html>
