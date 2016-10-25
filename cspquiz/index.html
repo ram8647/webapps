@@ -15,6 +15,8 @@
 <script>
   // Quiz data are stored in global quiz_data as a json array
   var IDEAS = ["creativity", "abstraction", "data", "algorithms", "programming", "internet", "impact"];
+  var COURSES = ["mcsp", "cb"];  // Could be expanded to other curricula -- e.g., bjc, uteach
+  var UNITS = ["1","2","3","4","5","6","7","8","9","10","11"];  // unit or chapter keywords
 
   var q_index = 0;         // Pointer into the quiz_index
   var q_id = 0;            // Pointer into the quiz_data 
@@ -166,6 +168,9 @@
     if (IDEAS.indexOf(option) != -1) {
       bigidea_filter(option);  
     }
+    if (COURSES.indexOf(option) != -1) {
+      course_filter(option);  
+    }
     if (option == "keyword") {
         document.getElementById('keyword-span').style.visibility="visible";
         return;
@@ -201,12 +206,24 @@
   function keyword_filter() {
     var keyword = document.getElementById('keyword-input').value.toLowerCase();
     var new_index = [];
-    // Search each quiz_data question object, including all its fields
-    for (var k = 0; k < quiz_data.length; k++) {
-      var question = JSON.stringify(quiz_data[k]).toLowerCase(); 
-      if (question.indexOf(keyword) != -1) {
-        new_index.push(k);
-      }    
+    if (UNITS.indexOf(keyword) != -1) {
+      // Search the source field
+      for (var k = 0; k < quiz_data.length; k++) {
+	var question = quiz_data[k]; 
+        var source = question['source'];
+        var unit_id = source.substring(source.indexOf('-')+1);
+	if (unit_id == keyword) {
+	  new_index.push(k);
+	}    
+      }
+    } else { 
+      // Search each quiz_data question object, including all its fields
+      for (var k = 0; k < quiz_data.length; k++) {
+	var question = JSON.stringify(quiz_data[k]).toLowerCase(); 
+	if (question.indexOf(keyword) != -1) {
+	  new_index.push(k);
+	}    
+      }
     }
     if (new_index.length > 0) {
       quiz_index = [];
@@ -223,11 +240,33 @@
     var new_index = [];
     var op_code = "" + (IDEAS.indexOf(idea) + 1);
     for (var k=0; k < quiz_data.length; k++) {
-//      var question = JSON.stringify(quiz_data[k]).toLowerCase(); 
       var question = quiz_data[k];
       if (question['cspcode'] != undefined) {
         var idea_code = question['cspcode'].substring(0,1);  // e.g. 2.2.2K
         if (idea_code == op_code) {
+          new_index.push(k);
+        }
+      }
+    }     
+    if (new_index.length > 0) {
+      quiz_index = [];
+      quiz_index = new_index;
+      q_index = 0;
+      curr_question = quiz_data[quiz_index[q_index]];
+      displayQuestion();
+    } else {
+      alert('Sorry, no matches were found for big idea ' + idea + '.');
+    }
+  }
+
+  function course_filter(course) {
+    var new_index = [];
+    for (var k=0; k < quiz_data.length; k++) {
+      var question = quiz_data[k];
+      if (question['source'] != undefined) {
+        var source = question['source'];
+        var course_code = source.substring(0,source.indexOf('-'));  // mcsp-1
+        if (course_code == course) {
           new_index.push(k);
         }
       }
@@ -258,7 +297,7 @@
    </td></tr></table>
    <div id="filter-div" style="display:inline">
      <select class="gcb-button" id="filter" onchange="filter()">
-      <option value="filter">Filtering Options</option>      
+      <option value="filter">Filtering Options&nbsp;&nbsp;&nbsp;</option>      
       <option disabled>---------------</option>      
       <option value="creativity">Creativity</option>      
       <option value="abstraction">Abstraction</option>      
@@ -268,13 +307,17 @@
       <option value="internet">Internet</option>      
       <option value="impact">Global Impact</option>      
       <option disabled>---------------</option>      
-      <option value="keyword">Keyword Filter</option>      
+      <option value="keyword">Keyword or Unit Number</option>      
+      <option disabled>---------------</option>      
+      <option disabled>Source</option>      
+      <option value="mcsp">&nbsp;&nbsp;&nbsp;Mobile CSP </option>      
+      <option value="cb">&nbsp;&nbsp;&nbsp;College Board Sample Question&nbsp;&nbsp;&nbsp; </option>      
       <option disabled>---------------</option>      
       <option value="random">Randomize</option>      
       <option value="unfilter">Remove all filters</option>      
      </select>
      <span id="keyword-span" style="visibility:hidden"> 
-       Keyword: <input type="text" id="keyword-input" > &nbsp;
+       &nbsp;<b>Keyword or Unit Number:</b> <input type="text" id="keyword-input" > &nbsp;
        <input type="submit" class="gcb-button" onclick="keyword_filter()" value="Submit">
      </span>
    </div>

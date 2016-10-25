@@ -27,6 +27,7 @@ var quiz_data = [
         "permute": false,
         "question": "<b>Hardware: Logic Gates.</b> An AND gate is an electronic component that takes two inputs, A and B, such that ____________",
         "type": 0,
+        "source":"mcsp-2",
         "wrongfeedback": ""
     },
     {
@@ -58,6 +59,7 @@ var quiz_data = [
         "question": "<b>Binary Data.</b> Suppose a computer uses 8-bit bytes to represent its data. An 8-bit byte can store values ranging from 0 to 255 -- i.e., 00000000 to 11111111.  What do you suppose would happen if you added 1 to a byte storing the value 11111111?\n<br><br>",
         "hint": "<br><hr>To help answer this question, you might want to use the Mobile CSP <a target=\"_blank\" href=\"http://appinventor.cs.trincoll.edu/csp/webapps/computer/gen0.html\">4-bit simulator</a> to write a little machine language program to see what happens. By default, the 4-bit computer adds the values in locations 1000 and 1001 and prints the sum. So here is how you would set up the machine to add 11111111 and 00000001:\n<br>\n\n<ul>\n  <li>Put the value 11111111 (decimal 255) in memory location 1000.</li>\n  <li>Put the value 00000001 (decimal 1) in memory location 1001.</li>\n  <li>Run the program and observe the output.</li>\n</ul>What decimal value do you get when you add binary 1 to binary 11111111?<hr>",
         "type": 0,
+        "source":"mcsp-2",
         "wrongfeedback": ""
     },
     {
@@ -88,6 +90,7 @@ var quiz_data = [
         "permute": false,
         "question": "<b>College Board Sample Question: Algorithms.</b> A teacher uses the following program to adjust student grades on an assignment by adding&nbsp;<span style=\"line-height: 1.22;\">5 points to each student\u2019s original grade. However, if adding 5 points to a student\u2019s original </span><span style=\"line-height: 1.22;\">grade causes the grade to exceed 100 points, the student will receive the maximum possible&nbsp;</span><span style=\"line-height: 1.22;\">score of 100 points. The students\u2019 original grades are stored in the list <i>gradeList</i>, which is&nbsp;</span><span style=\"line-height: 1.22;\">indexed from 1 to <i>n</i>.</span><blockquote>&nbsp;i \u2190 1<br>&nbsp;REPEAT n TIMES</blockquote><blockquote><span class=\"Apple-tab-span\" style=\"white-space:pre\">\t</span>&nbsp;{<br><span class=\"Apple-tab-span\" style=\"white-space:pre\">\t</span>&nbsp;<i>&lt;MISSING CODE&gt;</i><br><span class=\"Apple-tab-span\" style=\"white-space:pre\">\t</span>&nbsp;i \u2190 i + 1<br><span class=\"Apple-tab-span\" style=\"white-space:pre\">\t</span>&nbsp;}</blockquote><div>The teacher has the following procedures available.<br><br><div style=\"text-align: left;\"><img src=\"https://ram8647.appspot.com/mobileCSP/assets/img/Q30Table.PNG\" class=\"yui-img\" title=\"\" alt=\"\" style=\"line-height: 1.22;\"><div style=\"text-align: left;\"><br><div>Which of the following code segments can replace <i>&lt;MISSING CODE&gt;</i> so that the program&nbsp;<span style=\"line-height: 1.22;\">works as intended?</span></div></div></div></div>",
         "type": 0,
+        "source":"cb-x",
         "wrongfeedback": ""
     },
     {
@@ -118,6 +121,7 @@ var quiz_data = [
         "permute": false,
         "question": "<b>Using Data.</b> When should an app's data be stored in an online database, such as Google's Firebase, as opposed to a database on the mobile device itself?",
         "type": 0,
+        "source":"mcsp-6",
         "wrongfeedback": ""
     },
     {
@@ -148,6 +152,7 @@ var quiz_data = [
         "permute": false,
         "question": "<b>Hardware Abstractions.</b> Which of the following lists arranges hardware components from the lowest to the highest abstraction level? ",
         "type": 0,
+        "source":"mcsp-2",
         "wrongfeedback": ""
     },
     {
@@ -178,6 +183,7 @@ var quiz_data = [
         "permute": false,
         "question": "<b>Asynchronous Processing.</b> To say that the operation of requesting data from an online database, such as Google's Firebase, is <i><b>asynchronous</b></i> means __________________.",
         "type": 0,
+        "source":"mcsp-6",
         "wrongfeedback": "",
         "hint": "Synchronous means \"at the same time\"."
     },
@@ -210,6 +216,7 @@ var quiz_data = [
         "question": "<b>College Board Sample Question: Algorithms.</b> The following question uses a robot in a grid of squares. The robot is represented as a triangle, which is initially in the bottom left square of the grid and facing right.<br><br><div style=\"text-align: left;\"><img src=\"https://ram8647.appspot.com/mobileCSP/assets/img/Q17SquareQuestion.PNG\" class=\"yui-img selected\" title=\"\" alt=\"\" style=\"line-height: 1.22;\"><span style=\"line-height: 1.22;\">&nbsp; &nbsp;<br><br></span></div>Consider the following code segment, which moves the robot in the grid.\n\n<br><br><div style=\"text-align: left;\"><img src=\"https://ram8647.appspot.com/mobileCSP/assets/img/Q17Code.PNG\" class=\"yui-img\" title=\"\" alt=\"\" style=\"line-height: 1.22;\"><br><br></div>Which of the following shows the location of the robot after running the code segment?\n",
         "hint": "To answer this type of question, it sometimes help to get a piece of paper and pencil and trace the robot's movements.",
         "type": 0,
+        "source":"cb-x",
         "wrongfeedback": ""
     },
     {
@@ -241,6 +248,7 @@ var quiz_data = [
         "question": "<b>College Board Sample Question: Algorithms.</b> A programmer completes the user manual for a video game she has developed and realizes she has reversed the roles of goats and sheep throughout the text. Consider the programmer\u2019s goal of changing all occurrences of \u201cgoats\u201d to \u201csheep,\u201d and all occurrences of \u201csheep\u201d to \u201cgoats.\u201d The programmer will use the fact that the word \u201cfoxes\u201d does not appear anywhere in the original text.\n<br>\nWhich of the following algorithms can be used to accomplish the programmer\u2019s goal?",
         "hint": "To help see the correct algorithm, try each algorithm on a list containing multiple occurrences of \"sheep\" and \"goats\".", 
         "type": 0,
+        "source":"cb-x",
         "wrongfeedback": ""
     },
     {
@@ -272,6 +280,7 @@ var quiz_data = [
         "question": "<b>Cryptography.</b> An <i>asymmetric cipher</i>________________ ",
         "hint": "Remember, a <i>symmetric</i> cipher is one that uses the same key of encryption and decryption.",
         "type": 0,
+        "source":"mcsp-7",
         "wrongfeedback": ""
     },
     {
@@ -302,6 +311,7 @@ var quiz_data = [
         "permute": false,
         "question": "In terms of the data/information hierarchy the statement, \"Over 80% of Africans own a cell phone.\", would be best classified as an example of ______________",
         "type": "Bad",
+        "source":"mcsp-0",
         "wrongfeedback": ""
     },
     {
@@ -333,6 +343,7 @@ var quiz_data = [
         "question": "<b>Programming Best Practices. </b> Suppose you are creating an app that uses several different buttons on the User Interface. Which of the following is the best name for a button whose function is to clear another component?",
         "hint": "Remember, one of the goals in writing good code is to make it as descriptive and readable as possible.",
         "type": 0,
+        "source":"mcsp-2",
         "wrongfeedback": ""
     },
     {
@@ -363,6 +374,7 @@ var quiz_data = [
         "permute": false,
         "question": "<b>Binary Numbers.</b> What is the largest decimal value that can be represented in 4 bits?  ",
         "type": 0,
+        "source":"mcsp-2",
         "wrongfeedback": ""
     },
     {
@@ -393,6 +405,7 @@ var quiz_data = [
         "permute": false,
         "question": "<b>Binary Overflow.</b> An <i><b>overflow error</b></i> occurs when there aren't enough bits to represent a given number.  Which of following would cause an overflow error to occur.",
         "type": 0,
+        "source":"mcsp-2",
         "wrongfeedback": ""
     },
     {
@@ -423,6 +436,7 @@ var quiz_data = [
         "permute": false,
         "question": "<b>Using Data.</b> Suppose you are creating an app that uses a certain piece of data and you are trying to decide whether to store the data on the device itself or in an online database. For which of the following would storing the data online be the correct design choice?",
         "type": 0,
+        "source":"mcsp-6",
         "wrongfeedback": ""
     },
     {
@@ -453,6 +467,7 @@ var quiz_data = [
         "permute": false,
         "question": "<b>Cryptography.</b> One technique that can be used to break a Caesar cipher is called _________________________. ",
         "type": 0,
+        "source":"mcsp-7",
         "wrongfeedback": ""
     },
     {
@@ -483,6 +498,7 @@ var quiz_data = [
         "permute": false,
         "question": "<b>The Internet.</b> Which of the following is <b>not true</b> about IPv4 addresses?",
         "type": 0,
+        "source":"mcsp-7",
         "wrongfeedback": ""
     },
     {
@@ -513,6 +529,7 @@ var quiz_data = [
         "permute": false,
         "question": "<b>College Board Sample Question: Collaboration.</b> A team of students is creating a video to advertise an upcoming school activity. While working\non the video, the students plan to meet every day to review their progress and plan next steps.  Which of the following is a FALSE statement about the described collaborative process?",
         "type": 0,
+        "source":"cb-x",
         "wrongfeedback": ""
     },
     {
@@ -548,6 +565,7 @@ var quiz_data = [
         "permute": false,
         "question": "Which of the following statements are true for a TinyDb component. <br>\nChoose all that apply. ",
         "type": "AI",
+        "source":"mcsp-0",
         "wrongfeedback": ""
     },
     {
@@ -568,6 +586,7 @@ var quiz_data = [
         "permute": false,
         "question": "<b>Cloud Computing.</b> True or False.  Cloud computing is made possible by the Internet and the World Wide Web and employs a computation model known as client-server computing. ",
         "type": 0,
+        "source":"mcsp-2",
         "wrongfeedback": ""
     },
     {
@@ -596,6 +615,7 @@ var quiz_data = [
         "description": "EPT - Organization",
         "question": "Writing Organization - The report is well organized in a way that is easy to follow.",
         "cspcode":"0.0.0",
+        "source":"mcsp-0",
         "type": "Assessment"
     },
     {
@@ -611,6 +631,7 @@ var quiz_data = [
         "hint": "Try writing the alphabet out, A to Z, and then writing the shifted letters below it.",
         "question": "<b>Cryptography.</b> Encrypt the word <i><b>alphabet</b></i> using a Caesar cipher with a \nshift of 3. Type your answer into the Textbox. ",
         "cspcode":"0.0.0",
+        "source":"mcsp-0",
         "type": "Fillin",
         "wrongfeedback": "You're not quite there, yet. Give it another try; with a little more work you can figure this out! "
     }
