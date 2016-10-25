@@ -14,6 +14,8 @@
 
 <script>
   // Quiz data are stored in global quiz_data as a json array
+  var IDEAS = ["creativity", "abstraction", "data", "algorithms", "programming", "internet", "impact"];
+
   var q_index = 0;         // Pointer into the quiz_index
   var q_id = 0;            // Pointer into the quiz_data 
   var quiz_index = [];     // Array of quiz numbers
@@ -161,6 +163,9 @@
    */
   function filter() {
     var option = document.getElementById('filter').value;
+    if (IDEAS.indexOf(option) != -1) {
+      bigidea_filter(option);  
+    }
     if (option == "keyword") {
         document.getElementById('keyword-span').style.visibility="visible";
         return;
@@ -214,6 +219,30 @@
     }
   }
 
+  function bigidea_filter(idea) {
+    var new_index = [];
+    var op_code = "" + (IDEAS.indexOf(idea) + 1);
+    for (var k=0; k < quiz_data.length; k++) {
+//      var question = JSON.stringify(quiz_data[k]).toLowerCase(); 
+      var question = quiz_data[k];
+      if (question['cspcode'] != undefined) {
+        var idea_code = question['cspcode'].substring(0,1);  // e.g. 2.2.2K
+        if (idea_code == op_code) {
+          new_index.push(k);
+        }
+      }
+    }     
+    if (new_index.length > 0) {
+      quiz_index = [];
+      quiz_index = new_index;
+      q_index = 0;
+      curr_question = quiz_data[quiz_index[q_index]];
+      displayQuestion();
+    } else {
+      alert('Sorry, no matches were found for big idea ' + idea + '.');
+    }
+  }
+
 </script>
 
 </head>
@@ -228,9 +257,19 @@
      <h1 id="heading" >The CS Principles Quiz App</h1>
    </td></tr></table>
    <div id="filter-div" style="display:inline">
-     <select id="filter" onchange="filter()">
+     <select class="gcb-button" id="filter" onchange="filter()">
       <option value="filter">Filtering Options</option>      
+      <option disabled>---------------</option>      
+      <option value="creativity">Creativity</option>      
+      <option value="abstraction">Abstraction</option>      
+      <option value="data">Data</option>      
+      <option value="algorithms">Algorithms</option>      
+      <option value="programming">Programming</option>      
+      <option value="internet">Internet</option>      
+      <option value="impact">Global Impact</option>      
+      <option disabled>---------------</option>      
       <option value="keyword">Keyword Filter</option>      
+      <option disabled>---------------</option>      
       <option value="random">Randomize</option>      
       <option value="unfilter">Remove all filters</option>      
      </select>
