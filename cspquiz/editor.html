@@ -83,11 +83,9 @@
     // Create a default index (non-filtered)
     for (var k = 0; k < quiz_data.length; k++) {
       quiz_index.push(k);
-
-    curr_question = quiz_data[quiz_index[q_index]];
-//    console.log(curr_question['description']);
-    displayQuestion();
     }
+    curr_question = quiz_data[quiz_index[q_index]];
+    displayQuestion();
   }
 
   function setChoice(n) {
@@ -146,13 +144,55 @@
      choice_controls.innerHTML = controls;
   }
 
+
+  function create_file() {
+    var link = document.getElementById("download-link-span");
+    var file = new Blob([JSON.stringify(quiz_data,null,4)], {type: 'text/plain'});
+    var a = document.createElement('a');
+    a.setAttribute('href', URL.createObjectURL(file));
+    a.download = document.getElementById('file-name').value;
+    a.innerHTML = 'Download file';
+    link.appendChild(a);
+  }
+
+  function displayData() {
+    console.log('displayData()');
+    var question = document.getElementById('e-question');
+    question.value = curr_question['question'];
+    var type = document.getElementById('e-type');
+    type.value = curr_question['type'];
+    var type = document.getElementById('e-type');
+    type.value = curr_question['type'];
+    var cspcode = document.getElementById('e-cspcode');
+    cspcode.value = curr_question['cspcode'];
+    var source = document.getElementById('e-source');
+    source.value = curr_question['source'];
+  }
+
+  function saveData() {
+    var question = document.getElementById('e-question');
+    curr_question['question'] = question.value;
+    var type = document.getElementById('e-type');
+    curr_question['type'] = type.value; 
+    var cspcode = document.getElementById('e-cspcode');
+    curr_question['cspcode'] = cspcode.value;
+    var source = document.getElementById('e-source');
+    curr_question['source'] = source.value;
+  }
+
   function displayQuestion() {
-    if (curr_question['type'] != 0) {
-      nextQuestion();
-    }
+<!--     if (curr_question['type'] != 0) { -->
+<!--       nextQuestion(); -->
+<!--     } -->
+<!--     user_choice = -1; -->
+<!--     document.getElementById('hint-div').style.visibility="hidden"; -->
+<!--     document.getElementById('hint').innerHTML=""; -->
+<!--     document.getElementById('feedback-div').style.visibility="hidden"; -->
+<!--     var feedback = document.getElementById("feedback"); -->
+<!--     feedback.style.visibility="hidden"; -->
     user_choice = -1;
-    document.getElementById('hint-div').style.visibility="hidden";
-    document.getElementById('hint').innerHTML="";
+<!--     document.getElementById('hint-div').style.visibility="hidden"; -->
+<!--     document.getElementById('hint').innerHTML=""; -->
     document.getElementById('feedback-div').style.visibility="hidden";
     var feedback = document.getElementById("feedback");
     feedback.style.visibility="hidden";
@@ -161,6 +201,7 @@
     if (curr_question['type'] == 0) {  // multiple choices
         displayChoices();
     }
+    displayData();
   }
  
   /*
@@ -170,14 +211,12 @@
    *  Filtering changes the index.
    */ 
   function previousQuestion() {
+    saveData();
     q_index -= 1;
     if (q_index < 0) {
       q_index = quiz_index.length -1;
     }
     curr_question = quiz_data[quiz_index[q_index]];
-    if (curr_question['type'] != 0) {
-      previousQuestion();
-    }
     displayQuestion();
   }
 
@@ -188,16 +227,13 @@
    *  Filtering changes the index.
    */ 
   function nextQuestion() {
+     saveData();
      q_index += 1;
      if (q_index >= quiz_index.length) {
        q_index = 0;
      }
     curr_question = quiz_data[quiz_index[q_index]];
-    if (curr_question['type'] != 0) {
-      nextQuestion();
-    } else {
-      displayQuestion();
-    }
+    displayQuestion();
   }
 
   function giveHint() {
@@ -410,18 +446,29 @@
        <button class="gcb-button" id="prev_button_1" onclick="previousQuestion()"><< Previous</button>
        <button class="gcb-button" id="next_button_1" onclick="nextQuestion()">Next >></button>
        &nbsp;&nbsp;|&nbsp;&nbsp;
-       <button class="gcb-button" id="hint_button" onclick="giveHint()">Hint</button>
-       <div id="hint-div" style="display:inline"><span id="hint"></span></div>
+       Filename: <input type="text" value="quizdata.json" id="file-name">
+       <button class="gcb-button" id="download_button" onclick="create_file()">Create File</button>
+       <span id="download-link-span"><span>
+       <div id="download-div" style="display:inline"><span id="download"></span></div>
    </div>
   </div>
   <div id="quizbody"> 
     <br />
-<!--    <div style="overflow-y: scroll; max-height:400px;">-->
+    <div>
+      Title:  <input type="text" id="e-title"><br />
+      Type:  <input type="text" id="e-type"><br />
+      CSP Code: <input type="text" id="e-cspcode"><br />
+      Source: <input type="text" id="e-source"><br />
+      <hr>
+      Question: <textarea rows="8" cols="50" id="e-question"></textarea><br />
+      Choices: <textarea rows="8" cols="50" id="e-choices"></textarea><br />
+      <hr>
+      <hr>
+    </div>
     <div >
      <span id="question"></span>
     </div>
     <br />
-<!--     <div id="choices_container" style="overflow-y:scroll; max-height:400px; background-color: #ADCF2F; visibility:hidden"> -->
     <div id="choices_container" style="background-color: #ADCF2F; visibility:hidden">
      <span id="choices_table"></span>
    </div>

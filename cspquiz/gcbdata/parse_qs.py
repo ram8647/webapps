@@ -1,7 +1,17 @@
+# Script to convert GCB-formatted quiz data, downloaded
+# from ram8647.appspot.com/mobileCSp into json-formatted
+# data. 
+
+# To use:
+#  python parse_qs.py <filename>
+
+
 # Make sure App Engine APK is available
 import sys
 import logging
 import json
+import pprint
+
 sys.path.append('/usr/local/google_appengine/')
 from google.appengine.api.files import records
 from google.appengine.datastore import entity_pb
@@ -10,7 +20,6 @@ from google.appengine.api import datastore
 if len(sys.argv) == 1:
     print 'need filename'
     sys.exit(-1)
-
 
 # Properties in the GCB questions Entity
 # defaultFeedback : 
@@ -27,6 +36,12 @@ if len(sys.argv) == 1:
 # type : 0
 # show_answer_when_incorrect : False
 
+# Returns a formatted json object or string
+def pp_json(json_thing, sort=True, indents=4):
+    if type(json_thing) is str:
+        return json.dumps(json.loads(json_thing), sort_keys=sort, indent=indents)
+    else:
+        return json.dumps(json_thing, sort_keys=sort, indent=indents)
 
 raw = open(sys.argv[1], 'r')
 reader = records.RecordsReader(raw)
@@ -65,6 +80,8 @@ for question in questions:
     if 'permute_choices' in qobj:
         csp_q['permute'] = qobj['permute_choices']
     csp_q['type'] = qobj['type']
+    csp_q['source'] = 'mcsp-'
+    csp_q['cspcode'] = '0.0.0X'  # EK code number
     csp_qs.append(csp_q)
     k += 1
 
@@ -73,5 +90,18 @@ for question in csp_qs:
     print k, question['description'], question['type']
     k += 1
 
-with open(sys.argv[1] + '.json', 'w') as outfile:
-    json.dump(csp_qs, outfile)
+# Pretty print the resulting dictionary 
+# pp = pprint.PrettyPrinter(indent=2)
+# csp_str = pp.pformat(csp_qs)
+
+# csp_json_str = json.dumps(csp_qs)
+# csp_json_pretty = pp.pformat(csp_json_str)
+
+#csp_json_str = json.loads(csp_str)
+
+#print csp_str
+csp_json_str = pp_json(csp_qs)
+#print csp_json_str
+
+with open(sys.argv[1] + '.js', 'w') as outfile:
+    outfile.write('var quiz_data = ' + csp_json_str + ';')
