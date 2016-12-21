@@ -1,53 +1,47 @@
+
+#quiz_section { 
+        width: 95%; 
+        }
+#logo {
+        float: left;
+       min-width: 100px;  
+    }
+
+#heading {
+     font-size: 2em;
+    font-weight: bold;
+}
+
+#filter {
+ width: 100%; //make menu fill container
+ font-size: 100%;
+}
+
 h1 {
-  font-size: 60px;
+  font-size: 2em;
 }
 
 h2 {
-  font-size: 40px;
+  font-size: 1.5em;
 }
 
+#choices_container {
+    font-size: 1.1em; 
+}
 input[type=radio] {
-  font-size: 40px;
+  font-size: 1.1em;
   width:1em;
   height:1em;
 }
 
 label {
-  font-size: 40px;
+  font-size: 1.1em;
 }
 
-.logo {
-  width:150px;
-}
 
 .radio_text {
-  font-size:25px;
+  font-size: 1.1em;
 }
 
-.gcb-button {
-  background-color: #666;
-  background-image: -moz-linear-gradient(top,#777,#555);
-  background-image: -webkit-linear-gradient(top,#777,#555);
-  background-image: linear-gradient(top,#777,#555);
-  background-position: left bottom;
-  background-repeat: repeat-x;
-  border: 1px solid #505050;
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
-  -moz-box-shadow: 0 1px 1px rgba(0,0,0,.2);
-  -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.2);
-  box-shadow: 0 1px 1px rgba(0,0,0,.2);
-  color: white;
-  display: inline-block;
-  font-family: "open sans",arial,sans-serif;
-  font-size: 40px;
-  font-weight: 600;
-  line-height: 1.54;
-  padding: 4px 7px;
-  text-align: center;
-  text-shadow: 0 1px rgba(0,0,0,.1);
-  -moz-transition: all .218s ease-in;
-  -webkit-transition: all .218s ease-in;
-  transition: all .218s ease-in;
-}
+
+
