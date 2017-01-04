@@ -5,147 +5,66 @@
 <meta name="keywords" content="HTML,CSS,JavaScript">
 <meta name="author" content="ralph.morelli@trincoll.edu">
 
+
+<meta name="viewport" content="width=device-width, initial-scale=1"> 
 <link type="text/css" rel="stylesheet" href="main.css">
-<link href="main.mobile.css" rel="stylesheet" type="text/css" media="only screen and (max-device-width: 800px)" />
-
-<style type="text/css">
-/* The Modal (background) */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-
-/* Modal Content/Box */
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 33%; /* Could be more or less, depending on screen size */
-}
-
-/* The Close Button */
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
-</style>
+<link type="text/css" rel="stylesheet" href="main2.css">
+<link href="main.mobile.css" rel="stylesheet" type="text/css" media="only screen and (max-width: 600px)" />
+        
+<link rel="stylesheet" type="text/css" href="blockStyles.css">
+<script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+<script type="text/javascript" src="apml.js"></script>
 
 <title>CSP Quiz</title>
 
 <!-- Quiz Data:  Sets the global variable quiz_data --> 
-<!--<script type="text/javascript" src="./q0_load_pretty.js"></script> -->
-<script type="text/javascript" src="./q1_20161012.js"></script>
+    <!-- probably should have just json in file and load/parse it into var here -->
+    <!-- <script type="text/javascript" src="./emptyquiz.js"></script> -->
+<script type="text/javascript" src="./q0_load_pretty.js"></script> -->
+<!--<script type="text/javascript" src="./q1_20161012.js"></script>-->
 
+    <!-- This is the pulled out code to show the quiz that is shared with index.html -->
+    <script type="text/javascript" src="./quiz_code.js"></script>
+    
 <script>
-  /*
-    The JavaScript code in this page is free software: you can redistribute 
-    it and/or modify it under the terms of the GNU General Public License 
-    (GNU GPL) as published by the Free Software Foundation, either version 3 
-    of the License, or (at your option) any later version.  The code is distributed 
-    WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
-    or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-  */
-
-  // Quiz data are stored in global quiz_data as a json array
-  var IDEAS = ["creativity", "abstraction", "data", "algorithms", "programming", "internet", "impact"];
-  var COURSES = ["mcsp", "cb"];  // Could be expanded to other curricula -- e.g., bjc, uteach
-  var UNITS = ["1","2","3","4","5","6","7","8","9","10","11"];  // unit or chapter keywords
-
-  var q_index = 0;         // Pointer into the quiz_index
-  var q_id = 0;            // Pointer into the quiz_data 
-  var quiz_index = [];     // Array of quiz numbers
-  var curr_question;
-  var choices;          // Multiple choices text, score, feedback
-  var user_choice = -1; // Set when user clicks answer choice; 
-  
-
-  function initQuizData() {
-    console.log('Starting');
-
-    // Create a default index (non-filtered)
-    for (var k = 0; k < quiz_data.length; k++) {
-      quiz_index.push(k);
+    /* Known Issues: 
+     - breaks if data not as expected
+     - new question button might generate empty data if hit twice
+     - file load seems to only work from working directory (might be fine on server)
+     - probably should have just json in file and load/parse it into quiz_data var here because unexpected results when loading in new files.
+    
+     */
+    
+    // override shared displayQuestion to add displayData() and no hints
+ function displayQuestion() {
+/*     if (curr_question['type'] != 0) { -->
+<!--       nextQuestion(); -->
+<!--     } -->
+<!--     user_choice = -1; -->
+<!--     document.getElementById('hint-div').style.visibility="hidden"; -->
+<!--     document.getElementById('hint').innerHTML=""; -->
+<!--     document.getElementById('feedback-div').style.visibility="hidden"; -->
+<!--     var feedback = document.getElementById("feedback"); -->
+<!--     feedback.style.visibility="hidden"; -->
+    user_choice = -1;
+<!--     document.getElementById('hint-div').style.visibility="hidden"; -->
+<!--     document.getElementById('hint').innerHTML=""; -->
+*/
+    document.getElementById('feedback-div').style.visibility="hidden";
+    var feedback = document.getElementById("feedback");
+    feedback.style.visibility="hidden";
+   
+    var question = document.getElementById('question');
+     //  run through convertAPML(input)
+    question.innerHTML = convertAPML(curr_question['question']);
+    if (curr_question['type'] == 0) {  // multiple choices
+        displayChoices();
     }
-    curr_question = quiz_data[quiz_index[q_index]];
-    displayQuestion();
-  }
-
-  function setChoice(n) {
-    user_choice = n;
+    displayData();
   }
  
-  function processAnswer() {
-    if (user_choice == -1)    // No choice selected
-      return;
-    var feedback_element = document.getElementById("feedback");
-    feedback_element.style.visibility="visible";
-    var choice = choices[user_choice];
-    var score = choice['score'];
-    var feedback = choice['feedback'];
-    var feedback_txt = "";
-    if (feedback != "") {
-      feedback_txt = feedback;
-    } else if (score >= 1) {
-      feedback_txt = "Correct -- good job!";
-    } else {
-      feedback_txt = "Sorry, that's not correct -- try again!";
-    }
-    var feedback_div = document.getElementById('feedback-div');
-    feedback_div.style.visibility="visible";
-    if (score >= 1) {
-      feedback_div.style.backgroundColor="#ADCF2F";
-    } else {
-      feedback_div.style.backgroundColor="#FFCCCC";
-    }
-    feedback_element.innerHTML = feedback_txt;
-    window.scrollTo(0,document.body.scrollHeight);
-  }
-
-  function displayChoices() {
-     document.getElementById('choices_container').style.visibility="visible";
-     choices = curr_question['choices'];
-     var choice_form = '';
-     choice_form += '<hr>';
-     choice_form += '<i>Select the <u>best</u> choice.</i><br />';
-     for (var i=0; i < choices.length; i++) {
-       choice_form += '<input type="radio" name="choice"  value="' + i + '"';
-       choice_form += ' onclick=setChoice(' + i  + ') >';
-       choice_form += '&nbsp;<span class="radio_text">' + choices[i]["text"] + '</span>';
-       choice_form += '<br />';
-     }
-     choice_form += '<hr>';
-     var choice_table = document.getElementById('choices_table');
-     choice_table.innerHTML = choice_form;
-     var choice_controls = document.getElementById('choice-controls');
-     var controls = '<br>';
-     controls += '<button class="gcb-button" id="prev_button_2" onclick="previousQuestion()"><< Previous </button>';
-     controls += '&nbsp;';
-     controls += '<button class="gcb-button" id="next_button_2" onclick="nextQuestion()">Next >></button>';
-     controls += '&nbsp;&nbsp; | &nbsp;&nbsp;';
-     controls += '<button class="gcb-button" id="answer_button" onclick="processAnswer()">Check Answer</button>';
-     choice_controls.innerHTML = controls;
-  }
-
-
   function create_file() {
+      saveData();
     var link = document.getElementById("download-link-span");
     var file = new Blob([JSON.stringify(quiz_data,null,4)], {type: 'text/plain'});
     var a = document.createElement('a');
@@ -161,16 +80,54 @@
     question.value = curr_question['question'];
     var type = document.getElementById('e-type');
     type.value = curr_question['type'];
-    var type = document.getElementById('e-type');
-    type.value = curr_question['type'];
+   
     var cspcode = document.getElementById('e-cspcode');
     cspcode.value = curr_question['cspcode'];
     var source = document.getElementById('e-source');
     source.value = curr_question['source'];
+   var desc = document.getElementById('e-description');
+    desc.value = curr_question['description'];
+        var hint = document.getElementById('e-hint');
+    hint.value = curr_question['hint'];
+      var permute = document.getElementById('e-permute');
+    permute.value = curr_question['permute'];
+      var wrongf = document.getElementById('e-wrongfeedback');
+    wrongf.value = curr_question['wrongfeedback'];
+       
+    var choice = document.getElementById('e-choice1');
+    choice.value = curr_question['choices'][0].text;
+    document.getElementById('e-choice1-feedback').value = curr_question['choices'][0].feedback;
+    document.getElementById('e-choice1-score').value = curr_question['choices'][0].score;
+    choice = document.getElementById('e-choice2');
+    choice.value = curr_question['choices'][1].text;
+    document.getElementById('e-choice2-feedback').value = curr_question['choices'][1].feedback;
+    document.getElementById('e-choice2-score').value = curr_question['choices'][1].score;
+    choice = document.getElementById('e-choice3');
+     if (curr_question['choices'][2] != undefined) {
+        choice.value = curr_question['choices'][2].text;
+        document.getElementById('e-choice3-feedback').value = curr_question['choices'][2].feedback;
+        document.getElementById('e-choice3-score').value = curr_question['choices'][2].score;
+      } else {
+            choice.value = "";
+            document.getElementById('e-choice3-feedback').value = "";
+            document.getElementById('e-choice3-score').value ="";
+      }
+    choice = document.getElementById('e-choice4');
+    if (curr_question['choices'][3] != undefined) {
+        choice.value = curr_question['choices'][3].text;
+        document.getElementById('e-choice4-feedback').value = curr_question['choices'][3].feedback;
+        document.getElementById('e-choice4-score').value = curr_question['choices'][3].score;
+      }
+    else {
+           choice.value = "";
+            document.getElementById('e-choice3-feedback').value = "";
+            document.getElementById('e-choice3-score').value ="";
+      }
   }
+    
 
   function saveData() {
-    var question = document.getElementById('e-question');
+    var question = document.getElementById('e-question');      
     curr_question['question'] = question.value;
     var type = document.getElementById('e-type');
     curr_question['type'] = type.value; 
@@ -178,228 +135,71 @@
     curr_question['cspcode'] = cspcode.value;
     var source = document.getElementById('e-source');
     curr_question['source'] = source.value;
+    var description = document.getElementById('e-description');
+    curr_question['description'] = description.value;
+    var hint = document.getElementById('e-hint');
+    if (hint != undefined)
+       curr_question['hint'] = hint.value;
+    var permute = document.getElementById('e-permute');
+    curr_question['permute'] = permute.value;
+    var wrongf = document.getElementById('e-wrongfeedback');
+    curr_question['wrongfeedback'] = wrongf.value;
+      
+    var choiceText = document.getElementById('e-choice1');
+    curr_question['choices'][0].text = choiceText.value;
+    curr_question['choices'][0].score = document.getElementById('e-choice1-score').value;
+    curr_question['choices'][0].feedback = document.getElementById('e-choice1-feedback').value;
+
+    choiceText = document.getElementById('e-choice2');
+    curr_question['choices'][1].text = choiceText.value;
+    curr_question['choices'][1].score = document.getElementById('e-choice2-score').value;
+    curr_question['choices'][1].feedback = document.getElementById('e-choice2-feedback').value;
+    choiceText = document.getElementById('e-choice3');
+    if (curr_question['choices'][2] != undefined) {
+        curr_question['choices'][2].text = choiceText.value;
+        curr_question['choices'][2].score = document.getElementById('e-choice2-score').value;
+        curr_question['choices'][2].feedback = document.getElementById('e-choice2-feedback').value;
+       }
+    choiceText = document.getElementById('e-choice4');
+    if (curr_question['choices'][3] != undefined) {
+        curr_question['choices'][3].text = choiceText.value;
+        curr_question['choices'][3].score = document.getElementById('e-choice3-score').value;
+        curr_question['choices'][3].feedback = document.getElementById('e-choice3-feedback').value;
+    }
+      // do we need to save back to quiz_data so it can be saved in the file?
+     quiz_data[quiz_index[q_index]] = curr_question;
+    displayQuestion();
   }
 
-  function displayQuestion() {
-<!--     if (curr_question['type'] != 0) { -->
-<!--       nextQuestion(); -->
-<!--     } -->
-<!--     user_choice = -1; -->
-<!--     document.getElementById('hint-div').style.visibility="hidden"; -->
-<!--     document.getElementById('hint').innerHTML=""; -->
-<!--     document.getElementById('feedback-div').style.visibility="hidden"; -->
-<!--     var feedback = document.getElementById("feedback"); -->
-<!--     feedback.style.visibility="hidden"; -->
-    user_choice = -1;
-<!--     document.getElementById('hint-div').style.visibility="hidden"; -->
-<!--     document.getElementById('hint').innerHTML=""; -->
-    document.getElementById('feedback-div').style.visibility="hidden";
-    var feedback = document.getElementById("feedback");
-    feedback.style.visibility="hidden";
-    var question = document.getElementById('question');
-    question.innerHTML = curr_question['question'];
-    if (curr_question['type'] == 0) {  // multiple choices
-        displayChoices();
-    }
-    displayData();
-  }
  
-  /*
-   *  Uses quiz_index to select the previous question from quiz_data, wrapping
-   *   around if necessary.
-   *  By default the index contains the quiz numbers for all quizzes in quiz_data.
-   *  Filtering changes the index.
-   */ 
-  function previousQuestion() {
+// Adding a new question: move q_index to end and clear all fields? 
+      // what if clicked multiple times tho? Is it possible to create empty data entries?
+function newQuestion()  {
     saveData();
-    q_index -= 1;
-    if (q_index < 0) {
-      q_index = quiz_index.length -1;
-    }
-    curr_question = quiz_data[quiz_index[q_index]];
-    displayQuestion();
-  }
+    q_index = quiz_index.length;
+    quiz_index.push(q_index);
+    var elements = document.getElementsByTagName("input");
+   for (e of elements) 
+       if (e.type == "text") 
+           e.value = "";
 
-  /*
-   *  Uses quiz_index to select the next question from quiz_data, wrapping around
-   *   it necessary. 
-   *  By default the index contains the quiz numbers for all quizzes in quiz_data.
-   *  Filtering changes the index.
-   */ 
-  function nextQuestion() {
-     saveData();
-     q_index += 1;
-     if (q_index >= quiz_index.length) {
-       q_index = 0;
-     }
-    curr_question = quiz_data[quiz_index[q_index]];
-    displayQuestion();
-  }
+    elements = document.getElementsByTagName("textarea");
+    for (e of elements) 
+        e.value = "";
+    
+    document.getElementById("question").innerHTML = "";
+    document.getElementById("choices_table").innerHTML = "";
+}
+    
 
-  function giveHint() {
-    document.getElementById('hint-div').style.visibility="visible";
-    document.getElementById('hint-div').style.backgroundColor="#ADCF2F";
-    var hint = document.getElementById('hint');
-    if (curr_question['hint']  != undefined) {
-      hint.innerHTML = curr_question['hint'];
-    } else {
-      hint.innerHTML = 'Sorry, no hint available.';
-    }
-  }
-
-  /*
-   *  Handles the filter select component. 
-   */
-  function filter() {
-    var option = document.getElementById('filter').value;
-    if (IDEAS.indexOf(option) != -1) {
-      bigidea_filter(option);  
-    }
-    if (COURSES.indexOf(option) != -1) {
-      course_filter(option);  
-    }
-    if (option == "keyword") {
-        document.getElementById('keyword-span').style.visibility="visible";
-        return;
-    }
-    if (option == "unfilter") {
-        quiz_index = [];
-        for (var k = 0; k < quiz_data.length; k++) {
-          quiz_index.push(k);
-        }
-    }
-    if (option == "random") {
-      var len = quiz_index.length;
-      // Shuffle the index
-      for (var k = 1; k < len / 2; k++) {
-        var i1 = Math.floor(Math.random() * len);
-        var i2 = Math.floor(Math.random() * len);
-        var temp = quiz_index[i1];
-        quiz_index[i1] = quiz_index[i2];
-        quiz_index[i2] = temp;   
+    /* File loader: load json file as a <script> tag and initQuizData again */
+      function changeJSONfile(newfile) {
+          var newScriptTag = document.createElement("script");
+          newScriptTag.src = newfile.files[0].name;
+         console.log("Loading: " + newScriptTag.src)
+          document.getElementsByTagName("head")[0].appendChild(newScriptTag);
+          initQuizData();
       }
-    }
-    q_index = 0;
-    curr_question = quiz_data[quiz_index[q_index]];
-    displayQuestion();
-    document.getElementById('keyword-span').style.visibility="hidden";
-  }
-
-  /*
-   *  Handles the keyword filter.  Searches the quiz_data JSON object
-   *   for a case-insensitive keyword match.  The entire JSON question is
-   *   converted to string and all of its fields are included in the search.
-   */
-  function keyword_filter() {
-    var keyword = document.getElementById('keyword-input').value.toLowerCase();
-    var new_index = [];
-    if (UNITS.indexOf(keyword) != -1) {
-      // Search the source field
-      for (var k = 0; k < quiz_data.length; k++) {
-	var question = quiz_data[k]; 
-        var source = question['source'];
-        var unit_id = source.substring(source.indexOf('-')+1);
-	if (unit_id == keyword) {
-	  new_index.push(k);
-	}    
-      }
-    } else { 
-      // Search each quiz_data question object, including all its fields
-      for (var k = 0; k < quiz_data.length; k++) {
-	var question = JSON.stringify(quiz_data[k]).toLowerCase(); 
-	if (question.indexOf(keyword) != -1) {
-	  new_index.push(k);
-	}    
-      }
-    }
-    if (new_index.length > 0) {
-      quiz_index = [];
-      quiz_index = new_index;
-      q_index = 0;
-      curr_question = quiz_data[quiz_index[q_index]];
-      displayQuestion();
-    } else {
-      open_modal("Sorry, no matches were found for keyword <i>" + keyword + "</i>."); 
-    }
-  }
-
-  function bigidea_filter(idea) {
-    var new_index = [];
-    var op_code = "" + (IDEAS.indexOf(idea) + 1);
-    for (var k=0; k < quiz_data.length; k++) {
-      var question = quiz_data[k];
-      if (question['cspcode'] != undefined) {
-        var idea_code = question['cspcode'].substring(0,1);  // e.g. 2.2.2K
-        if (idea_code == op_code) {
-          new_index.push(k);
-        }
-      }
-    }     
-    if (new_index.length > 0) {
-      quiz_index = [];
-      quiz_index = new_index;
-      q_index = 0;
-      curr_question = quiz_data[quiz_index[q_index]];
-      displayQuestion();
-    } else {
-      open_modal("Sorry, no matches were found for Big Idea <i>" + idea + "</i>."); 
-    }
-  }
-
-  function course_filter(course) {
-    var new_index = [];
-    for (var k=0; k < quiz_data.length; k++) {
-      var question = quiz_data[k];
-      if (question['source'] != undefined) {
-        var source = question['source'];
-        var course_code = source.substring(0,source.indexOf('-'));  // mcsp-1
-        if (course_code == course) {
-          new_index.push(k);
-        }
-      }
-    }     
-    if (new_index.length > 0) {
-      quiz_index = [];
-      quiz_index = new_index;
-      q_index = 0;
-      curr_question = quiz_data[quiz_index[q_index]];
-      displayQuestion();
-    } else {
-      open_modal("Sorry, no matches were found for Course <i>" + course + "</i>."); 
-    }
-  }
-
-
-  function open_modal(html) {
-    var modal = document.getElementById('myModal');
-    var span = document.getElementsByClassName("close")[0];
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-      modal.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-      if (event.target == modal) {
-        modal.style.display = "none";
-      }
-    }
-
-    modal.style.display = "block";
-    var msg = document.getElementById("msg");
-    msg.innerHTML = html;
-  }
-
-  /*
-   * Information about the app.
-   */
-  function about() {
-    var msg = "A free quiz app for the CS Principles course.<br />";
-    msg += "Created by the Mobile CSP Project.<br />";
-    msg += "Visit us at <a target='_blank' href='http://mobile-csp.org'>http:mobile-csp.org</a> ";
-    open_modal(msg);
-  }
-
 </script>
 
 </head>
@@ -408,12 +208,13 @@
 
  <div id="quiz_section">
   <div id="quiz_heading">
-   <table><tr><td>
-     <img class="logo" src="./mobile-csp-logo.png" width="100px" onclick="about()"/>
-    </td><td>
-     <h1 id="heading" >The CS Principles Quiz</h1>
-   </td></tr></table>
-   <div id="filter-div" style="display:inline">
+ 
+     <img id="logo" src="./mobile-csp-logo.png" width=20% onclick="about()"/>
+
+     <div id="heading">The CS Principles Quiz</div>
+
+
+   <div id="filter-div" >
      <select class="gcb-button" id="filter" onchange="filter()">
       <option value="filter">Filtering Options&nbsp;&nbsp;&nbsp;</option>      
       <option disabled>---------------</option>      
@@ -446,22 +247,44 @@
        <button class="gcb-button" id="prev_button_1" onclick="previousQuestion()"><< Previous</button>
        <button class="gcb-button" id="next_button_1" onclick="nextQuestion()">Next >></button>
        &nbsp;&nbsp;|&nbsp;&nbsp;
-       Filename: <input type="text" value="quizdata.json" id="file-name">
+       Load File: <input type="file" onchange="changeJSONfile(this)">
+       Save File: <input type="text" value="quizdata.json" id="file-name">
        <button class="gcb-button" id="download_button" onclick="create_file()">Create File</button>
        <span id="download-link-span"><span>
-       <div id="download-div" style="display:inline"><span id="download"></span></div>
+       <div id="download-div" style="display:inline"><span id="download"></span></div> 
+           <br>
+           
+         <button class="gcb-button" id="newQ" onclick="newQuestion()">Add New Question</button>  
+                    <button class="gcb-button" id="saveQ" onclick="saveData()">Save Changes</button>  
+
    </div>
   </div>
   <div id="quizbody"> 
     <br />
     <div>
-      Title:  <input type="text" id="e-title"><br />
+      Description:  <input type="text" id="e-description"><br />
       Type:  <input type="text" id="e-type"><br />
       CSP Code: <input type="text" id="e-cspcode"><br />
       Source: <input type="text" id="e-source"><br />
+         Permute: <input type="text" id="e-permute"><br />
+         Wrong Feedback: <input type="text" id="e-wrongfeedback"><br />
       <hr>
-      Question: <textarea rows="8" cols="50" id="e-question"></textarea><br />
-      Choices: <textarea rows="8" cols="50" id="e-choices"></textarea><br />
+      Question: <textarea rows="8" cols="50" id="e-question" style="vertical-align: top;"></textarea><br />
+    Hint: <textarea rows="8" cols="50" id="e-hint" style="vertical-align: top;"></textarea><br />
+        Choice 1 Text: <textarea rows="8" cols="50" id="e-choice1" style="vertical-align: top;"></textarea>
+        Score: <input type="text" id="e-choice1-score" size=5>  
+        Feedback: <textarea rows="8" cols="40" id="e-choice1-feedback" style="vertical-align: top;"></textarea>
+        <br /> 
+        
+           Choice 2 Text: <textarea rows="8" cols="50" id="e-choice2" style="vertical-align: top;"></textarea>
+          Score: <input type="text" id="e-choice2-score" size=5>  
+        Feedback: <textarea rows="8" cols="40" id="e-choice2-feedback" style="vertical-align: top;"></textarea><br />
+           Choice 3 Text: <textarea rows="8" cols="50" id="e-choice3" style="vertical-align: top;"></textarea>
+          Score: <input type="text" id="e-choice3-score" size=5>  
+        Feedback: <textarea rows="8" cols="40" id="e-choice3-feedback" style="vertical-align: top;"></textarea><br />
+           Choice 4 Text: <textarea rows="8" cols="50" id="e-choice4" style="vertical-align: top;"></textarea>
+          Score: <input type="text" id="e-choice4-score" size=5>  
+        Feedback: <textarea rows="8" cols="40" id="e-choice4-feedback" style="vertical-align: top;"></textarea><br />
       <hr>
       <hr>
     </div>
