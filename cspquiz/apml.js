@@ -1,21 +1,28 @@
 // This code is from https://bakerfranke.github.io/apml/, except for convertAPML(input) function
 // Added convertAPML(input) -- Beryl Hoffman
 function convertAPML(input) {
-    var first = input.indexOf('[');
-    var last = input.lastIndexOf(']');
+    // Let's mark APML code with <apml> </apml> because [ ] picks up arrays!
+    var first = input.indexOf('<apml>');
+    if (first == -1) 
+        return input; // no APML code;
+    
+    var last = input.lastIndexOf('</apml>');
     var pre = input.substr(0,first);
-    var apmlSection = input.substr(first, last);
-    var post = input.substr(last+1,input.length);
-                                                            
-    apmlSection = ap2apml(apmlSection);
-    for(var i=0; i<convs.length; i++){
-        var reg = new RegExp(convs[i].a, "g");
-        debug("replace "+reg.toString()+" with "+convs[i].b);
+    var apmlSection = input.substr(first+6, last); // leaving off <apml> tags
+    var post = input.substr(last+8,input.length);
+    if (apmlSection != "") {                                    
+        apmlSection = ap2apml(apmlSection);
+        for(var i=0; i<convs.length; i++){
+            var reg = new RegExp(convs[i].a, "g");
+            debug("replace "+reg.toString()+" with "+convs[i].b);
         
-        apmlSection = apmlSection.replace(reg, convs[i].b);
+            apmlSection = apmlSection.replace(reg, convs[i].b);
         
+        }
+        apmlSection = "<br>" + apmlSection + "<br>";  
     }
-    return pre + "<br>" + apmlSection + "<br>" + post; 
+  
+    return pre + apmlSection + post; 
     
 }
 

@@ -1,4 +1,4 @@
- /*
+  /*
     The JavaScript code in this page is free software: you can redistribute 
     it and/or modify it under the terms of the GNU General Public License 
     (GNU GPL) as published by the Free Software Foundation, either version 3 
@@ -6,6 +6,8 @@
     WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
     or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
   */
+// This is code shared by index.html and editor.html to display the quiz
+//  Questions and answers are run through APML converter before being displayed.
 
   // Quiz data are stored in global quiz_data as a json array
   var IDEAS = ["creativity", "abstraction", "data", "algorithms", "programming", "internet", "impact"];
@@ -22,13 +24,15 @@
 
   function initQuizData() {
     console.log('Starting');
+
     // Create a default index (non-filtered)
     for (var k = 0; k < quiz_data.length; k++) {
       quiz_index.push(k);
-    }
+
     curr_question = quiz_data[quiz_index[q_index]];
-   //   console.log(quiz_data.length)
+//    console.log(curr_question['description']);
     displayQuestion();
+    }
   }
 
   function setChoice(n) {
@@ -71,9 +75,9 @@
      for (var i=0; i < choices.length; i++) {
        choice_form += '<input type="radio" name="choice"  value="' + i + '"';
        choice_form += ' onclick=setChoice(' + i  + ') >';
-       choice_form += '&nbsp;<span class="radio_text">' +  
-      //  run through convertAPML(input)
-       convertAPML(choices[i]["text"]) + '</span>';
+       choice_form += '&nbsp;<span class="radio_text">' + // choices[i]["text"] + '</span>';
+                    //  run through convertAPML(input) first
+                    convertAPML(choices[i]["text"]) + '</span>';
        choice_form += '<br />';
      }
      choice_form += '<hr>';
@@ -89,7 +93,7 @@
      choice_controls.innerHTML = controls;
   }
 
- function displayQuestion() {
+  function displayQuestion() {
     if (curr_question['type'] != 0) {
       nextQuestion();
     }
@@ -99,9 +103,9 @@
     document.getElementById('feedback-div').style.visibility="hidden";
     var feedback = document.getElementById("feedback");
     feedback.style.visibility="hidden";
-          
     var question = document.getElementById('question');
-    //  run through convertAPML(input)
+     //  question.innerHTML = curr_question['question'];
+     //  run through convertAPML(input)
     question.innerHTML = convertAPML(curr_question['question']);
    
     if (curr_question['type'] == 0) {  // multiple choices
@@ -121,6 +125,9 @@
       q_index = quiz_index.length -1;
     }
     curr_question = quiz_data[quiz_index[q_index]];
+    if (curr_question['type'] != 0) {
+      previousQuestion();
+    }
     displayQuestion();
   }
 
@@ -136,10 +143,13 @@
        q_index = 0;
      }
     curr_question = quiz_data[quiz_index[q_index]];
-    displayQuestion();
+    if (curr_question['type'] != 0) {
+      nextQuestion();
+    } else {
+      displayQuestion();
+    }
   }
 
-     
   function giveHint() {
     document.getElementById('hint-div').style.visibility="visible";
     document.getElementById('hint-div').style.backgroundColor="#ADCF2F";
