@@ -11,7 +11,8 @@
 
   // Quiz data are stored in global quiz_data as a json array
   var IDEAS = ["creativity", "abstraction", "data", "algorithms", "programming", "internet", "impact"];
-  var COURSES = ["mcsp", "cb"];  // Could be expanded to other curricula -- e.g., bjc, uteach
+  var COURSES = ["mcsp", "cb"];     // Could be expanded to other curricula -- e.g., bjc, uteach
+  var Q_TYPES  = ["Mc", "Ma", "Fi"];  // multiple choice, muliple answer, fill-in
   var UNITS = ["1","2","3","4","5","6","7","8","9","10","11"];  // unit or chapter keywords
 
   var q_index = 0;         // Pointer into the quiz_index
@@ -19,7 +20,7 @@
   var quiz_index = [];     // Array of quiz numbers
   var curr_question;
   var choices;          // Multiple choices text, score, feedback
-  var user_choice = -1; // Set when user clicks answer choice; 
+  var user_choices = []; // A list of user choices for multiple answer questions
   
 
   function initQuizData() {
@@ -36,24 +37,57 @@
   }
 
   function setChoice(n) {
-    user_choice = n;
+    user_choices = [];
+    user_choices.push(n);
   }
  
+  function setMaChoice(n) {  // Multiple answer (checkbox)
+    var i = user_choices.indexOf(n);
+    if ( i == -1) {
+      user_choices.push(n);
+    } else {
+      user_choices.splice(i,1);
+    }
+  }
+ 
+  function processFillinAnswer() {
+    var user_answer = document.getElementById("textanswer").value.toLowerCase();
+    var correct_answer = curr_question['response'].toLowerCase();
+    var score = (user_answer == correct_answer) ? 1 : 0;
+    var feedback_txt = "";
+    feedback_txt = (score >= 1) ? curr_question['feedback'] : curr_question['wrongfeedback'];
+    displayFeedback(feedback_txt, score);
+  }
+
   function processAnswer() {
-    if (user_choice == -1)    // No choice selected
+    if (curr_question['type'] == "Fi") {
+      processFillinAnswer();
       return;
+    }
+    if (user_choices == [])    // No choice selected
+      return;
+
+    var feedback = "";
+    var feedback_txt = "";
+    var score = 0;
+    for (var i=0; i < user_choices.length; i++) {
+      score += choices[user_choices[i]]['score'];
+      feedback_txt += choices[user_choices[i]]['feedback'] + "<br>";
+    }
+    displayFeedback(feedback_txt, score);
+  }
+
+  function displayFeedback(txt, score) {
     var feedback_element = document.getElementById("feedback");
     feedback_element.style.visibility="visible";
-    var choice = choices[user_choice];
-    var score = choice['score'];
-    var feedback = choice['feedback'];
-    var feedback_txt = "";
-    if (feedback != "") {
-      feedback_txt = feedback;
-    } else if (score >= 1) {
-      feedback_txt = "Correct -- good job!";
-    } else {
-      feedback_txt = "Sorry, that's not correct -- try again!";
+    if (txt == "" || txt == "<br>") {
+      if (score >= 1) {
+        txt = "Correct -- good job!";
+      } else {
+        txt = "Sorry, that's not correct -- try again!";
+      }
+    } else if (curr_question['type'] == "Ma" && user_choices.length != 2) {
+      txt += "For this question you need <u>exactly two</u> choices";
     }
     var feedback_div = document.getElementById('feedback-div');
     feedback_div.style.visibility="visible";
@@ -62,11 +96,11 @@
     } else {
       feedback_div.style.backgroundColor="#FFCCCC";
     }
-    feedback_element.innerHTML = feedback_txt;
+    feedback_element.innerHTML = txt;
     window.scrollTo(0,document.body.scrollHeight);
   }
 
-  function displayChoices() {
+  function displayChoices() {  // Multipl choice question
      document.getElementById('choices_container').style.visibility="visible";
      choices = curr_question['choices'];
      var choice_form = '';
@@ -83,6 +117,41 @@
      choice_form += '<hr>';
      var choice_table = document.getElementById('choices_table');
      choice_table.innerHTML = choice_form;
+  }
+
+  function displayMaChoices() {  // Multiple answer question
+     document.getElementById('choices_container').style.visibility="visible";
+     choices = curr_question['choices'];
+     var choice_form = '';
+     choice_form += '<hr>';
+     choice_form += '<i>Select <u>two</u> answers.</i><br />';
+     for (var i=0; i < choices.length; i++) {
+       choice_form += '<input type="checkbox" name="choice"  value="' + i + '"';
+       choice_form += ' onclick=setMaChoice(' + i  + ') >';
+       choice_form += '&nbsp;<span class="checkbox_text">' + // choices[i]["text"] + '</span>';
+                    //  run through convertAPML(input) first
+                    convertAPML(choices[i]["text"]) + '</span>';
+       choice_form += '<br />';
+     }
+     choice_form += '<hr>';
+     var choice_table = document.getElementById('choices_table');
+     choice_table.innerHTML = choice_form;
+  }
+
+  function displayFillin() {  // Fillin answer type
+     document.getElementById('choices_container').style.visibility="visible";
+     var choice_form = '';
+     choice_form += '<hr>';
+     choice_form += '<i>Input your answer into the text box and click \'Check Answer\'.</i><br />';
+     choice_form += '<input type="text" id="textanswer" name="textanswer"  value=""';
+     choice_form += '<br />';
+     choice_form += '<hr>';
+     var choice_table = document.getElementById('choices_table');
+     choice_table.innerHTML = choice_form;
+  }
+
+
+  function displayControls() {
      var choice_controls = document.getElementById('choice-controls');
      var controls = '<br>';
      controls += '<button class="gcb-button" id="prev_button_2" onclick="previousQuestion()"><< Previous </button>';
@@ -94,10 +163,25 @@
   }
 
   function displayQuestion() {
-    if (curr_question['type'] != 0) {
+    if (curr_question['type'] == "Mc") {  // Multiple choice - radio
+      displayQuestionData();
+      displayChoices();
+      displayControls();
+    } else if (curr_question['type'] == "Ma") {   // Multiple answer - checkbox
+      displayQuestionData();
+      displayMaChoices();
+      displayControls();
+    } else if (curr_question['type'] == "Fi") {   // Fillin answer
+      displayQuestionData();
+      displayFillin();
+      displayControls();
+    } else {
       nextQuestion();
     }
-    user_choice = -1;
+  }
+ 
+  function displayQuestionData() {
+    user_choices = [];
     document.getElementById('hint-div').style.visibility="hidden";
     document.getElementById('hint').innerHTML="";
     document.getElementById('feedback-div').style.visibility="hidden";
@@ -107,12 +191,8 @@
      //  question.innerHTML = curr_question['question'];
      //  run through convertAPML(input)
     question.innerHTML = convertAPML(curr_question['question']);
-   
-    if (curr_question['type'] == 0) {  // multiple choices
-        displayChoices();
-    }
   }
- 
+
   /*
    *  Uses quiz_index to select the previous question from quiz_data, wrapping
    *   around if necessary.
@@ -125,10 +205,12 @@
       q_index = quiz_index.length -1;
     }
     curr_question = quiz_data[quiz_index[q_index]];
-    if (curr_question['type'] != 0) {
+    var type = curr_question['type'];
+    if (Q_TYPES.indexOf(type) == -1) {
       previousQuestion();
+    } else {
+      displayQuestion();
     }
-    displayQuestion();
   }
 
   /*
@@ -143,7 +225,8 @@
        q_index = 0;
      }
     curr_question = quiz_data[quiz_index[q_index]];
-    if (curr_question['type'] != 0) {
+    var type = curr_question['type'];
+    if (Q_TYPES.indexOf(type) == -1) {
       nextQuestion();
     } else {
       displayQuestion();

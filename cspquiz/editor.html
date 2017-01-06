@@ -20,7 +20,7 @@
 <!-- Quiz Data:  Sets the global variable quiz_data --> 
     <!-- probably should have just json in file and load/parse it into var here -->
     <!-- <script type="text/javascript" src="./emptyquiz.js"></script> -->
-<script type="text/javascript" src="./q0_load_pretty.js"></script> -->
+<script type="text/javascript" src="./q0_load_pretty.js"></script>
 <!--<script type="text/javascript" src="./q1_20161012.js"></script>-->
 
     <!-- This is the pulled out code to show the quiz that is shared with index.html -->
@@ -32,24 +32,10 @@
      - new question button might generate empty data if hit twice
      - file load seems to only work from working directory (might be fine on server)
      - probably should have just json in file and load/parse it into quiz_data var here because unexpected results when loading in new files.
-    
      */
     
-    // override shared displayQuestion to add displayData() and no hints
+ // override shared displayQuestion to add displayData() and no hints
  function displayQuestion() {
-/*     if (curr_question['type'] != 0) { -->
-<!--       nextQuestion(); -->
-<!--     } -->
-<!--     user_choice = -1; -->
-<!--     document.getElementById('hint-div').style.visibility="hidden"; -->
-<!--     document.getElementById('hint').innerHTML=""; -->
-<!--     document.getElementById('feedback-div').style.visibility="hidden"; -->
-<!--     var feedback = document.getElementById("feedback"); -->
-<!--     feedback.style.visibility="hidden"; -->
-    user_choice = -1;
-<!--     document.getElementById('hint-div').style.visibility="hidden"; -->
-<!--     document.getElementById('hint').innerHTML=""; -->
-*/
     document.getElementById('feedback-div').style.visibility="hidden";
     var feedback = document.getElementById("feedback");
     feedback.style.visibility="hidden";
@@ -57,9 +43,14 @@
     var question = document.getElementById('question');
      //  run through convertAPML(input)
     question.innerHTML = convertAPML(curr_question['question']);
-    if (curr_question['type'] == 0) {  // multiple choices
+    if (curr_question['type'] == "Mc") {  // multiple choices
         displayChoices();
+    } else if (curr_question['type'] == "Ma") {  // multiple choices
+        displayMaChoices();
+    } else if (curr_question['type'] == "Fi") { // Fill-in
+        displayFillin();
     }
+    displayControls();
     displayData();
   }
  
@@ -72,6 +63,10 @@
     a.download = document.getElementById('file-name').value;
     a.innerHTML = 'Download file';
     link.appendChild(a);
+  }
+
+  function displayFillinData() {
+    return;
   }
 
   function displayData() {
@@ -94,6 +89,10 @@
       var wrongf = document.getElementById('e-wrongfeedback');
     wrongf.value = curr_question['wrongfeedback'];
        
+    if (curr_question['type'] == "Fi") {
+      displayFillinData();
+      return;
+    }
     var choice = document.getElementById('e-choice1');
     choice.value = curr_question['choices'][0].text;
     document.getElementById('e-choice1-feedback').value = curr_question['choices'][0].feedback;
