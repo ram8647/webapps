@@ -9,10 +9,15 @@ html {
 #quizdata {
     background-color: beige; 
     float:left;
+    padding: 10px;
+    max-width: 55%;
 }
 #quizpreview { 
     display:block; 
     float:right;
+    background-color: bisque;
+    padding: 10px;
+    max-width: 40%;
 }
 
 #quiz_section {  
