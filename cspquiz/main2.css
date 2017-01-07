@@ -4,6 +4,11 @@ html {
 
 #quizbody { 
     background-color: beige; 
+    max-width:500px;
+}
+
+#quizpreview { 
+    max-width:500px;
 }
 
 #quiz_section {  
