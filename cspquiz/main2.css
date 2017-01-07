@@ -4,11 +4,15 @@ html {
 
 #quizbody { 
     background-color: beige; 
-    max-width:500px;
 }
 
+#quizdata {
+    background-color: beige; 
+    float:left;
+}
 #quizpreview { 
-    max-width:500px;
+    display:block; 
+    float:right;
 }
 
 #quiz_section {  

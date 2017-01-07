@@ -206,7 +206,7 @@ function newQuestion()  {
 
 <body onload="initQuizData()">
 
- <div id="quiz_section" style="float:left;width=100%">
+ <div id="quiz_section" style="width:100%">
   <div id="quiz_heading">
       <img alt="Mobile CSP Logo" id="logo" src="./mobile-csp-logo.png" width="20%" onclick="about()"/>
       <div id="heading">The CS Principles Quiz</div>
@@ -254,7 +254,7 @@ function newQuestion()  {
 	  </p>
       </div> <!-- controls -->
   </div> <!-- quiz heading -->
-  <div id="quizbody" style="float:left;padding:20px">
+  <div id="quizdata">
       <h2>Quiz Data</h2>
       <span style="float:left;">
        Description:  <input type="text" style="width:200px;" id="e-description">&nbsp;
@@ -275,27 +275,27 @@ function newQuestion()  {
         Wrong Feedback: <textarea rows="3" cols="80" id="e-wrongfeedback"></textarea><br />
       </span>
       <span style="float:left; background-color:bisque;">
-        Choice 1: <textarea rows="4" cols="75" id="e-choice1" style="margin-left:10px; vertical-align: top;"></textarea>
+        Choice 1: <textarea rows="4" cols="75" id="e-choice1" style="margin-left:10px; vertical-align: top;"></textarea><br>
         Score: <input type="text" id="e-choice1-score" size=5>  
         Feedback: <textarea rows="4" cols="50" id="e-choice1-feedback" style="vertical-align: top;"></textarea>
       </span>
       <span style="float:left; background-color:beige;">
-        Choice 2: <textarea rows="4" cols="75" id="e-choice2" style="margin-left:10px; vertical-align: top;"></textarea>
+        Choice 2: <textarea rows="4" cols="75" id="e-choice2" style="margin-left:10px; vertical-align: top;"></textarea> <br>
         Score: <input type="text" id="e-choice2-score" size=5>  
         Feedback: <textarea rows="4" cols="50" id="e-choice2-feedback" style="vertical-align: top;"></textarea><br />
       </span>
       <span style="float:left; background-color:bisque;">
-        Choice 3: <textarea rows="4" cols="75" id="e-choice3" style="margin-right:10px; margin-left:10px;vertical-align: top;"></textarea>
+        Choice 3: <textarea rows="4" cols="75" id="e-choice3" style="margin-left:10px;vertical-align: top;"></textarea><br>
         Score: <input type="text" id="e-choice3-score" size=5>  
         Feedback: <textarea rows="4" cols="45" id="e-choice3-feedback" style="margin-right:10px; vertical-align: top;"></textarea><br />
       </span>
       <span style="float:left; background-color:beige;">
-        Choice 4: <textarea rows="4" cols="75" id="e-choice4" style="margin-left:10px; vertical-align: top;"></textarea>
+        Choice 4: <textarea rows="4" cols="75" id="e-choice4" style="margin-left:10px; vertical-align: top;"></textarea><br>
         Score: <input type="text" id="e-choice4-score" size=5>  
         Feedback: <textarea rows="4" cols="50" id="e-choice4-feedback" style="vertical-align: top;"></textarea><br />
       </span>
-  </div> <!-- quizbody -->
-  <div id="quizpreview" style="display:block; float:right;background-color:bisque;padding:20px;">
+  </div> <!-- quizdata -->
+  <div id="quizpreview">
      <h2>Preview</h2>
      <div >
       <span id="question"></span>

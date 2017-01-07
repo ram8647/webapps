@@ -97,7 +97,7 @@
       feedback_div.style.backgroundColor="#FFCCCC";
     }
     feedback_element.innerHTML = txt;
-    window.scrollTo(0,document.body.scrollHeight);
+   // window.scrollTo(0,document.body.scrollHeight);
   }
 
   function displayChoices() {  // Multipl choice question
