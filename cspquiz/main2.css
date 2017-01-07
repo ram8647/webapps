@@ -31,8 +31,8 @@ html {
 
 #logo {
         float: left; // instead of table
-        width: 30%; // is this a good max-width?
-        min-width: 100px;
+        width: 25%; 
+        max-width: 25%;
     }
    
  #heading {
