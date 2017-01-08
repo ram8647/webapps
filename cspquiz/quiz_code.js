@@ -188,9 +188,8 @@
     var feedback = document.getElementById("feedback");
     feedback.style.visibility="hidden";
     var question = document.getElementById('question');
-     //  question.innerHTML = curr_question['question'];
-     //  run through convertAPML(input)
-    question.innerHTML = convertAPML(curr_question['question']);
+    var question_txt = "<b>"+curr_question['heading']+".</b>&nbsp;" + curr_question['question'];
+    question.innerHTML = convertAPML(question_txt); // convertAPML
   }
 
   /*
