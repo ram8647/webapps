@@ -35,24 +35,27 @@
      - probably should have just json in file and load/parse it into quiz_data var here because unexpected results when loading in new files.
      */
     
- // override shared displayQuestion to add displayData() and no hints
- function displayQuestion() {
-    document.getElementById('feedback-div').style.visibility="hidden";
-    var feedback = document.getElementById("feedback");
-    feedback.style.visibility="hidden";
-   
-    var question = document.getElementById('question');
-     //  run through convertAPML(input)
-    question.innerHTML = convertAPML(curr_question['question']);
-    if (curr_question['type'] == "Mc") {  // multiple choices
-        displayChoices();
-    } else if (curr_question['type'] == "Ma") {  // multiple choices
-        displayMaChoices();
-    } else if (curr_question['type'] == "Fi") { // Fill-in
-        displayFillin();
+ // override shared displayQuestion in quiz_code.js to add displayData() 
+ function displayQuestion() {   
+    if (curr_question['type'] == "Mc") {  // Multiple choice - radio
+      displayQuestionData();
+      displayChoices();
+      displayControls();
+      displayData();
+    } else if (curr_question['type'] == "Ma") {   // Multiple answer - checkbox
+      displayQuestionData();
+      displayMaChoices();
+      displayControls();
+      displayData();
+    } else if (curr_question['type'] == "Fi") {   // Fillin answer
+      displayQuestionData();
+      displayFillin();
+      displayControls();
+      displayData();
+    } else {
+      nextQuestion();
     }
-    displayControls();
-    displayData();
+  
   }
  
   function create_file() {
@@ -296,9 +299,15 @@ function newQuestion()  {
       </span>
   </div> <!-- quizdata -->
   <div id="quizpreview">
-     <h2>Preview</h2>
+      <div>
+      <h2 style="display:inline">Preview </h2>
+         <div id="score"><img id="completedImage" src="not_started.png"/> (<span id=points>0/0</span>)
+    </div> <br/>
+           <button class="gcb-button" id="hint_button" onclick="giveHint()">Hint</button>
+       <div id="hint-div" style="display:inline"><span id="hint"></span></div>
      <div >
       <span id="question"></span>
+         
      </div>
      <br />
      <div id="choices_container" style="background-color: #ADCF2F; visibility:hidden">

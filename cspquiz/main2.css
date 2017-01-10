@@ -45,6 +45,11 @@ html {
         clear: both; // stop floating left
        
     }
+#score {
+    float: right;
+    font-size: 1em; 
+    font-weight: normal;
+}
 
 select option:disabled {
     color: whitesmoke; // disabled menu categories hard to see in original color

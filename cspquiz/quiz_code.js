@@ -22,6 +22,11 @@
   var choices;          // Multiple choices text, score, feedback
   var user_choices = []; // A list of user choices for multiple answer questions
   
+  // scoring
+ var completed = []; // keeps track of whether questions are completed (-1 not attempted, 0 attempted, 1 correct)
+  var points = 0;  
+  var attempts = 0;  
+ 
 
   function initQuizData() {
     console.log('Starting');
@@ -29,11 +34,13 @@
     // Create a default index (non-filtered)
     for (var k = 0; k < quiz_data.length; k++) {
       quiz_index.push(k);
+      completed[k] = -1;    
+    }
 
     curr_question = quiz_data[quiz_index[q_index]];
 //    console.log(curr_question['description']);
     displayQuestion();
-    }
+   // } // I think the loop should end above
   }
 
   function setChoice(n) {
@@ -79,24 +86,38 @@
 
   function displayFeedback(txt, score) {
     var feedback_element = document.getElementById("feedback");
+    // scoring - count attempt
+    document.getElementById("completedImage").src = "in_progress.png";
+    if (completed[quiz_index[q_index]] == -1)  // never tried
+        attempts++;
+    completed[quiz_index[q_index]] = 0; // attempted  
     feedback_element.style.visibility="visible";
-    if (txt == "" || txt == "<br>") {
-      if (score >= 1) {
-        txt = "Correct -- good job!";
-      } else {
-        txt = "Sorry, that's not correct -- try again!";
-      }
-    } else if (curr_question['type'] == "Ma" && user_choices.length != 2) {
-      txt += "For this question you need <u>exactly two</u> choices";
-    }
+    
+      
     var feedback_div = document.getElementById('feedback-div');
     feedback_div.style.visibility="visible";
+      
     if (score >= 1) {
-      feedback_div.style.backgroundColor="#ADCF2F";
-    } else {
-      feedback_div.style.backgroundColor="#FFCCCC";
+       if (txt == "" || txt == "<br>") 
+          txt = "Correct -- good job!";
+        points++;
+        document.getElementById("completedImage").src = "completed.png";
+        completed[quiz_index[q_index]] = 1; 
+        feedback_div.style.backgroundColor="#ADCF2F";
+      } else {
+         if (txt == "" || txt == "<br>") 
+             txt = "Sorry, that's not correct -- try again!";
+        feedback_div.style.backgroundColor="#FFCCCC";
+      }
+    
+    if (curr_question['type'] == "Ma" && user_choices.length != 2) {
+      txt += "For this question you need <u>exactly two</u> choices.";
     }
+   
     feedback_element.innerHTML = txt;
+     // display attempts
+    document.getElementById("points").innerHTML = points+"/"+attempts; //+ "(" + points*100/attempts +  "%)";
+    
    // window.scrollTo(0,document.body.scrollHeight);
   }
 
@@ -117,6 +138,8 @@
      choice_form += '<hr>';
      var choice_table = document.getElementById('choices_table');
      choice_table.innerHTML = choice_form;
+  
+            
   }
 
   function displayMaChoices() {  // Multiple answer question
@@ -178,7 +201,9 @@
     } else {
       nextQuestion();
     }
+  
   }
+  
  
   function displayQuestionData() {
     user_choices = [];
@@ -191,6 +216,14 @@
      //  question.innerHTML = curr_question['question'];
      //  run through convertAPML(input)
     question.innerHTML = convertAPML(curr_question['question']);
+      
+      // display stored completion info
+     if ( completed[quiz_index[q_index]] == 1)   
+         document.getElementById("completedImage").src = "completed.png";
+     else if ( completed[quiz_index[q_index]] == 0)   
+         document.getElementById("completedImage").src = "in_progress.png";
+     else 
+           document.getElementById("completedImage").src = "not_started.png";
   }
 
   /*
