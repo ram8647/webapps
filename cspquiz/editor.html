@@ -88,8 +88,8 @@
     desc.value = curr_question['description'];
         var hint = document.getElementById('e-hint');
     hint.value = curr_question['hint'];
-      var permute = document.getElementById('e-permute');
-    permute.value = curr_question['permute'];
+      var heading = document.getElementById('e-heading');
+    heading.value = curr_question['heading'];
       var wrongf = document.getElementById('e-wrongfeedback');
     wrongf.value = curr_question['wrongfeedback'];
        
@@ -143,8 +143,8 @@
     var hint = document.getElementById('e-hint');
     if (hint != undefined)
        curr_question['hint'] = hint.value;
-    var permute = document.getElementById('e-permute');
-    curr_question['permute'] = permute.value;
+    var heading = document.getElementById('e-heading');
+    curr_question['heading'] = heading.value;
     var wrongf = document.getElementById('e-wrongfeedback');
     curr_question['wrongfeedback'] = wrongf.value;
       
@@ -260,42 +260,60 @@ function newQuestion()  {
   <div id="quizdata">
       <h2>Quiz Data</h2>
       <span style="float:left;">
-       Description:  <input type="text" style="width:200px;" id="e-description">&nbsp;
+       Description:  <input type="text" style="width:300px;" id="e-description">&nbsp;
       </span>
       <span style="float:right;">
-        Type:  <input type="text" id="e-type"><br />
-      </span>
-      <span style="float:left;">
-        CSP Code: <input type="text" id="e-cspcode">&nbsp;
+	 Type:  <input type="text" style="width:75px;" id="e-type"><br />
       </span>
       <span style="float:right;">
-        Source: <input type="text" id="e-source"><br />
+	 CSP Code: <input type="text" style="width:75px;" id="e-cspcode">&nbsp;
       </span>
-      <span style="display:none;">Permute: <input type="text" id="e-permute"><br /></span> <!-- hiding, unused -->
+      <span style="float:right;">
+	 Source: <input type="text" style="width:75px;" id="e-source"><br />
+      </span>
       <span style="float:left;">
-        Question: <textarea rows="6" cols="80" id="e-question" style="vertical-align: top;"></textarea><br />
-        Hint: <textarea rows="3" cols="80" id="e-hint" style="vertical-align: top;"></textarea><br />
-        Wrong Feedback: <textarea rows="3" cols="80" id="e-wrongfeedback"></textarea><br />
-      </span>
+	 Heading: <input type="text" style="width:300px;" id="e-heading"><br />
+      </span> 
+      <table border=0 style="float:left;width:100%;">
+       <tr><td align="right" width="10%">Question:</td><td><textarea rows="5"  id="e-question" style="width:100%; vertical-align: top;"></textarea></td></tr>
+       <tr><td align="right" width="10%">Hint:</td><td><textarea rows="2"  id="e-hint" style="width:100%; vertical-align: top;"></textarea></td></tr>
+       <tr><td align="right" width="10%">Wrong Feedback:</td><td><textarea rows="2"  id="e-wrongfeedback" style="width:100%; vertical-align: top;"></textarea></td></tr>
+      </table>
       <span style="float:left; background-color:bisque;">
-        Choice 1: <textarea rows="4" cols="75" id="e-choice1" style="margin-left:10px; vertical-align: top;"></textarea><br>
-        Score: <input type="text" id="e-choice1-score" size=5>  
-        Feedback: <textarea rows="4" cols="50" id="e-choice1-feedback" style="vertical-align: top;"></textarea>
+      <table border=0 style="float:left;width:100%;">
+       <tr><td align="right" width="10%">Choice1:<br>Score:<input type="text" id="e-choice1-score" size=3></td>
+           <td><textarea rows="3" id="e-choice1" style="width:100%; vertical-align: top;"></textarea></td>
+       </tr>
+       <tr><td align="right">Feedback:</td><td><textarea rows="2" cols="50" id="e-choice1-feedback" style="width:100%; vertical-align: top;"></textarea></td>
+       </tr>
+      </table>
       </span>
       <span style="float:left; background-color:beige;">
-        Choice 2: <textarea rows="4" cols="75" id="e-choice2" style="margin-left:10px; vertical-align: top;"></textarea> <br>
-        Score: <input type="text" id="e-choice2-score" size=5>  
-        Feedback: <textarea rows="4" cols="50" id="e-choice2-feedback" style="vertical-align: top;"></textarea><br />
+      <table border=0 style="float:left;width:100%;">
+       <tr><td align="right" width="10%">Choice2:<br>Score:<input type="text" id="e-choice1-score" size=3></td>
+           <td><textarea rows="3" id="e-choice2" style="width:100%; vertical-align: top;"></textarea></td>
+       </tr>
+       <tr><td align="right">Feedback:</td><td><textarea rows="2" cols="50" id="e-choice2-feedback" style="width:100%; vertical-align: top;"></textarea></td>
+       </tr>
+      </table>
       </span>
       <span style="float:left; background-color:bisque;">
-        Choice 3: <textarea rows="4" cols="75" id="e-choice3" style="margin-left:10px;vertical-align: top;"></textarea><br>
-        Score: <input type="text" id="e-choice3-score" size=5>  
-        Feedback: <textarea rows="4" cols="45" id="e-choice3-feedback" style="margin-right:10px; vertical-align: top;"></textarea><br />
+      <table border=0 style="float:left;width:100%;">
+       <tr><td align="right" width="10%">Choice3:<br>Score:<input type="text" id="e-choice3-score" size=3></td>
+           <td><textarea rows="3" id="e-choice3" style="width:100%; vertical-align: top;"></textarea></td>
+       </tr>
+       <tr><td align="right">Feedback:</td><td><textarea rows="2" cols="50" id="e-choice3-feedback" style="width:100%; vertical-align: top;"></textarea></td>
+       </tr>
+      </table>
       </span>
       <span style="float:left; background-color:beige;">
-        Choice 4: <textarea rows="4" cols="75" id="e-choice4" style="margin-left:10px; vertical-align: top;"></textarea><br>
-        Score: <input type="text" id="e-choice4-score" size=5>  
-        Feedback: <textarea rows="4" cols="50" id="e-choice4-feedback" style="vertical-align: top;"></textarea><br />
+      <table border=0 style="float:left;width:100%;">
+       <tr><td align="right" width="10%">Choice4:<br>Score:<input type="text" id="e-choice4-score" size=3></td>
+           <td><textarea rows="3" id="e-choice4" style="width:100%; vertical-align: top;"></textarea></td>
+       </tr>
+       <tr><td align="right">Feedback:</td><td><textarea rows="2" cols="50" id="e-choice4-feedback" style="width:100%; vertical-align: top;"></textarea></td>
+       </tr>
+      </table>
       </span>
   </div> <!-- quizdata -->
   <div id="quizpreview">
