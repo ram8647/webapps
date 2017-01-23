@@ -36,7 +36,15 @@
       quiz_index.push(k);
       completed[k] = -1;    
     }
-
+      // see if any scores stored in local storage
+   if(localStorage != undefined && 
+      localStorage.getItem("completed") != null) {
+            completed = JSON.parse(localStorage.getItem("completed"));
+            console.log("Got completed from LocalStorage " + completed);
+            attempts = parseInt(localStorage.getItem("attempts"));
+            points = parseInt(localStorage.getItem("points"));
+            console.log(points + "/" + attempts);
+    }
     curr_question = quiz_data[quiz_index[q_index]];
 //    console.log(curr_question['description']);
     displayQuestion();
@@ -119,6 +127,12 @@
     document.getElementById("points").innerHTML = points+"/"+attempts; //+ "(" + points*100/attempts +  "%)";
     
    // window.scrollTo(0,document.body.scrollHeight);
+      
+      // update points in localStorage
+      localStorage.setItem("completed", JSON.stringify(completed));
+      localStorage.setItem("attempts", attempts);
+       localStorage.setItem("points", points);
+      console.log("Saving " + points + "/" + attempts);
   }
 
   function displayChoices() {  // Multipl choice question
@@ -216,11 +230,13 @@
 
      //  question.innerHTML = curr_question['question'];
      //  run through convertAPML(input)
-    question.innerHTML = convertAPML(curr_question['question']);
+   // question.innerHTML = convertAPML(curr_question['question']);
       
     var question_txt = "<b>"+curr_question['heading']+".</b>&nbsp;" + curr_question['question'];
     question.innerHTML = convertAPML(question_txt); // convertAPML
      
+      console.log("display question " + quiz_index[q_index] 
+                 + " c " + completed[quiz_index[q_index] ]);
       // display stored completion info
      if ( completed[quiz_index[q_index]] == 1)   
          document.getElementById("completedImage").src = "completed.png";
@@ -228,6 +244,8 @@
          document.getElementById("completedImage").src = "in_progress.png";
      else 
            document.getElementById("completedImage").src = "not_started.png";
+      // display attempts
+      document.getElementById("points").innerHTML = points+"/"+attempts; 
   }
 
   /*
@@ -279,6 +297,19 @@
     } else {
       hint.innerHTML = 'Sorry, no hint available.';
     }
+  }
+
+ // reset localStorage and completed array for scoring
+  function resetScore() {
+      localStorage.clear();
+      for (var k = 0; k < quiz_data.length; k++) {
+            completed[k] = -1;    
+      }
+      attempts = 0;
+      points = 0;
+      document.getElementById("completedImage").src = "not_started.png";
+      // display attempts
+      document.getElementById("points").innerHTML = points+"/"+attempts;
   }
 
   /*
