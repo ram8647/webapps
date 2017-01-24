@@ -21,8 +21,8 @@
 <!-- Quiz Data:  Sets the global variable quiz_data --> 
     <!-- probably should have just json in file and load/parse it into var here -->
     <!-- <script type="text/javascript" src="./emptyquiz.js"></script> -->
-<script type="text/javascript" src="./q0_load_pretty.js"></script>
-<!--<script type="text/javascript" src="./q1_20161012.js"></script>-->
+ <script type="text/javascript" src="./q0_load_pretty.js"></script>
+<!-- <script type="text/javascript" src="./q3r_load_pretty.js"></script> -->
 
     <!-- This is the pulled out code to show the quiz that is shared with index.html -->
     <script type="text/javascript" src="./quiz_code.js"></script>
@@ -70,11 +70,13 @@
   }
 
   function displayFillinData() {
+    document.getElementById("choices-area").style.display="none";
     return;
   }
 
   function displayData() {
     console.log('displayData()');
+    document.getElementById("choices-area").style.display="block";
     var question = document.getElementById('e-question');
     question.value = curr_question['question'];
     var type = document.getElementById('e-type');
@@ -107,24 +109,28 @@
     document.getElementById('e-choice2-score').value = curr_question['choices'][1].score;
     choice = document.getElementById('e-choice3');
      if (curr_question['choices'][2] != undefined) {
+        document.getElementById("choice-3-el").style.display="block";
         choice.value = curr_question['choices'][2].text;
         document.getElementById('e-choice3-feedback').value = curr_question['choices'][2].feedback;
         document.getElementById('e-choice3-score').value = curr_question['choices'][2].score;
       } else {
+            document.getElementById("choice-3-el").style.display="none";
             choice.value = "";
             document.getElementById('e-choice3-feedback').value = "";
             document.getElementById('e-choice3-score').value ="";
       }
     choice = document.getElementById('e-choice4');
     if (curr_question['choices'][3] != undefined) {
+        document.getElementById("choice-4-el").style.display="block";
         choice.value = curr_question['choices'][3].text;
         document.getElementById('e-choice4-feedback').value = curr_question['choices'][3].feedback;
         document.getElementById('e-choice4-score').value = curr_question['choices'][3].score;
       }
     else {
-           choice.value = "";
-            document.getElementById('e-choice3-feedback').value = "";
-            document.getElementById('e-choice3-score').value ="";
+            document.getElementById("choice-4-el").style.display="none";
+            choice.value = "";
+            document.getElementById('e-choice4-feedback').value = "";
+            document.getElementById('e-choice4-score').value ="";
       }
   }
     
@@ -279,42 +285,44 @@ function newQuestion()  {
        <tr><td align="right" width="10%">Hint:</td><td><textarea rows="2"  id="e-hint" style="width:100%; vertical-align: top;"></textarea></td></tr>
        <tr><td align="right" width="10%">Wrong Feedback:</td><td><textarea rows="2"  id="e-wrongfeedback" style="width:100%; vertical-align: top;"></textarea></td></tr>
       </table>
-      <span style="float:left; background-color:bisque;">
-      <table border=0 style="float:left;width:100%;">
-       <tr><td align="right" width="10%">Choice1:<br>Score:<input type="text" id="e-choice1-score" size=3></td>
-           <td><textarea rows="3" id="e-choice1" style="width:100%; vertical-align: top;"></textarea></td>
-       </tr>
-       <tr><td align="right">Feedback:</td><td><textarea rows="2" cols="50" id="e-choice1-feedback" style="width:100%; vertical-align: top;"></textarea></td>
-       </tr>
-      </table>
-      </span>
-      <span style="float:left; background-color:beige;">
-      <table border=0 style="float:left;width:100%;">
-       <tr><td align="right" width="10%">Choice2:<br>Score:<input type="text" id="e-choice1-score" size=3></td>
-           <td><textarea rows="3" id="e-choice2" style="width:100%; vertical-align: top;"></textarea></td>
-       </tr>
-       <tr><td align="right">Feedback:</td><td><textarea rows="2" cols="50" id="e-choice2-feedback" style="width:100%; vertical-align: top;"></textarea></td>
-       </tr>
-      </table>
-      </span>
-      <span style="float:left; background-color:bisque;">
-      <table border=0 style="float:left;width:100%;">
-       <tr><td align="right" width="10%">Choice3:<br>Score:<input type="text" id="e-choice3-score" size=3></td>
-           <td><textarea rows="3" id="e-choice3" style="width:100%; vertical-align: top;"></textarea></td>
-       </tr>
-       <tr><td align="right">Feedback:</td><td><textarea rows="2" cols="50" id="e-choice3-feedback" style="width:100%; vertical-align: top;"></textarea></td>
-       </tr>
-      </table>
-      </span>
-      <span style="float:left; background-color:beige;">
-      <table border=0 style="float:left;width:100%;">
-       <tr><td align="right" width="10%">Choice4:<br>Score:<input type="text" id="e-choice4-score" size=3></td>
-           <td><textarea rows="3" id="e-choice4" style="width:100%; vertical-align: top;"></textarea></td>
-       </tr>
-       <tr><td align="right">Feedback:</td><td><textarea rows="2" cols="50" id="e-choice4-feedback" style="width:100%; vertical-align: top;"></textarea></td>
-       </tr>
-      </table>
-      </span>
+      <div id="choices-area">
+	<span style="float:left; background-color:bisque;">
+	<table border=0 style="float:left;width:100%;">
+	 <tr><td align="right" width="10%">Choice1:<br>Score:<input type="text" id="e-choice1-score" size=3></td>
+	     <td><textarea rows="3" id="e-choice1" style="width:100%; vertical-align: top;"></textarea></td>
+	 </tr>
+	 <tr><td align="right">Feedback:</td><td><textarea rows="2" cols="50" id="e-choice1-feedback" style="width:100%; vertical-align: top;"></textarea></td>
+	 </tr>
+	</table>
+	</span>
+	<span style="float:left; background-color:beige;">
+	<table border=0 style="float:left;width:100%;">
+	 <tr><td align="right" width="10%">Choice2:<br>Score:<input type="text" id="e-choice2-score" size=3></td>
+	     <td><textarea rows="3" id="e-choice2" style="width:100%; vertical-align: top;"></textarea></td>
+	 </tr>
+	 <tr><td align="right">Feedback:</td><td><textarea rows="2" cols="50" id="e-choice2-feedback" style="width:100%; vertical-align: top;"></textarea></td>
+	 </tr>
+	</table>
+	</span>
+	<span id="choice-3-el" style="float:left; background-color:bisque;">
+	<table border=0 style="float:left;width:100%;">
+	 <tr><td align="right" width="10%">Choice3:<br>Score:<input type="text" id="e-choice3-score" size=3></td>
+	     <td><textarea rows="3" id="e-choice3" style="width:100%; vertical-align: top;"></textarea></td>
+	 </tr>
+	 <tr><td align="right">Feedback:</td><td><textarea rows="2" cols="50" id="e-choice3-feedback" style="width:100%; vertical-align: top;"></textarea></td>
+	 </tr>
+	</table>
+	</span>
+	<span id="choice-4-el" style="float:left; background-color:beige;">
+	<table border=0 style="float:left;width:100%;">
+	 <tr><td align="right" width="10%">Choice4:<br>Score:<input type="text" id="e-choice4-score" size=3></td>
+	     <td><textarea rows="3" id="e-choice4" style="width:100%; vertical-align: top;"></textarea></td>
+	 </tr>
+	 <tr><td align="right">Feedback:</td><td><textarea rows="2" cols="50" id="e-choice4-feedback" style="width:100%; vertical-align: top;"></textarea></td>
+	 </tr>
+	</table>
+	</span>
+      </div> <!-- choices-area -->
   </div> <!-- quizdata -->
   <div id="quizpreview">
       <div>
