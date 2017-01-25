@@ -97,25 +97,34 @@
     // scoring - count attempt
     document.getElementById("completedImage").src = "in_progress.png";
     if (completed[quiz_index[q_index]] == -1)  // never tried
+    {
         attempts++;
-    completed[quiz_index[q_index]] = 0; // attempted  
+        completed[quiz_index[q_index]] = 0; // attempted  
+    }
     feedback_element.style.visibility="visible";
     
       
     var feedback_div = document.getElementById('feedback-div');
     feedback_div.style.visibility="visible";
       
-    if (score >= 1) {
-       if (txt == "" || txt == "<br>") 
-          txt = "Correct -- good job!";
-        points++;
+    if (score >= 1) { //correct
+        if (txt == "" || txt == "<br>") 
+           txt = "Correct -- good job!";
+        console.log(completed[quiz_index[q_index]]+ " " + points);
+        if (completed[quiz_index[q_index]] != 1) 
+            points++;  // if not already counted correct
         document.getElementById("completedImage").src = "completed.png";
         completed[quiz_index[q_index]] = 1; 
         feedback_div.style.backgroundColor="#ADCF2F";
-      } else {
+      } else { // incorrect
          if (txt == "" || txt == "<br>") 
              txt = "Sorry, that's not correct -- try again!";
-        feedback_div.style.backgroundColor="#FFCCCC";
+         feedback_div.style.backgroundColor="#FFCCCC";
+         if (completed[quiz_index[q_index]] == 1) // previously correct
+             {
+                 points--; // remove correct points but not attempts
+                 completed[quiz_index[q_index]] = 0; // set back to attempted but not correct
+             }
       }
     
     if (curr_question['type'] == "Ma" && user_choices.length != 2) {

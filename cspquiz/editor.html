@@ -75,7 +75,7 @@
   }
 
   function displayData() {
-    console.log('displayData()');
+   // console.log('displayData()');
     document.getElementById("choices-area").style.display="block";
     var question = document.getElementById('e-question');
     question.value = curr_question['question'];
@@ -132,6 +132,8 @@
             document.getElementById('e-choice4-feedback').value = "";
             document.getElementById('e-choice4-score').value ="";
       }
+      
+      document.getElementById('question-json').value =  JSON.stringify(curr_question);
   }
     
 
@@ -259,7 +261,8 @@ function newQuestion()  {
 	<div id="download-div" style="display:inline"><span id="download"></span></div> 
 	  <p>
 	   <button class="gcb-button" id="newQ" onclick="newQuestion()">Add New Question</button>  
-	   <button class="gcb-button" id="saveQ" onclick="saveData()">Save Question Changes</button>  
+	   <button class="gcb-button" id="saveQ" onclick="saveData()">Save Question Changes</button> 
+         
 	  </p>
       </div> <!-- controls -->
   </div> <!-- quiz heading -->
@@ -345,6 +348,8 @@ function newQuestion()  {
      <div id="feedback-div">
        <span><label id="feedback"></label></span>
      </div>
+          JSON: <textarea id="question-json" rows=10 style="width:100%; vertical-align: top;">
+          </textarea>
   </div> <!-- quizpreview -->
  </div> <!-- quizsection -->
 
