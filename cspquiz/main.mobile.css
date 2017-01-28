@@ -4,7 +4,7 @@
         }
 #logo {
         float: left;
-       min-width: 100px;  
+       min-width: 150px;  
     }
 
 #heading {
@@ -26,21 +26,21 @@ h2 {
 }
 
 #choices_container {
-    font-size: 1.1em; 
+    font-size: 1.05em; 
 }
 input[type=radio] {
-  font-size: 1.1em;
+  font-size: 1.05em;
   width:1em;
   height:1em;
 }
 
 label {
-  font-size: 1.1em;
+  font-size: 1.05em;
 }
 
 
 .radio_text {
-  font-size: 1.1em;
+  font-size: 1.05em;
 }
 
 

@@ -33,6 +33,7 @@ html {
         float: left; // instead of table
         width: 25%; 
         max-width: 25%;
+        min-width: 150px;  
     }
    
  #heading {
@@ -49,6 +50,15 @@ html {
     float: right;
     font-size: 1em; 
     font-weight: normal;
+}
+
+#hint-div, #feedback-div {
+   width: 90%;
+   margin: 10px auto 10px;     // top left/right bottom
+}
+
+#hint {
+       padding: 5px;
 }
 
 select option:disabled {
