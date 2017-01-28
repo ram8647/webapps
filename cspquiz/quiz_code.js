@@ -478,3 +478,14 @@
     msg += "Visit us at <a target='_blank' href='http://mobile-csp.org'>http:mobile-csp.org</a> ";
     open_modal(msg);
   }
+
+// jQuery swipe controls in custom build jquery mobile download
+$(document).ready(function(){
+    $("#quiz_section").on("swiperight",function(){
+                nextQuestion();
+    });
+    
+     $("#quiz_section").on("swipeleft",function(){
+                previousQuestion();
+    });
+});

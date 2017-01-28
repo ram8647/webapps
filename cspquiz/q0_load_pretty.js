@@ -4,13 +4,13 @@ var quiz_data = [
         "feedback": "That's right! With a Caesar shift of 3, the word 'alphabet' is encrypted into 'doskdehw'.",
         "response": "doskdehw",
         "score": "1.0",
-        "hint": "Try writing the alphabet out, A to Z, and then writing the shifted letters below it.",
+        "hint": "In Caesar cipher encryption with shift 3, each letter is replaced with a letter 3 letters down in the alphabet, so a becomes c.",
         "heading": "Cryptography",
         "question": "Encrypt the word <i><b>alphabet</b></i> using a Caesar cipher with a \nshift of 3. Type your answer into the Textbox. ",
-        "cspcode":"0.0.0",
-        "source":"mcsp-0",
+        "cspcode":"6.3.1K",
+        "source":"mcsp-7",
         "type": "Fi",
-        "wrongfeedback": "You're not quite there, yet. Give it another try; with a little more work you can figure this out! "
+        "wrongfeedback": "Sorry, that's not right. In Caesar cipher encryption with shift 3, each letter is replaced with a letter 3 letters down in the alphabet, so a becomes c. "
     },
     {
         "choices": [
@@ -80,27 +80,27 @@ var quiz_data = [
             {
                 "feedback": "Answer A is correct -- if the student's original grade (gradeList[i]) is 97, this code would assign 100 as the new grade.",
                 "score": 0.5,
-                "text": "(A) <blockquote><pre>gradeList[i] \u2190 min (gradeList[i] + 5, 100)</pre></blockquote>"
+                "text": "(A) <pre>gradeList[i] \u2190 min (gradeList[i] + 5, 100)</pre>"
             },
             {
                 "feedback": "Sorry answer B is not correct. For example, if the student's original grade (gradeList[i]) is 92, this code would assign 100 as the new grade instead of 92. Give this another try.",
                 "score": -1.0,
-                "text": "(B) <blockquote><pre>gradeList[i] \u2190 max (gradeList[i] + 5, 100)</pre></blockquote>"
+                "text": "(B) <pre>gradeList[i] \u2190 max (gradeList[i] + 5, 100)</pre>"
             },
             {
-                "feedback": "Sorry answer C is not correct. For example, if the student's original greade (gradeList[i]) is 97, this code would assign 97 as the new grade instead of 100. Give this another try.",
+                "feedback": "Sorry answer C is not correct. For example, if the student's original grade (gradeList[i]) is 97, this code would assign 97 as the new grade instead of 100. Give this another try.",
                 "score": -1.0,
-                "text": "(C) <blockquote><pre>gradeList[i] \u2190 gradeList[i] + 5\nIF (gradeList[i] > 100) \n {\n\tgradeList[i] \u2190 gradeList[i] - 5 \n }</pre></blockquote>"
+                "text": "(C) <pre>gradeList[i] \u2190 gradeList[i] + 5\nIF (gradeList[i] > 100) \n {\n\tgradeList[i] \u2190 gradeList[i] - 5 \n }</pre>"
             },
             {
                 "feedback": "Answer D is correct -- if the student's original grade (gradeList[i]) is 97, this code would assign 100 as the new grade.",
                 "score": 0.5,
-                "text": "(D) <blockquote><pre>gradeList[i] \u2190 gradeList[i] + 5\nIF (gradeList[i] > 100) \n { \n\tgradeList[i] \u2190 100 \n }</pre></blockquote>"
+                "text": "(D) <pre>gradeList[i] \u2190 gradeList[i] + 5\nIF (gradeList[i] > 100) \n { \n\tgradeList[i] \u2190 100 \n }</pre>"
             }
         ],
         "description": "AP CS P Exam Prep Grade Procedures",
         "cspcode": "4.4.1E",
-        "question": "A teacher uses the following program to adjust student grades on an assignment by adding&nbsp;<span style=\"line-height: 1.22;\">5 points to each student\u2019s original grade. However, if adding 5 points to a student\u2019s original </span><span style=\"line-height: 1.22;\">grade causes the grade to exceed 100 points, the student will receive the maximum possible&nbsp;</span><span style=\"line-height: 1.22;\">score of 100 points. The students\u2019 original grades are stored in the list <i>gradeList</i>, which is&nbsp;</span><span style=\"line-height: 1.22;\">indexed from 1 to <i>n</i>.</span><blockquote>&nbsp;i \u2190 1<br>&nbsp;REPEAT n TIMES</blockquote><blockquote><span class=\"Apple-tab-span\" style=\"white-space:pre\">\t</span>&nbsp;{<br><span class=\"Apple-tab-span\" style=\"white-space:pre\">\t</span>&nbsp;<i>&lt;MISSING CODE&gt;</i><br><span class=\"Apple-tab-span\" style=\"white-space:pre\">\t</span>&nbsp;i \u2190 i + 1<br><span class=\"Apple-tab-span\" style=\"white-space:pre\">\t</span>&nbsp;}</blockquote><div>The teacher has the following procedures available.<br><br><div style=\"text-align: left;\"><img src=\"https://ram8647.appspot.com/mobileCSP/assets/img/Q30Table.PNG\" class=\"yui-img\" title=\"\" alt=\"\" style=\"line-height: 1.22;\"><div style=\"text-align: left;\"><br><div>Which of the following code segments can replace <i>&lt;MISSING CODE&gt;</i> so that the program&nbsp;<span style=\"line-height: 1.22;\">works as intended?</span></div></div></div></div>",
+        "question": "A teacher uses the following program to adjust student grades on an assignment by adding&nbsp;<span style=\"line-height: 1.22;\">5 points to each student\u2019s original grade. However, if adding 5 points to a student\u2019s original </span><span style=\"line-height: 1.22;\">grade causes the grade to exceed 100 points, the student will receive the maximum possible&nbsp;</span><span style=\"line-height: 1.22;\">score of 100 points. The students\u2019 original grades are stored in the list <i>gradeList</i>, which is&nbsp;</span><span style=\"line-height: 1.22;\">indexed from 1 to <i>n</i>.</span><blockquote>&nbsp;i \u2190 1<br>&nbsp;REPEAT n TIMES</blockquote><blockquote><span class=\"Apple-tab-span\" style=\"white-space:pre\">\t</span>&nbsp;{<br><span class=\"Apple-tab-span\" style=\"white-space:pre\">\t</span>&nbsp;<i>&lt;MISSING CODE&gt;</i><br><span class=\"Apple-tab-span\" style=\"white-space:pre\">\t</span>&nbsp;i \u2190 i + 1<br><span class=\"Apple-tab-span\" style=\"white-space:pre\">\t</span>&nbsp;}</blockquote><div>The teacher has the following procedures available.<br><br><div style=\"text-align: left;\"><img src=\"https://ram8647.appspot.com/mobileCSP/assets/img/Q30Table.PNG\" class=\"yui-img\" title=\"\" alt=\"\" width=100% style=\"line-height: 1.22;\"><div style=\"text-align: left;\"><br><div>Which of the following code segments can replace <i>&lt;MISSING CODE&gt;</i> so that the program&nbsp;<span style=\"line-height: 1.22;\">works as intended?</span></div></div></div></div>",
         "heading": "College Board Sample Question: Algorithms",
         "type": "Ma",
         "source":"cb-x",
@@ -111,22 +111,22 @@ var quiz_data = [
             {
                 "feedback": "Both an online database and a database on the device itself are able to persist data between different uses of the app.  So this is not the best answer.",
                 "score": 0.0,
-                "text": "a. When the data needs to persist between uses of the app."
+                "text": "When the data needs to persist between uses of the app."
             },
             {
                 "feedback": "Right.  The online database stores data on the Web and retrieves it over the Internet. So it can be shared among many devices.  A database on the device stores data on the device.  So it can't be shared among different devices. ",
                 "score": 1.0,
-                "text": "b. When the data needs to be shared among different devices running the app."
+                "text": "When the data needs to be shared among different devices running the app."
             },
             {
                 "feedback": "It is true that data stored on the device is retrieved instantaneously, which will always be faster than data retrieved asynchronously from an online database. But we are talking about a difference of a few milliseconds, assuming the app has a reasonable Internet connection.  So this is not a main reason to choose between an online and on-device database.",
                 "score": 0.0,
-                "text": "c. When you need to retrieve the data quickly. "
+                "text": "When you need to retrieve the data quickly. "
             },
             {
                 "feedback": "Both types of database, online and on-device, can store lists of data.  So this is not a distinguishing feature. ",
                 "score": 0.0,
-                "text": "d. When you need to store lists of data."
+                "text": "When you need to store lists of data."
             }
         ],
         "description": "Online or on-device data",
@@ -205,22 +205,22 @@ var quiz_data = [
             {
                 "feedback": "Correct! There are two loops in this algorithm.  In the inner loop the robot forward <i>n</i> times.  And in the other loop the value of <i>n</i> is decreased by one each time. So the robot will move forward 3 times then turn left, then move forward 2 times and turn left, then move forward 1 time.",
                 "score": 1.0,
-                "text": "(A)&nbsp;<br><div style=\"text-align: left;\"><img src=\"https://ram8647.appspot.com/mobileCSP/assets/img/Q17A1.PNG\" class=\"yui-img\" title=\"\" alt=\"\" style=\"line-height: 1.22;\"></div>"
+                "text": "<img src=\"https://ram8647.appspot.com/mobileCSP/assets/img/Q17A1.PNG\" class=\"yui-img\" title=\"\" alt=\"\" style=\"line-height: 1.22;\">"
             },
             {
                 "feedback": "Not quite. Try that again!  There are two loops in this algorithm.  In the inner loop the robot forward <i>n</i> times.  And in the other loop the value of <i>n</i> is decreased by one each time. So the robot will move forward 3 times then turn left, then move forward 2 times and turn left, then move forward 1 time.",
                 "score": 0.0,
-                "text": "(B)&nbsp;<br><img src=\"https://ram8647.appspot.com/mobileCSP/assets/img/Q17A2.PNG\" class=\"yui-img\" title=\"\" alt=\"\"><br>"
+                "text": "<img src=\"https://ram8647.appspot.com/mobileCSP/assets/img/Q17A2.PNG\" class=\"yui-img\" title=\"\" alt=\"\"><br>"
             },
             {
                 "feedback": "Not quite. Try that again! There are two loops in this algorithm.  In the inner loop the robot forward <i>n</i> times.  And in the other loop the value of <i>n</i> is decreased by one each time. So the robot will move forward 3 times then turn left, then move forward 2 times and turn left, then move forward 1 time.",
                 "score": 0.0,
-                "text": "(C) <br><img src=\"https://ram8647.appspot.com/mobileCSP/assets/img/Q17A3.PNG\" class=\"yui-img\" title=\"\" alt=\"\"><br>"
+                "text": "<img src=\"https://ram8647.appspot.com/mobileCSP/assets/img/Q17A3.PNG\" class=\"yui-img\" title=\"\" alt=\"\"><br>"
             },
             {
                 "feedback": "Not quite.  Try that again!. There are two loops in this algorithm.  In the inner loop the robot forward <i>n</i> times.  And in the other loop the value of <i>n</i> is decreased by one each time. So the robot will move forward 3 times then turn left, then move forward 2 times and turn left, then move forward 1 time.",
                 "score": 0.0,
-                "text": "(D) <br><img src=\"https://ram8647.appspot.com/mobileCSP/assets/img/Q17A4.PNG\" class=\"yui-img\" title=\"\" alt=\"\"><br>"
+                "text": "<img src=\"https://ram8647.appspot.com/mobileCSP/assets/img/Q17A4.PNG\" class=\"yui-img\" title=\"\" alt=\"\"><br>"
             }
         ],
         "description": "AP CS P Exam Prep Move Robot Loop",
@@ -237,22 +237,22 @@ var quiz_data = [
             {
                 "feedback": "This is not a correct choice.  This algorithm will result in all occurrences of both words being changed to \"goats\".",
                 "score": 0.0,
-                "text": "(A) <blockquote><pre>First, change all occurrences of \u201cgoats\u201d to \u201csheep.\u201d<br>Then, change all occurrences of \u201csheep\u201d to \u201cgoats.\u201d</pre></blockquote>"
+                "text": "<div style='border:1px solid black'>First, change all occurrences of \u201cgoats\u201d to \u201csheep.\u201d<br>Then, change all occurrences of \u201csheep\u201d to \u201cgoats.\u201d</div>"
             },
             {
                 "feedback": "This is not a correct choice.  This algorithm will result in all occurrences of both words being changed to \"goats\".",
                 "score": 0.0,
-                "text": "(B) <blockquote><pre>First, change all occurrences of \u201cgoats\u201d to \u201csheep.\u201d <br>Then, change all occurrences of \u201csheep\u201d to \u201cgoats.\u201d<br>Last, change all occurrences of \u201cfoxes\u201d to \u201csheep.\u201d</pre></blockquote>"
+                "text": "<div style='border:1px solid black'>First, change all occurrences of \u201cgoats\u201d to \u201csheep.\u201d <br>Then, change all occurrences of \u201csheep\u201d to \u201cgoats.\u201d<br>Last, change all occurrences of \u201cfoxes\u201d to \u201csheep.\u201d</div>"
             },
             {
                 "feedback": "That's correct! Very good!",
                 "score": 1.0,
-                "text": "(C) <blockquote><pre>First, change all occurrences of \u201cgoats\u201d to \u201cfoxes.\u201d<br>Then, change all occurrences of \u201csheep\u201d to \u201cgoats.\u201d<br>Last, change all occurrences of \u201cfoxes\u201d to \u201csheep.\u201d</pre></blockquote>"
+                "text": "<div style='border:1px solid black'>First, change all occurrences of \u201cgoats\u201d to \u201cfoxes.\u201d<br>Then, change all occurrences of \u201csheep\u201d to \u201cgoats.\u201d<br>Last, change all occurrences of \u201cfoxes\u201d to \u201csheep.\u201d</div>"
             },
             {
                 "feedback": "This is not a correct choice.  This algorithm will result in all occurrences of both words being changed to \"goats\".",
                 "score": 0.0,
-                "text": "(D) <blockquote><pre>First, change all occurrences of \u201cgoats\u201d to \u201cfoxes.\u201d<br>Then, change all occurrences of \u201cfoxes\u201d to \u201csheep.\u201d<br>Last, change all occurrences of \u201csheep\u201d to \u201cgoats.\u201d</pre></blockquote>"
+                "text": "<div style='border:1px solid black'>First, change all occurrences of \u201cgoats\u201d to \u201cfoxes.\u201d<br>Then, change all occurrences of \u201cfoxes\u201d to \u201csheep.\u201d<br>Last, change all occurrences of \u201csheep\u201d to \u201cgoats.\u201d</div>"
             }
         ],
         "description": "AP CS P Exam Prep Replacing Text Algorithm",
@@ -395,22 +395,22 @@ var quiz_data = [
             {
                 "feedback": "If it were easy, you wouldn\u2019t be learning anything!",
                 "score": 0.0,
-                "text": "a. That data needs to persist between different uses of the app."
+                "text": "That data needs to persist between different uses of the app."
             },
             {
                 "feedback": "Right. To share data among different devices it is necessary to store it an online location that is accessible to the devices. The decision doesn't really depend on the amount or type of data and storing the person's name can be done in a TinyDb",
                 "score": 1.0,
-                "text": "b. The data needs to be shared among users running the app on different devices."
+                "text": "The data needs to be shared among users running the app on different devices."
             },
             {
                 "feedback": "If it were easy, you wouldn\u2019t be learning anything!",
                 "score": 0.0,
-                "text": "c. The data is very large, more that 10 Mb"
+                "text": "The data is very large, more that 10 Mb"
             },
             {
                 "feedback": "If it were easy, you wouldn\u2019t be learning anything!",
                 "score": 0.0,
-                "text": "d. The data are organized into a list."
+                "text": "The data are organized into a list."
             }
         ],
         "description": "Online or on-devices data",
