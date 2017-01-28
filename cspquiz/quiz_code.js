@@ -326,6 +326,11 @@
    */
   function filter() {
     var option = document.getElementById('filter').value;
+    if (option == "resetScore") {
+        resetScore();
+        document.getElementById('filter').selectedIndex = 0;
+        return;
+    }
     if (IDEAS.indexOf(option) != -1) {
       bigidea_filter(option);  
     }

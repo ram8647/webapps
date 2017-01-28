@@ -56,7 +56,8 @@
       <option value="cb">&nbsp;&nbsp;&nbsp;College Board Sample Question&nbsp;&nbsp;&nbsp; </option>      
       <option disabled>---------------</option>      
       <option value="random">Randomize</option>      
-      <option value="unfilter">Remove all filters</option>      
+      <option value="unfilter">Remove all filters</option>  
+       <option value="resetScore">Reset Score</option>  
      </select>
      <span id="keyword-span" style="display:none"> 
        &nbsp;<b>Keyword or Unit Number:</b> <input type="text" id="keyword-input" > &nbsp;
@@ -71,12 +72,13 @@
        <button class="gcb-button" id="hint_button" onclick="giveHint()">Hint</button>  
      
      <!-- Moving down score and hint text to next row -->
-        
+        <br>
        <div id="hint-div"><span id="hint"></span></div>
        
        <div id="score"><img id="completedImage" src="not_started.png"/> (<span id=points>0/0</span>)
           </div>
-        <button class="gcb-button" id="reset_score" onclick="resetScore()" style="float:right; margin-right:10px">Reset Score</button> 
+       <!-- Move reset score to menu
+        <button class="gcb-button" id="reset_score" onclick="resetScore()" style="float:right; margin-right:5px; margin-top:2px; font-size: 9pt;">Reset Score</button>  -->
       </div> <!-- controls -->
      </div> <!-- quiz heading -->
   <div id="quizbody"> 
@@ -85,7 +87,7 @@
     <div id="questiondiv">
      <span id="question"></span>
     </div>
-    <br />
+   
 <!--     <div id="choices_container" style="overflow-y:scroll; max-height:400px; background-color: #ADCF2F; visibility:hidden"> -->
     <div id="choices_container" style="background-color: #ADCF2F; visibility:hidden">
      <span id="choices_table"></span>
