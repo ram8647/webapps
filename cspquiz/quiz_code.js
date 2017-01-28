@@ -101,11 +101,12 @@
         attempts++;
         completed[quiz_index[q_index]] = 0; // attempted  
     }
-    feedback_element.style.visibility="visible";
+      // make visible again 
+    feedback_element.style.display="inline";
     
       
     var feedback_div = document.getElementById('feedback-div');
-    feedback_div.style.visibility="visible";
+    feedback_div.style.display="block"; // visible
       
     if (score >= 1) { //correct
         if (txt == "" || txt == "<br>") 
@@ -230,11 +231,11 @@
  
   function displayQuestionData() {
     user_choices = [];
-    document.getElementById('hint-div').style.visibility="hidden";
+    document.getElementById('hint-div').style.display="none"; 
     document.getElementById('hint').innerHTML="";
-    document.getElementById('feedback-div').style.visibility="hidden";
+    document.getElementById('feedback-div').style.display="none";
     var feedback = document.getElementById("feedback");
-    feedback.style.visibility="hidden";
+    feedback.style.display="none";
     var question = document.getElementById('question');
 
      //  question.innerHTML = curr_question['question'];
@@ -296,7 +297,7 @@
   }
 
   function giveHint() {
-    document.getElementById('hint-div').style.visibility="visible";
+    document.getElementById('hint-div').style.display="block";
     document.getElementById('hint-div').style.backgroundColor="#ADCF2F";
     var hint = document.getElementById('hint');
     if (curr_question['hint']  != undefined &&
@@ -332,7 +333,7 @@
       course_filter(option);  
     }
     if (option == "keyword") {
-        document.getElementById('keyword-span').style.visibility="visible";
+        document.getElementById('keyword-span').style.display="inline";
         return;
     }
     if (option == "unfilter") {
@@ -355,7 +356,7 @@
     q_index = 0;
     curr_question = quiz_data[quiz_index[q_index]];
     displayQuestion();
-    document.getElementById('keyword-span').style.visibility="hidden";
+    document.getElementById('keyword-span').style.display="none";
   }
 
   /*
