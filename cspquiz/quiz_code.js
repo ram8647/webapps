@@ -299,7 +299,8 @@
     document.getElementById('hint-div').style.visibility="visible";
     document.getElementById('hint-div').style.backgroundColor="#ADCF2F";
     var hint = document.getElementById('hint');
-    if (curr_question['hint']  != undefined) {
+    if (curr_question['hint']  != undefined &&
+       curr_question['hint']  != "" ) {
       hint.innerHTML = curr_question['hint'];
     } else {
       hint.innerHTML = 'Sorry, no hint available.';
