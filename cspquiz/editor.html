@@ -20,8 +20,8 @@
 
 <!-- Quiz Data:  Sets the global variable quiz_data --> 
     <!-- probably should have just json in file and load/parse it into var here -->
-    <!-- <script type="text/javascript" src="./emptyquiz.js"></script> -->
- <script type="text/javascript" src="./q0_load_pretty.js"></script>
+ <script type="text/javascript" src="./questions_AP.js"></script> 
+<!-- <script type="text/javascript" src="./q1_load_pretty.js"></script>
 <!-- <script type="text/javascript" src="./q3r_load_pretty.js"></script> -->
 
     <!-- This is the pulled out code to show the quiz that is shared with index.html -->
@@ -75,7 +75,7 @@
   }
 
   function displayData() {
-    console.log('displayData()');
+   // console.log('displayData()');
     document.getElementById("choices-area").style.display="block";
     var question = document.getElementById('e-question');
     question.value = curr_question['question'];
@@ -132,6 +132,8 @@
             document.getElementById('e-choice4-feedback').value = "";
             document.getElementById('e-choice4-score').value ="";
       }
+      
+      document.getElementById('question-json').value =  JSON.stringify(curr_question);
   }
     
 
@@ -166,14 +168,14 @@
     choiceText = document.getElementById('e-choice3');
     if (curr_question['choices'][2] != undefined) {
         curr_question['choices'][2].text = choiceText.value;
-        curr_question['choices'][2].score = document.getElementById('e-choice2-score').value;
-        curr_question['choices'][2].feedback = document.getElementById('e-choice2-feedback').value;
+        curr_question['choices'][2].score = document.getElementById('e-choice3-score').value;
+        curr_question['choices'][2].feedback = document.getElementById('e-choice3-feedback').value;
        }
     choiceText = document.getElementById('e-choice4');
     if (curr_question['choices'][3] != undefined) {
         curr_question['choices'][3].text = choiceText.value;
-        curr_question['choices'][3].score = document.getElementById('e-choice3-score').value;
-        curr_question['choices'][3].feedback = document.getElementById('e-choice3-feedback').value;
+        curr_question['choices'][3].score = document.getElementById('e-choice4-score').value;
+        curr_question['choices'][3].feedback = document.getElementById('e-choice4-feedback').value;
     }
       // do we need to save back to quiz_data so it can be saved in the file?
      quiz_data[quiz_index[q_index]] = curr_question;
@@ -259,7 +261,8 @@ function newQuestion()  {
 	<div id="download-div" style="display:inline"><span id="download"></span></div> 
 	  <p>
 	   <button class="gcb-button" id="newQ" onclick="newQuestion()">Add New Question</button>  
-	   <button class="gcb-button" id="saveQ" onclick="saveData()">Show Changes</button>  
+	   <button class="gcb-button" id="saveQ" onclick="saveData()">Save Question Changes</button> 
+         
 	  </p>
       </div> <!-- controls -->
   </div> <!-- quiz heading -->
@@ -345,6 +348,8 @@ function newQuestion()  {
      <div id="feedback-div">
        <span><label id="feedback"></label></span>
      </div>
+          JSON: <textarea id="question-json" rows=10 style="width:100%; vertical-align: top;">
+          </textarea>
   </div> <!-- quizpreview -->
  </div> <!-- quizsection -->
 

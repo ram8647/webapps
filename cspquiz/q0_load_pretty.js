@@ -299,37 +299,6 @@ var quiz_data = [
     {
         "choices": [
             {
-                "feedback": "This is not the best answer.  An example of data would be a list of raw numbers.",
-                "score": 0.0,
-                "text": "Data"
-            },
-            {
-                "feedback": "Yes, this is an example of information.  The raw data have been processed to provide some context.",
-                "score": 1.0,
-                "text": "Information"
-            },
-            {
-                "feedback": "This is not the best answer. This example would be too narrow to consider as an example of knowledge.",
-                "score": 0.0,
-                "text": "Knowledge"
-            },
-            {
-                "feedback": "This is not the best answer. This example would be too narrow to consider as an example of wisdom.",
-                "score": 0.0,
-                "text": "Wisdom"
-            }
-        ],
-        "description": "Data Info Knowledge Wisdom",
-        "cspcode": "9.9.9",
-        "question": "In terms of the data/information hierarchy the statement, \"Over 80% of Africans own a cell phone.\", would be best classified as an example of ______________",
-        "heading": "",
-        "type": "Bad",
-        "source":"mcsp-0",
-        "wrongfeedback": ""
-    },
-    {
-        "choices": [
-            {
                 "feedback": "Remember, it is best to give buttons names that help you understand their function. ",
                 "score": 0.0,
                 "text": "Button1"
@@ -548,42 +517,6 @@ var quiz_data = [
     {
         "choices": [
             {
-                "feedback": "This is challenging, but rewarding!",
-                "score": -1.0,
-                "text": "a. Data stored in a TinyDb can easily be shared with other devices and users."
-            },
-            {
-                "feedback": "That's right! Data stored in a TinyDb persist between uses of the app, but these data are stored on the device (not in the cloud) and cannot be shared with other devices or users. A TinyDb can store strings or numbers or lists.",
-                "score": 1.0,
-                "text": "b. Data stored in a TinyDb will persist between different uses of the app."
-            },
-            {
-                "feedback": "This is challenging, but rewarding!",
-                "score": -1.0,
-                "text": "c. Data stored in a TinyDb disappears when you quit the app. "
-            },
-            {
-                "feedback": "This is challenging, but rewarding!",
-                "score": -1.0,
-                "text": "d. Data stored in a TinyDb is stored in the cloud. "
-            },
-            {
-                "feedback": "This is challenging, but rewarding!",
-                "score": -1.0,
-                "text": "e. Only strings (text) can be stored in a TinyDb. "
-            }
-        ],
-        "description": "TinyDB Component",
-        "cspcode": "9.9.9",
-        "question": "Which of the following statements are true for a TinyDb component. <br>\nChoose all that apply. ",
-        "heading": "",
-        "type": "AI",
-        "source":"mcsp-0",
-        "wrongfeedback": ""
-    },
-    {
-        "choices": [
-            {
                 "feedback": "",
                 "score": 1.0,
                 "text": "True"
@@ -601,35 +534,5 @@ var quiz_data = [
         "type": "Mc",
         "source":"mcsp-2",
         "wrongfeedback": ""
-    },
-    {
-        "choices": [
-            {
-                "feedback": "",
-                "score": 3.0,
-                "text": "Well organized, easy to follow"
-            },
-            {
-                "feedback": "",
-                "score": 2.0,
-                "text": "Adequately organized"
-            },
-            {
-                "feedback": "",
-                "score": 1.0,
-                "text": "Poorly organized"
-            },
-            {
-                "feedback": "",
-                "score": 0.0,
-                "text": "Did not complete a report"
-            }
-        ],
-        "description": "EPT - Organization",
-        "question": "Writing Organization - The report is well organized in a way that is easy to follow.",
-        "cspcode":"0.0.0",
-        "source":"mcsp-0",
-        "type": "Assessment",
-        "wrongfeedback":""
     }
 ];

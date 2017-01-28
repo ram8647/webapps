@@ -29,7 +29,7 @@
  
 
   function initQuizData() {
-    console.log('Starting');
+    //console.log('Starting');
 
     // Create a default index (non-filtered)
     for (var k = 0; k < quiz_data.length; k++) {
@@ -40,10 +40,10 @@
    if(localStorage != undefined && 
       localStorage.getItem("completed") != null) {
             completed = JSON.parse(localStorage.getItem("completed"));
-            console.log("Got completed from LocalStorage " + completed);
+           // console.log("Got completed from LocalStorage " + completed);
             attempts = parseInt(localStorage.getItem("attempts"));
             points = parseInt(localStorage.getItem("points"));
-            console.log(points + "/" + attempts);
+           // console.log(points + "/" + attempts);
     }
     curr_question = quiz_data[quiz_index[q_index]];
 //    console.log(curr_question['description']);
@@ -97,25 +97,35 @@
     // scoring - count attempt
     document.getElementById("completedImage").src = "in_progress.png";
     if (completed[quiz_index[q_index]] == -1)  // never tried
+    {
         attempts++;
-    completed[quiz_index[q_index]] = 0; // attempted  
-    feedback_element.style.visibility="visible";
+        completed[quiz_index[q_index]] = 0; // attempted  
+    }
+      // make visible again 
+    feedback_element.style.display="inline";
     
       
     var feedback_div = document.getElementById('feedback-div');
-    feedback_div.style.visibility="visible";
+    feedback_div.style.display="block"; // visible
       
-    if (score >= 1) {
-       if (txt == "" || txt == "<br>") 
-          txt = "Correct -- good job!";
-        points++;
+    if (score >= 1) { //correct
+        if (txt == "" || txt == "<br>") 
+           txt = "Correct -- good job!";
+        console.log(completed[quiz_index[q_index]]+ " " + points);
+        if (completed[quiz_index[q_index]] != 1) 
+            points++;  // if not already counted correct
         document.getElementById("completedImage").src = "completed.png";
         completed[quiz_index[q_index]] = 1; 
         feedback_div.style.backgroundColor="#ADCF2F";
-      } else {
+      } else { // incorrect
          if (txt == "" || txt == "<br>") 
              txt = "Sorry, that's not correct -- try again!";
-        feedback_div.style.backgroundColor="#FFCCCC";
+         feedback_div.style.backgroundColor="#FFCCCC";
+         if (completed[quiz_index[q_index]] == 1) // previously correct
+             {
+                 points--; // remove correct points but not attempts
+                 completed[quiz_index[q_index]] = 0; // set back to attempted but not correct
+             }
       }
     
     if (curr_question['type'] == "Ma" && user_choices.length != 2) {
@@ -132,7 +142,7 @@
       localStorage.setItem("completed", JSON.stringify(completed));
       localStorage.setItem("attempts", attempts);
        localStorage.setItem("points", points);
-      console.log("Saving " + points + "/" + attempts);
+     // console.log("Saving " + points + "/" + attempts);
   }
 
   function displayChoices() {  // Multipl choice question
@@ -221,11 +231,11 @@
  
   function displayQuestionData() {
     user_choices = [];
-    document.getElementById('hint-div').style.visibility="hidden";
+    document.getElementById('hint-div').style.display="none"; 
     document.getElementById('hint').innerHTML="";
-    document.getElementById('feedback-div').style.visibility="hidden";
+    document.getElementById('feedback-div').style.display="none";
     var feedback = document.getElementById("feedback");
-    feedback.style.visibility="hidden";
+    feedback.style.display="none";
     var question = document.getElementById('question');
 
      //  question.innerHTML = curr_question['question'];
@@ -235,8 +245,6 @@
     var question_txt = "<b>"+curr_question['heading']+".</b>&nbsp;" + curr_question['question'];
     question.innerHTML = convertAPML(question_txt); // convertAPML
      
-      console.log("display question " + quiz_index[q_index] 
-                 + " c " + completed[quiz_index[q_index] ]);
       // display stored completion info
      if ( completed[quiz_index[q_index]] == 1)   
          document.getElementById("completedImage").src = "completed.png";
@@ -289,10 +297,11 @@
   }
 
   function giveHint() {
-    document.getElementById('hint-div').style.visibility="visible";
+    document.getElementById('hint-div').style.display="block";
     document.getElementById('hint-div').style.backgroundColor="#ADCF2F";
     var hint = document.getElementById('hint');
-    if (curr_question['hint']  != undefined) {
+    if (curr_question['hint']  != undefined &&
+       curr_question['hint']  != "" ) {
       hint.innerHTML = curr_question['hint'];
     } else {
       hint.innerHTML = 'Sorry, no hint available.';
@@ -317,6 +326,11 @@
    */
   function filter() {
     var option = document.getElementById('filter').value;
+    if (option == "resetScore") {
+        resetScore();
+        document.getElementById('filter').selectedIndex = 0;
+        return;
+    }
     if (IDEAS.indexOf(option) != -1) {
       bigidea_filter(option);  
     }
@@ -324,7 +338,7 @@
       course_filter(option);  
     }
     if (option == "keyword") {
-        document.getElementById('keyword-span').style.visibility="visible";
+        document.getElementById('keyword-span').style.display="inline";
         return;
     }
     if (option == "unfilter") {
@@ -347,7 +361,7 @@
     q_index = 0;
     curr_question = quiz_data[quiz_index[q_index]];
     displayQuestion();
-    document.getElementById('keyword-span').style.visibility="hidden";
+    document.getElementById('keyword-span').style.display="none";
   }
 
   /*
