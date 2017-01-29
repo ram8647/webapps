@@ -314,15 +314,17 @@
 
  // reset localStorage and completed array for scoring
   function resetScore() {
-      localStorage.clear();
-      for (var k = 0; k < quiz_data.length; k++) {
+      if (confirm("Are you sure you want to delete your scores permanently?")) {
+          localStorage.clear();
+          for (var k = 0; k < quiz_data.length; k++) {
             completed[k] = -1;    
+          }
+          attempts = 0;
+          points = 0;
+          document.getElementById("completedImage").src = "not_started.png";
+          // display attempts
+          document.getElementById("points").innerHTML = points+"/"+attempts+"/"+q_length;
       }
-      attempts = 0;
-      points = 0;
-      document.getElementById("completedImage").src = "not_started.png";
-      // display attempts
-      document.getElementById("points").innerHTML = points+"/"+attempts+"/"+q_length;;
   }
 
   /*
