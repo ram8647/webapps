@@ -1,0 +1,23 @@
+ // for smaller devices - phones, not tablets, viewport width <= 420px
+body {  
+         margin: 0;
+}
+#quiz_section  { 
+        width: 100%; 
+        margin: 0;
+} 
+#heading {
+    font-size: 1.25em;
+}
+
+
+#question, #hint-div, #score, #choices_container, input[type=radio], label, .radio_text {
+    font-size: 90%; 
+}
+.gcb-button {
+    font-size: 11px; // default 13px for button, filter
+}
+
+  
+
+
