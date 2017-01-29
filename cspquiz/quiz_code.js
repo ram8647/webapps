@@ -17,6 +17,7 @@
 
   var q_index = 0;         // Pointer into the quiz_index
   var q_id = 0;            // Pointer into the quiz_data 
+  var q_length = 0;        // Number of questions in the quiz
   var quiz_index = [];     // Array of quiz numbers
   var curr_question;
   var choices;          // Multiple choices text, score, feedback
@@ -31,11 +32,15 @@
   function initQuizData() {
     //console.log('Starting');
 
+    q_length = quiz_data.length;
+
     // Create a default index (non-filtered)
     for (var k = 0; k < quiz_data.length; k++) {
       quiz_index.push(k);
       completed[k] = -1;    
     }
+    randomize();   // Shuffle the quiz questions
+
       // see if any scores stored in local storage
    if(localStorage != undefined && 
       localStorage.getItem("completed") != null) {
@@ -48,7 +53,6 @@
     curr_question = quiz_data[quiz_index[q_index]];
 //    console.log(curr_question['description']);
     displayQuestion();
-   // } // I think the loop should end above
   }
 
   function setChoice(n) {
@@ -134,7 +138,7 @@
    
     feedback_element.innerHTML = txt;
      // display attempts
-    document.getElementById("points").innerHTML = points+"/"+attempts; //+ "(" + points*100/attempts +  "%)";
+    document.getElementById("points").innerHTML = points+"/"+attempts+"/"+q_length; //+ "(" + points*100/attempts +  "%)";
     
    // window.scrollTo(0,document.body.scrollHeight);
       
@@ -253,7 +257,7 @@
      else 
            document.getElementById("completedImage").src = "not_started.png";
       // display attempts
-      document.getElementById("points").innerHTML = points+"/"+attempts; 
+      document.getElementById("points").innerHTML = points+"/"+attempts+"/"+q_length;; 
   }
 
   /*
@@ -318,7 +322,7 @@
       points = 0;
       document.getElementById("completedImage").src = "not_started.png";
       // display attempts
-      document.getElementById("points").innerHTML = points+"/"+attempts;
+      document.getElementById("points").innerHTML = points+"/"+attempts+"/"+q_length;;
   }
 
   /*
@@ -348,20 +352,25 @@
         }
     }
     if (option == "random") {
-      var len = quiz_index.length;
-      // Shuffle the index
-      for (var k = 1; k < len / 2; k++) {
-        var i1 = Math.floor(Math.random() * len);
-        var i2 = Math.floor(Math.random() * len);
-        var temp = quiz_index[i1];
-        quiz_index[i1] = quiz_index[i2];
-        quiz_index[i2] = temp;   
-      }
+      randomize();
     }
     q_index = 0;
     curr_question = quiz_data[quiz_index[q_index]];
     displayQuestion();
     document.getElementById('keyword-span').style.display="none";
+  }
+
+   // Shuffles the quiz questions. 
+  function randomize() {
+    var len = quiz_index.length;
+    // Shuffle the index
+    for (var k = 1; k < len / 2; k++) {
+      var i1 = Math.floor(Math.random() * len);
+      var i2 = Math.floor(Math.random() * len);
+      var temp = quiz_index[i1];
+      quiz_index[i1] = quiz_index[i2];
+      quiz_index[i2] = temp;   
+    }
   }
 
   /*
