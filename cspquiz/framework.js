@@ -392,6 +392,7 @@ var essentials = {
   "6.2.1D": "Essential Knowledge  6.2.1D Routing on the Internet is fault tolerant and redundant.",
   "6.2.2A": "Essential Knowledge  6.2.2A Hierarchy and redundancy helps systems scale.",
   "6.2.2B": "Essential Knowledge  6.2.2B The redundancy of routing (i.e., more than one way to route data) between two points on the Internet increases the reliability of the Internet and helps it scale to more devices and more people.",
+  "6.2.2C": "Hierarchy in the DNS helps that system scale.",
   "6.2.2D": "Essential Knowledge  6.2.2D Interfaces and protocols enable widespread use of the Internet.",
   "6.2.2E": "Essential Knowledge  6.2.2E Open standards fuel the growth of the Internet.",
   "6.2.2F": "Essential Knowledge  6.2.2F The internet is a packet-switched system through which digital data is sent by breaking the data into blocks of bits called packets, which contain both the data being transmitted and control information for routing data. (Exclusion statement: Specific details of any particular packet-switching system are beyond the scope of this course and the AP Exam).",
