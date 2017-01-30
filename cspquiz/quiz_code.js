@@ -12,6 +12,7 @@
   // Quiz data are stored in global quiz_data as a json array
   var IDEAS = ["creativity", "abstraction", "data", "algorithms", "programming", "internet", "impact"];
   var COURSES = ["mcsp", "cb"];     // Could be expanded to other curricula -- e.g., bjc, uteach
+  var COURSE_NAMES = {mcsp:"Mobile CSP", cb:"College Board Sample Question"};
   var Q_TYPES  = ["Mc", "Ma", "Fi"];  // multiple choice, muliple answer, fill-in
   var UNITS = ["1","2","3","4","5","6","7","8","9","10","11"];  // unit or chapter keywords
 
@@ -24,7 +25,7 @@
   var user_choices = []; // A list of user choices for multiple answer questions
   
   // scoring
- var completed = []; // keeps track of whether questions are completed (-1 not attempted, 0 attempted, 1 correct)
+  var completed = []; // keeps track of whether questions are completed (-1 not attempted, 0 attempted, 1 correct)
   var points = 0;  
   var attempts = 0;  
  
@@ -347,6 +348,10 @@
         document.getElementById('keyword-span').style.display="inline";
         return;
     }
+    if (option == "unanswered") {
+        points_filter();
+        return;
+    }
     if (option == "unfilter") {
         quiz_index = [];
         for (var k = 0; k < quiz_data.length; k++) {
@@ -375,6 +380,19 @@
     }
   }
 
+  // Updates the quiz_index after filtering. 
+  function update_index(new_index, text) {
+    if (new_index.length > 0) {
+      quiz_index = [];
+      quiz_index = new_index;
+      q_index = 0;
+      curr_question = quiz_data[quiz_index[q_index]];
+      displayQuestion();
+    } else {
+      open_modal("Sorry, no matches were found for " + text + "."); 
+    }
+  }
+ 
   /*
    *  Handles the keyword filter.  Searches the quiz_data JSON object
    *   for a case-insensitive keyword match.  The entire JSON question is
@@ -402,16 +420,24 @@
 	}    
       }
     }
+    update_index(new_index, 'Keyword&nbsp;<i>' + keyword + '</i>');
+  }
+ 
+  // Filters for unanswered questions  
+  function points_filter() {
+    var new_index = [];
+    for (var k=0; k < quiz_data.length; k++) {
+      //      if (completed[quiz_index[k]] < 1) {
+      if (completed[k] < 1) {
+        new_index.push(k);
+      }
+    }
+    alert('There are currently ' + new_index.length + ' unanswered questions in this set of ' + q_length + ' questions.');
     if (new_index.length > 0) {
-      quiz_index = [];
-      quiz_index = new_index;
-      q_index = 0;
-      curr_question = quiz_data[quiz_index[q_index]];
-      displayQuestion();
-    } else {
-      open_modal("Sorry, no matches were found for keyword <i>" + keyword + "</i>."); 
+      update_index(new_index, '<i>unanswered questions</i>');
     }
   }
+
 
   function bigidea_filter(idea) {
     var new_index = [];
@@ -425,15 +451,7 @@
         }
       }
     }     
-    if (new_index.length > 0) {
-      quiz_index = [];
-      quiz_index = new_index;
-      q_index = 0;
-      curr_question = quiz_data[quiz_index[q_index]];
-      displayQuestion();
-    } else {
-      open_modal("Sorry, no matches were found for Big Idea <i>" + idea + "</i>."); 
-    }
+    update_index(new_index, 'Big Idea<i> ' + idea + '</i>');
   }
 
   function course_filter(course) {
@@ -448,15 +466,7 @@
         }
       }
     }     
-    if (new_index.length > 0) {
-      quiz_index = [];
-      quiz_index = new_index;
-      q_index = 0;
-      curr_question = quiz_data[quiz_index[q_index]];
-      displayQuestion();
-    } else {
-      open_modal("Sorry, no matches were found for Course <i>" + course + "</i>."); 
-    }
+    update_index(new_index, '<i> ' + COURSE_NAMES[course] + '</i>');
   }
 
 
