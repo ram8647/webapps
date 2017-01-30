@@ -54,11 +54,17 @@ html {
 
 #hint-div, #feedback-div {
    width: 90%;
-   margin: 10px auto 10px;     // top left/right bottom
+   margin: 5px auto 5px;     // top left/right bottom
+   padding: 5px;    
+   position: relative;
+   box-shadow: 3px 3px 2px #aaaaaa;
+}
+#feedback-div {
+    margin-bottom: 0px;
 }
 
 #hint {
-       padding: 5px;
+       padding: 5px; // not working because span instead of div
 }
 
 select option:disabled {

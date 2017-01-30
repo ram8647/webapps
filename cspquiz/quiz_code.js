@@ -137,8 +137,8 @@
     }
    
     feedback_element.innerHTML = txt;
-     // display attempts
-    document.getElementById("points").innerHTML = points+"/"+attempts+"/"+q_length; //+ "(" + points*100/attempts +  "%)";
+     // display points
+    document.getElementById("points").innerHTML = points+"/"+q_length; 
     
    // window.scrollTo(0,document.body.scrollHeight);
       
@@ -146,7 +146,6 @@
       localStorage.setItem("completed", JSON.stringify(completed));
       localStorage.setItem("attempts", attempts);
        localStorage.setItem("points", points);
-     // console.log("Saving " + points + "/" + attempts);
   }
 
   function displayChoices() {  // Multipl choice question
@@ -256,8 +255,9 @@
          document.getElementById("completedImage").src = "in_progress.png";
      else 
            document.getElementById("completedImage").src = "not_started.png";
-      // display attempts
-      document.getElementById("points").innerHTML = points+"/"+attempts+"/"+q_length;; 
+      // display completed/total
+      document.getElementById("points").innerHTML = //points+"/"+attempts+"/"+q_length; 
+          points+"/"+q_length;
   }
 
   /*
@@ -322,8 +322,9 @@
           attempts = 0;
           points = 0;
           document.getElementById("completedImage").src = "not_started.png";
-          // display attempts
-          document.getElementById("points").innerHTML = points+"/"+attempts+"/"+q_length;
+          // display completed/total
+          document.getElementById("points").innerHTML = //points+"/"+attempts+"/"+q_length;
+              points+"/"+q_length;
       }
   }
 

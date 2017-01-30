@@ -11,7 +11,7 @@ body {
 }
 
 
-#question, #hint-div, #score, #choices_container, input[type=radio], label, .radio_text {
+#question, #hint-div, #feedback-div, #score, #choices_container, input[type=radio], label, .radio_text, a {
     font-size: 90%; 
 }
 .gcb-button {
