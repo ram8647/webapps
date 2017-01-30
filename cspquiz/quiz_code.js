@@ -5,9 +5,13 @@
     of the License, or (at your option) any later version.  The code is distributed 
     WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
     or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-  */
+ 
+  Authors: Ralph Morelli, Beryl Hoffman
+  Mobile CSP
+  
 // This is code shared by index.html and editor.html to display the quiz
 //  Questions and answers are run through APML converter before being displayed.
+ */
 
   // Quiz data are stored in global quiz_data as a json array
   var IDEAS = ["creativity", "abstraction", "data", "algorithms", "programming", "internet", "impact"];
@@ -40,7 +44,7 @@
       quiz_index.push(k);
       completed[k] = -1;    
     }
-    randomize();   // Shuffle the quiz questions
+    randomize(quiz_index);   // Shuffle the quiz questions
 
       // see if any scores stored in local storage
    if(localStorage != undefined && 
@@ -149,9 +153,10 @@
        localStorage.setItem("points", points);
   }
 
-  function displayChoices() {  // Multipl choice question
-     document.getElementById('choices_container').style.visibility="visible";
+  function displayChoices() {  // Multiple choice question
+     //document.getElementById('choices_container').style.visibility="visible";
      choices = curr_question['choices'];
+     randomize(choices);
      var choice_form = '';
      choice_form += '<hr>';
      choice_form += '<i>Select the <u>best</u> choice.</i><br />';
@@ -171,7 +176,7 @@
   }
 
   function displayMaChoices() {  // Multiple answer question
-     document.getElementById('choices_container').style.visibility="visible";
+     //document.getElementById('choices_container').style.visibility="visible";
      choices = curr_question['choices'];
      var choice_form = '';
      choice_form += '<hr>';
@@ -190,7 +195,7 @@
   }
 
   function displayFillin() {  // Fillin answer type
-     document.getElementById('choices_container').style.visibility="visible";
+     //document.getElementById('choices_container').style.visibility="visible";
      var choice_form = '';
      choice_form += '<hr>';
      choice_form += '<i>Input your answer into the text box and click \'Check Answer\'.</i><br />';
@@ -360,7 +365,7 @@
         }
     }
     if (option == "random") {
-      randomize();
+      randomize(quiz_index);
     }
     q_index = 0;
     curr_question = quiz_data[quiz_index[q_index]];
@@ -368,17 +373,17 @@
     document.getElementById('keyword-span').style.display="none";
   }
 
-   // Shuffles the quiz questions. 
-  function randomize() {
-    var len = quiz_index.length;
-    // Shuffle the index
-    for (var k = 1; k < len / 2; k++) {
+   // Shuffles the quiz questions and answer choices
+  function randomize(array) {
+    var len = array.length;
+    // Shuffle the array
+    for (var k = 0; k < len / 2; k++) {
       var i1 = Math.floor(Math.random() * len);
       var i2 = Math.floor(Math.random() * len);
-      var temp = quiz_index[i1];
-      quiz_index[i1] = quiz_index[i2];
-      quiz_index[i2] = temp;   
-    }
+      var temp = array[i1];
+      array[i1] = array[i2];
+      array[i2] = temp;   
+    } 
   }
 
   // Updates the quiz_index after filtering. 
