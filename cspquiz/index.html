@@ -25,8 +25,8 @@
 <title>CSP Quiz</title>
 
 <!-- Quiz Data:  Sets the global variable quiz_data --> 
-<!-- <script type="text/javascript" src="./q3r_load_pretty.js"></script> -->
-<script type="text/javascript" src="./questions.js"></script>
+<script type="text/javascript" src="./q3r_load_pretty.js"></script>
+<!-- <script type="text/javascript" src="./questions.js"></script> -->
 
 </head>
 
@@ -52,18 +52,16 @@
       <option value="internet">&nbsp;&nbsp;&nbsp;Internet</option>      
       <option value="impact">&nbsp;&nbsp;&nbsp;Global Impact</option>      
       <option disabled>---------------</option>      
-      <option value="keyword">Keyword or Unit Number</option>      
-      <option disabled>---------------</option>      
-      <option disabled>Source</option>      
-      <option value="mcsp">&nbsp;&nbsp;&nbsp;Mobile CSP </option>      
-      <option value="cb">&nbsp;&nbsp;&nbsp;College Board Sample Question&nbsp;&nbsp;&nbsp; </option>      
+      <option value="keyword">Keyword</option>
+      <option value="cb">College Board Sample Question&nbsp;&nbsp;&nbsp; </option>      
+      <option value="unanswered">Unanswered questions&nbsp;&nbsp;&nbsp; </option>      
       <option disabled>---------------</option>      
       <option value="random">Randomize</option>      
       <option value="unfilter">Remove all filters</option>  
        <option value="resetScore">Reset Score</option>  
      </select>
      <span id="keyword-span" style="display:none"> 
-       &nbsp;<b>Keyword or Unit Number:</b> <input type="text" id="keyword-input" > &nbsp;
+       &nbsp;<b>Keyword:</b> <input type="text" id="keyword-input" > &nbsp;
        <input type="submit" class="gcb-button" onclick="keyword_filter()" value="Submit">
      </span>
    </div>
