@@ -30,7 +30,8 @@
   
   // scoring
   var completed = []; // keeps track of whether questions are completed (-1 not attempted, 0 attempted, 1 correct)
-  var points = 0;  
+  var points = 0; 
+  var filtered_points = 0; 
   var attempts = 0;  
  
 
@@ -121,8 +122,10 @@
         if (txt == "" || txt == "<br>") 
            txt = "Correct -- good job!";
         console.log(completed[quiz_index[q_index]]+ " " + points);
-        if (completed[quiz_index[q_index]] != 1) 
+        if (completed[quiz_index[q_index]] != 1) {
             points++;  // if not already counted correct
+            filtered_points++;
+        }
         document.getElementById("completedImage").src = "completed.png";
         completed[quiz_index[q_index]] = 1; 
         feedback_div.style.backgroundColor="#ADCF2F";
@@ -143,7 +146,8 @@
    
     feedback_element.innerHTML = txt;
      // display points
-    document.getElementById("points").innerHTML = points+"/"+q_length; 
+    document.getElementById("points").innerHTML = 
+        getPoints() + "/"+ quiz_index.length ; // using filtered points and quiz_index instead of total q_length; 
     
    // window.scrollTo(0,document.body.scrollHeight);
       
@@ -262,9 +266,18 @@
      else 
            document.getElementById("completedImage").src = "not_started.png";
       // display completed/total
-      document.getElementById("points").innerHTML = //points+"/"+attempts+"/"+q_length; 
-          points+"/"+q_length;
+      document.getElementById("points").innerHTML =  
+          getPoints()+"/"+ quiz_index.length ; // using filtered quiz_index instead of total q_length;
   }
+
+function getPoints()
+{
+    if (quiz_index.length == q_length) { //not filtered
+        return points;
+    }
+    else 
+        return filtered_points;
+}
 
   /*
    *  Uses quiz_index to select the previous question from quiz_data, wrapping
@@ -320,18 +333,17 @@
 
  // reset localStorage and completed array for scoring
   function resetScore() {
-      if (confirm("Are you sure you want to delete your scores permanently?")) {
           localStorage.clear();
           for (var k = 0; k < quiz_data.length; k++) {
             completed[k] = -1;    
           }
           attempts = 0;
           points = 0;
+          filtered_points = 0;
           document.getElementById("completedImage").src = "not_started.png";
           // display completed/total
-          document.getElementById("points").innerHTML = //points+"/"+attempts+"/"+q_length;
-              points+"/"+q_length;
-      }
+          document.getElementById("points").innerHTML = 
+              getPoints()+"/"+ quiz_index.length ; // using filtered quiz_index instead of total q_length;
   }
 
   /*
@@ -340,7 +352,7 @@
   function filter() {
     var option = document.getElementById('filter').value;
     if (option == "resetScore") {
-        resetScore();
+        open_modal("Are you sure you want to delete your scores permanently for all questions? <br><button onClick='resetScore();document.getElementById(\"myModal\").style.display=\"none\";'>Yes</button> <button onClick='document.getElementById(\"myModal\").style.display=\"none\";'>No</button>");
         document.getElementById('filter').selectedIndex = 0;
         return;
     }
@@ -363,9 +375,11 @@
         for (var k = 0; k < quiz_data.length; k++) {
           quiz_index.push(k);
         }
+        open_modal('There are currently ' + (quiz_index.length - points)  + ' unanswered questions in the complete set of ' + quiz_index.length + ' questions.');
     }
     if (option == "random") {
       randomize(quiz_index);
+      open_modal('There are currently ' + (quiz_index.length - getPoints())  + ' unanswered questions in the complete set of ' + quiz_index.length + ' questions.');
     }
     q_index = 0;
     curr_question = quiz_data[quiz_index[q_index]];
@@ -427,6 +441,8 @@
       }
     }
     update_index(new_index, 'Keyword&nbsp;<i>' + keyword + '</i>');
+    calculate_filtered_points();
+    open_modal('There are currently ' + (quiz_index.length - filtered_points)  + ' unanswered questions in this set of ' + quiz_index.length + " " + keyword  + ' questions.');
   }
  
   // Filters for unanswered questions  
@@ -438,7 +454,8 @@
         new_index.push(k);
       }
     }
-    alert('There are currently ' + new_index.length + ' unanswered questions in this set of ' + q_length + ' questions.');
+    filtered_points = 0;
+    open_modal('There are currently ' + new_index.length + ' unanswered questions in this set of ' + q_length + ' questions.');
     if (new_index.length > 0) {
       update_index(new_index, '<i>unanswered questions</i>');
     }
@@ -456,11 +473,22 @@
           new_index.push(k);
         }
       }
-    }     
+    }  
     update_index(new_index, 'Big Idea<i> ' + idea + '</i>');
+    calculate_filtered_points();
+    open_modal('There are currently ' + (quiz_index.length - filtered_points)  + ' unanswered questions in this set of ' + quiz_index.length + " " + idea  + ' questions.');
   }
 
-  function course_filter(course) {
+function calculate_filtered_points()
+{
+  filtered_points = 0;    
+  for (var k = 0; k < quiz_index.length; k++) {
+      if (completed[quiz_index[k]] == 1)
+          filtered_points++;
+    }      
+}
+
+function course_filter(course) {
     var new_index = [];
     for (var k=0; k < quiz_data.length; k++) {
       var question = quiz_data[k];
@@ -473,6 +501,12 @@
       }
     }     
     update_index(new_index, '<i> ' + COURSE_NAMES[course] + '</i>');
+    calculate_filtered_points();
+    if (course == "cb")
+        course = "College Board AP";
+    else
+        course = "Mobile CSP"
+    open_modal('There are currently ' + (quiz_index.length - filtered_points)  + ' unanswered questions in this set of ' + quiz_index.length + " " + course  + ' questions.');
   }
 
 
@@ -500,9 +534,8 @@
    * Information about the app.
    */
   function about() {
-    var msg = "A free quiz app for the CS Principles course.<br />";
-    msg += "Created by the Mobile CSP Project.<br />";
-    msg += "Visit us at <a target='_blank' href='http://mobile-csp.org'>http:mobile-csp.org</a> ";
+    var msg = "This is a free quiz app for the CS Principles course created by the Mobile CSP Project.<br />";
+    msg += "Visit us at <a target='_blank' href='http://mobile-csp.org'>http:mobile-csp.org</a> <br> <a style='font-size:70%' href='https://creativecommons.org/licenses/by-nc-sa/4.0/'>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0).</a>";
     open_modal(msg);
   }
 

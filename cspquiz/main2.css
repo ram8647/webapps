@@ -92,14 +92,16 @@ select option:disabled {
     padding: 20px;
     border: 1px solid #888;
     width: 33%; /* Could be more or less, depending on screen size */
+   box-shadow: 3px 3px 2px black;
 }
 
 /* The Close Button */
 .close {
     color: #aaa;
     float: right;
-    font-size: 28px;
+    font-size: 22px;
     font-weight: bold;
+    margin-top: -20px;
 }
 
 .close:hover,
