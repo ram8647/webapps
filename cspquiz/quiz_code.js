@@ -379,7 +379,7 @@ function getPoints()
     }
     if (option == "random") {
       randomize(quiz_index);
-      open_modal('There are currently ' + (quiz_index.length - getPoints())  + ' unanswered questions in the complete set of ' + quiz_index.length + ' questions.');
+      open_modal('There are currently ' + (quiz_index.length - getPoints())  + ' unanswered questions in the set of ' + quiz_index.length + ' questions.');
     }
     q_index = 0;
     curr_question = quiz_data[quiz_index[q_index]];
