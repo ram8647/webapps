@@ -25,8 +25,18 @@ See https://github.com/phonegap/phonegap-start/blob/master/www/config.xml for ma
 
     <!-- Customize your app and platform with the preference element. -->
     <preference name="orientation"                value="default" />        <!-- all: default means both landscape and portrait are enabled -->
+   
     <preference name="target-device"              value="universal" />      <!-- all: possible values handset, tablet, or universal -->
-    <preference name="fullscreen"                 value="true" />           <!-- all: hides the status bar at the top of the screen -->
+    <preference name="fullscreen"                 value="true" />           
+    
+    <!-- to make swipe work? -->
+    <preference nam="android-targetSdkVersion" value="18"></preference>
+    
+    <!-- to have access to images  <access origin="https://ram8647.appspot.com/mobileCSP/assets/img/*" />
+       but seems to need full access to any site for swipe to work  -->
+     <plugin name="cordova-plugin-whitelist" spec="1" />
+     <access origin="*" />
+    
     
     <!-- Define app icon for each platform. -->
     <icon src="mobile-csp-logo.png" />
