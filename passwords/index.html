@@ -56,13 +56,13 @@
         //alert(chars + " " + combos + " " + seconds);
         document.getElementById("output").innerHTML =
             "That password has " + combos.toLocaleString('en') + " possible combinations!<br/><br/>" +
-            "At " + parseInt(guessesPerSecond).toLocaleString('en') + " guesses per second " +
+            "At " + parseFloat(guessesPerSecond).toLocaleString('en') + " guesses per second " +
             " that will take: <br/>&nbsp;&nbsp; " 
-              + parseInt(seconds.toFixed(1)).toLocaleString('en') + " seconds or <br/>&nbsp;&nbsp; " +
-               parseInt(minutes.toFixed(1)).toLocaleString('en') + " minutes or <br/>&nbsp;&nbsp; " + 
-               parseInt(hours.toFixed(1)).toLocaleString('en') + " hours or <br/>&nbsp;&nbsp; " + 
-             parseInt(days.toFixed(1)).toLocaleString('en') + " days or <br/>&nbsp;&nbsp; " + 
-             parseInt(years.toFixed(1)).toLocaleString('en') + " years to crack.";
+              + parseFloat(seconds.toFixed(1)).toLocaleString('en') + " seconds or <br/>&nbsp;&nbsp; " +
+               parseFloat(minutes.toFixed(1)).toLocaleString('en') + " minutes or <br/>&nbsp;&nbsp; " + 
+               parseFloat(hours.toFixed(1)).toLocaleString('en') + " hours or <br/>&nbsp;&nbsp; " + 
+             parseFloat(days.toFixed(1)).toLocaleString('en') + " days or <br/>&nbsp;&nbsp; " + 
+             parseFloat(years.toFixed(1)).toLocaleString('en') + " years to crack.";
     }
 
 </script>
