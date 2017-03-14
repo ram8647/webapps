@@ -18,7 +18,7 @@ function countLetters() {
   freqs = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
   for (var k = 0; k < text.length; k++) {
     var ch = text.charAt(k);
-    if (alphabet.indexOf(ch) != 0) {
+    if (alphabet.indexOf(ch) != -1) {
       var x = ch.charCodeAt(0) - "a".charCodeAt(0);
       ++freqs[x];
       ++count;
