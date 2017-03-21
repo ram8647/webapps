@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>ASCII Lookup</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="./widget.css">
+
+  <!-- edX This script enables communication between  iframe and the platform.
+       REQUIRED for edX - - - DO NOT REMOVE!! -->
+   <script src="/static/js/capa/src/jschannel.js"></script>
+   <script src="./ed-jsinput.js"></script>
+
+   <script src="./converters.js"></script>
+   <script>
+
+    base = 2;
+    value = 0;
+
+    // Initialization
+    function init() {
+    }
+
+    //Sets the base from drop-down 
+    function setBase(n) {
+      base = parseInt(n);
+      var decimal = document.getElementById("inputletter").value.charCodeAt(0);
+      if (decimal == NaN) {
+       document.getElementById("binary").innerHTML = "NaN";
+       return;
+     }
+     value = decimal;
+     document.getElementById("binary").innerHTML = padForBase(decToAltBase(value, base), base);
+    }
+
+
+    // Converts an input letter to is ascii code
+    function convert() {
+       var input = document.getElementById("inputletter").value;
+       var decimal = input.charCodeAt(0);
+       if (decimal == NaN) {
+         document.getElementById("binary").innerHTML = "NaN";
+         return;
+       }
+       var conv = decToAltBase(decimal, base);
+       document.getElementById("binary").innerHTML = conv;
+    }
+   </script>
+</head>
+<body onLoad="init()">
+  <div class="center" style="width:605">
+
+    <table class="container" style="width:600">
+      <tr>
+	<td>
+          <img style="float:left; width:128px" src="./android_mobileCSP-192.jpg" alt="mobile csp logo">
+          <br /><label style="font-size:1.8em">ASCII Lookup</label>
+	  <br /><br />Type a letter in the text field and the <b><i>Enter</i></b> key to get its ASCII code.
+	</td>
+      </tr>
+    </table>
+
+    <table class="widget">
+      <tr>
+	<td style="width:400px">
+          <input style="height:30px;font-size:1.2em;border:1px;background:#eeeeee"  placeholder="?" type="text" id="inputletter" size="3" value="?" maxlength="1" onchange="convert()">
+          <label style="font-size:1.3em" id="binary">1000001</label>
+          <select id="bases" onchange="setBase(value)">
+           <option value="2" selected>binary</option>
+           <option value="8">octal</option>
+           <option value="10">decimal</option>
+           <option value="16">hexadecimal</option>
+         </select>
+
+        </td>
+      </tr>
+    </table>
+</div>
+</body>
+</html>

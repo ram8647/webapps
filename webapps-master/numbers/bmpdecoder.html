@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="./widget.css">
+
+    <title>BMP Decoder</title>
+    <script src="converters.js"></script>
+    <script src="bitmap-editor.js"></script>
+  </head>
+  <body onload="">
+    <div class="center">
+      <table class="container">
+	<tr>
+	  <td>
+            <div class="alignleft" >
+  	      <img src="./android_mobileCSP-192.jpg" alt="mobile csp logo">
+            </div>
+            <br /><label style="font-size:1.8em">Steganography<br />Decoder</label>
+	    <br /><br /> Upload your bitmap image.<br />Click 'Decode'.
+	  </td>
+	</tr>
+      </table>
+
+      <table class="widget" style="border:1px">
+	<tr>
+	  <td style="border:0px">
+	    <div>
+	      Select a BMP file:
+	      <input type="file" id="fileInput" onchange="fileChangeHandler()">
+	    </div>
+	    <div id="filedisplayarea"></div>
+            <hr />
+	  </td>
+	</tr>
+        <tr>
+          <td style="border:0px">
+            <div id="rawimgdiv" style="visibility:hidden">
+	      <table>
+		<tr>
+		  <td style="border:0px"><img id="rawimg" src="placeholder" alt='MyImage'></td>
+		  <td style="border:0px"><label id="message"></label>
+		</tr>
+	      </table>
+	    </div>
+          </td>
+	</tr>
+	<tr>
+	  <td style="border:0px">
+	    <input class="button" id="decode" type="button" disabled value="Decode" onclick='decodeImg()'>
+	  </td>
+	</tr>
+      </table>
+    </div>
+  </body>
+</html>

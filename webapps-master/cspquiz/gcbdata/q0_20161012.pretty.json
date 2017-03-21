@@ -1,0 +1,671 @@
+[
+    {
+        "choices": [
+            {
+                "feedback": "OK, so you didn\u2019t get it right this time. Let\u2019s look at this as an opportunity to learn. An OR gate would be TRUE (or ON) when either A or B is TRUE (or ON).",
+                "score": 0.0,
+                "text": "the gate will be TRUE (or ON) when either A or B is TRUE (or ON)."
+            },
+            {
+                "feedback": "",
+                "score": 1.0,
+                "text": "the gate will be TRUE (or ON) when both A and B are TRUE (or ON)."
+            },
+            {
+                "feedback": "OK, so you didn\u2019t get it right this time. Let\u2019s look at this as an opportunity to learn. For the AND gate to be TRUE (or ON) B would also have to be TRUE (or ON).",
+                "score": 0.0,
+                "text": "the gate will be TRUE (or ON) when A is TRUE (or ON)."
+            },
+            {
+                "feedback": "OK, so you didn\u2019t get it right this time. Let\u2019s look at this as an opportunity to learn. For the AND gate to be TRUE (or ON) A would also have to be TRUE (or ON).",
+                "score": 0.0,
+                "text": "the gate will be TRUE (or ON) when B is TRUE (or ON)."
+            }
+        ],
+        "description": "AND gate",
+        "permute": false,
+        "question": "An AND gate is an electronic component that takes two inputs, A and B, such that",
+        "type": 0,
+        "wrongfeedback": ""
+    },
+    {
+        "choices": [
+            {
+                "feedback": "",
+                "score": 3.0,
+                "text": "Very well documented"
+            },
+            {
+                "feedback": "",
+                "score": 2.0,
+                "text": "Fairly well documented \u2013 some problems"
+            },
+            {
+                "feedback": "",
+                "score": 1.0,
+                "text": "Not well documented \u2013 no comments/poor names "
+            },
+            {
+                "feedback": "",
+                "score": 0.0,
+                "text": "Did not complete"
+            }
+        ],
+        "description": "CP1 - Documentation of Code",
+        "question": "Documentation of Code",
+        "type": 0
+    },
+    {
+        "choices": [
+            {
+                "feedback": "Yes, the correct answer is 0. This would be an example of an <b>overflow error</b>. But it would not crash the machine.",
+                "score": 1.0,
+                "text": "0"
+            },
+            {
+                "feedback": "No. You would get 255 if you added 0 to 255. ",
+                "score": 0.0,
+                "text": "255"
+            },
+            {
+                "feedback": "No.  The value 256 cannot be represented at all in 8 bits.  In 8 bits you can represent 256 different values, ranging from 00000000 to 11111111,  decimal 0 to decimal 255. ",
+                "score": 0.0,
+                "text": "256"
+            },
+            {
+                "feedback": "No.  Adding 1 to 255 in 8 bits causes an overflow error, but it would not crash the machine. ",
+                "score": 0.0,
+                "text": "No value.  The machine would crash."
+            }
+        ],
+        "description": "Binary Overflow",
+        "permute": false,
+        "question": "<h3>What's the Output?</h3>\n\nOur 4-bit computer uses 8-bit bytes to represent its data. An 8-bit byte can store values ranging from 0 to 255 -- i.e., 00000000 to 11111111.  What do you suppose would happen if you added 1 to 11111111?\n<br><br>\nTo help answer this question, you might want to use the <a target=\"_blank\" href=\"http://appinventor.cs.trincoll.edu/csp/webapps/computer/gen0.html\">4-bit simulator</a> to write a little machine language program to see what happens. By default, the 4-bit computer adds the values in locations 1000 and 1001 and prints the sum. So here is how you would set up the machine to add 11111111 and 00000001:\n<br>\n\n<ul>\n  <li>Put the value 11111111 (decimal 255) in memory location 1000.</li>\n  <li>Put the value 00000001 (decimal 1) in memory location 1001.</li>\n  <li>Run the program and observe the output.</li>\n</ul>\n<br>\n\nWhat decimal value do you get when you add binary 1 to binary 11111111?\n<br>\n<br>\n\n",
+        "type": 0,
+        "wrongfeedback": ""
+    },
+    {
+        "choices": [
+            {
+                "feedback": "",
+                "score": 0.5,
+                "text": "(A) gradeList[i] \u2190 min (gradeList[i] + 5, 100)"
+            },
+            {
+                "feedback": "",
+                "score": -1.0,
+                "text": "(B) gradeList[i] \u2190 max (gradeList[i] + 5, 100)"
+            },
+            {
+                "feedback": "",
+                "score": -1.0,
+                "text": "(C) gradeList[i] \u2190 gradeList[i] + 5<br>IF (gradeList[i] > 100) {<br><blockquote>gradeList[i] \u2190 gradeList[i] - 5</blockquote> }"
+            },
+            {
+                "feedback": "",
+                "score": 0.5,
+                "text": "(D) gradeList[i] \u2190 gradeList[i] + 5<br>IF (gradeList[i] > 100) {<br><blockquote>gradeList[i] \u2190 100</blockquote> }"
+            }
+        ],
+        "description": "AP CS P Exam Prep Grade Procedures",
+        "permute": false,
+        "question": "A teacher uses the following program to adjust student grades on an assignment by adding&nbsp;<span style=\"line-height: 1.22;\">5 points to each student\u2019s original grade. However, if adding 5 points to a student\u2019s original </span><span style=\"line-height: 1.22;\">grade causes the grade to exceed 100 points, the student will receive the maximum possible&nbsp;</span><span style=\"line-height: 1.22;\">score of 100 points. The students\u2019 original grades are stored in the list <i>gradeList</i>, which is&nbsp;</span><span style=\"line-height: 1.22;\">indexed from 1 to <i>n</i>.</span><div><br></div><blockquote>&nbsp;i \u2190 1<br>&nbsp;REPEAT n TIMES</blockquote><blockquote><span class=\"Apple-tab-span\" style=\"white-space:pre\">\t</span>&nbsp;{<br><span class=\"Apple-tab-span\" style=\"white-space:pre\">\t</span>&nbsp;<i>&lt;MISSING CODE&gt;</i><br><span class=\"Apple-tab-span\" style=\"white-space:pre\">\t</span>&nbsp;i \u2190 i + 1<br><span class=\"Apple-tab-span\" style=\"white-space:pre\">\t</span>&nbsp;}</blockquote><div><br></div><div>The teacher has the following procedures available.<br><br><div style=\"text-align: center;\"><img src=\"https://ram8647.appspot.com/mobileCSP/assets/img/Q30Table.PNG\" class=\"yui-img\" title=\"\" alt=\"\" style=\"line-height: 1.22;\"><br><div style=\"text-align: left;\"><br><div>Which of the following code segments can replace <i>&lt;MISSING CODE&gt;</i> so that the program&nbsp;<span style=\"line-height: 1.22;\">works as intended?</span></div><div><br></div><div>Select <u>two</u> answers.<br><br></div></div></div></div>",
+        "type": 0,
+        "wrongfeedback": ""
+    },
+    {
+        "choices": [
+            {
+                "feedback": "Both FirebaseDB and TinyDb are able to persist data between different uses of the app.  So this is not the best answer.",
+                "score": 0.0,
+                "text": "a. When the data needs to persist between uses of the app."
+            },
+            {
+                "feedback": "Right.  FirebaseDb stores data on the Web and retrieves it over the Internet. So it can be shared among many devices.  TinyDb stores data on the device.  So it can't be shared among different devices. ",
+                "score": 1.0,
+                "text": "b. When the data needs to be shared among different devices running the app."
+            },
+            {
+                "feedback": "It is true that data stored on a TinyDb is retrieved instantaneously, which will always be faster than data retrieved asynchronously from a FirebaseDB. But we are talking about a difference of a few milliseconds, assuming the app has a reasonable Internet connection.  So this is not a main reason to choose between TinyDb and FirebaseDB.",
+                "score": 0.0,
+                "text": "c. When you need to retrieve the data quickly. "
+            },
+            {
+                "feedback": "Both TinyDb and FirebaseDB can store lists of data.  So this is not a distinguishing feature. ",
+                "score": 0.0,
+                "text": "d. When you need to store lists of data."
+            }
+        ],
+        "description": "FirebaseDb vs TinyDb",
+        "permute": false,
+        "question": "When should an app's data be stored in a <i><b>FirebaseDb</b></i> as opposed to a <i><b>TinyDb</b></i>?",
+        "type": 0,
+        "wrongfeedback": ""
+    },
+    {
+        "choices": [
+            {
+                "feedback": "",
+                "score": 3.0,
+                "text": "Uses data appropriately and effectively"
+            },
+            {
+                "feedback": "",
+                "score": 2.0,
+                "text": "Makes appropriate use of data but with minor lapses"
+            },
+            {
+                "feedback": "",
+                "score": 1.0,
+                "text": "Fails to use variables and/or databases"
+            },
+            {
+                "feedback": "",
+                "score": 0.0,
+                "text": "Did not complete"
+            }
+        ],
+        "description": "CP1 - Data",
+        "question": "Data (variables and/or databases)",
+        "type": 0
+    },
+    {
+        "choices": [
+            {
+                "feedback": "Let me add new information to help you solve this; a physical circuit is a low-level component.",
+                "score": 0.0,
+                "text": "RAM chip, motherboard, logic gate, physical circuit "
+            },
+            {
+                "feedback": "Let me add new information to help you solve this; a motherboard would contain RAM chips which would contain low-level logic gates.",
+                "score": 0.0,
+                "text": "Physical circuit, motherboard, logic gate, RAM chip "
+            },
+            {
+                "feedback": "Yes, that is correct. ",
+                "score": 1.0,
+                "text": "Physical circuit, logic gate,  RAM chip, motherboard,"
+            },
+            {
+                "feedback": "Let me add new information to help you solve this; a logic gate is made up of physical circuits. ",
+                "score": 0.0,
+                "text": "RAM chip, logic gate, physical circuit, motherboard."
+            }
+        ],
+        "description": "Hardware abstraction layers",
+        "permute": false,
+        "question": "Which of the following lists arranges hardware components from the lowest to the highest abstraction level? ",
+        "type": 0,
+        "wrongfeedback": ""
+    },
+    {
+        "choices": [
+            {
+                "feedback": "OK, so you didn\u2019t get it right this time. Let\u2019s look at this as an opportunity to learn. Try reviewing this; synchronous means \"at the same time\".  So synchronous operations are performed instantaneously, whereas asynchronous operations are not.  Operations over the Internet are asynchronous.",
+                "score": 0.0,
+                "text": "that it can be completed immediately. "
+            },
+            {
+                "feedback": "Right.  Synchronous means \"at the same time\".  So synchronous operations are performed instantaneously, whereas asynchronous operations are not.  Operations over the Internet are asynchronous.",
+                "score": 1.0,
+                "text": "that the request cannot be completed at the same time as it was made and may take an unpredictable amount of time. "
+            },
+            {
+                "feedback": "OK, so you didn\u2019t get it right this time. Let\u2019s look at this as an opportunity to learn. Try reviewing this; synchronous means \"at the same time\".  So synchronous operations are performed instantaneously, whereas asynchronous operations are not.  Operations over the Internet are asynchronous.",
+                "score": 0.0,
+                "text": "that it must be performed on a clock."
+            },
+            {
+                "feedback": "OK, so you didn\u2019t get it right this time. Let\u2019s look at this as an opportunity to learn. Try reviewing this; synchronous means \"at the same time\".  So synchronous operations are performed instantaneously, whereas asynchronous operations are not.  Operations over the Internet are asynchronous.",
+                "score": 0.0,
+                "text": "that it cannot be performed on a clock."
+            }
+        ],
+        "description": "Asynchronous Definition",
+        "permute": false,
+        "question": "To say that the operation of requesting data from a FirebaseDB is <i><b>asynchronous</b></i> means ",
+        "type": 0,
+        "wrongfeedback": ""
+    },
+    {
+        "choices": [
+            {
+                "feedback": "",
+                "score": 1.0,
+                "text": "(A)&nbsp;<br><div style=\"text-align: left;\"><img src=\"https://ram8647.appspot.com/mobileCSP/assets/img/Q17A1.PNG\" class=\"yui-img\" title=\"\" alt=\"\" style=\"line-height: 1.22;\"></div>"
+            },
+            {
+                "feedback": "",
+                "score": 0.0,
+                "text": "(B)&nbsp;<br><img src=\"https://ram8647.appspot.com/mobileCSP/assets/img/Q17A2.PNG\" class=\"yui-img\" title=\"\" alt=\"\"><br>"
+            },
+            {
+                "feedback": "",
+                "score": 0.0,
+                "text": "(C) <br><img src=\"https://ram8647.appspot.com/mobileCSP/assets/img/Q17A3.PNG\" class=\"yui-img\" title=\"\" alt=\"\"><br>"
+            },
+            {
+                "feedback": "",
+                "score": 0.0,
+                "text": "(D) <br><img src=\"https://ram8647.appspot.com/mobileCSP/assets/img/Q17A4.PNG\" class=\"yui-img\" title=\"\" alt=\"\"><br>"
+            }
+        ],
+        "description": "AP CS P Exam Prep Move Robot Loop",
+        "permute": false,
+        "question": "The following question uses a robot in a grid of squares. The robot is represented as a triangle, which is initially in the bottom left square of the grid and facing right.<br><br><div style=\"text-align: center;\"><img src=\"https://ram8647.appspot.com/mobileCSP/assets/img/Q17SquareQuestion.PNG\" class=\"yui-img selected\" title=\"\" alt=\"\" style=\"line-height: 1.22;\"><span style=\"line-height: 1.22;\">&nbsp; &nbsp;<br><br></span></div>Consider the following code segment, which moves the robot in the grid.\n\n<br><br><div style=\"text-align: center;\"><img src=\"https://ram8647.appspot.com/mobileCSP/assets/img/Q17Code.PNG\" class=\"yui-img\" title=\"\" alt=\"\" style=\"line-height: 1.22;\"><br><br></div>Which of the following shows the location of the robot after running the code segment?\n",
+        "type": 0,
+        "wrongfeedback": ""
+    },
+    {
+        "choices": [
+            {
+                "feedback": "",
+                "score": 0.0,
+                "text": "(A) First, change all occurrences of \u201cgoats\u201d to \u201csheep.\u201d\n<br>Then, change all occurrences of \u201csheep\u201d to \u201cgoats.\u201d"
+            },
+            {
+                "feedback": "",
+                "score": 0.0,
+                "text": "(B) First, change all occurrences of \u201cgoats\u201d to \u201csheep.\u201d\n<br>Then, change all occurrences of \u201csheep\u201d to \u201cgoats.\u201d\n<br>Last, change all occurrences of \u201cfoxes\u201d to \u201csheep.\u201d"
+            },
+            {
+                "feedback": "That's correct!",
+                "score": 1.0,
+                "text": "(C) First, change all occurrences of \u201cgoats\u201d to \u201cfoxes.\u201d\n<br>Then, change all occurrences of \u201csheep\u201d to \u201cgoats.\u201d\n<br>Last, change all occurrences of \u201cfoxes\u201d to \u201csheep.\u201d"
+            },
+            {
+                "feedback": "",
+                "score": 0.0,
+                "text": "(D) First, change all occurrences of \u201cgoats\u201d to \u201cfoxes.\u201d\n<br>Then, change all occurrences of \u201cfoxes\u201d to \u201csheep.\u201d\n<br>Last, change all occurrences of \u201csheep\u201d to \u201cgoats.\u201d"
+            }
+        ],
+        "description": "AP CS P Exam Prep Replacing Text Algorithm",
+        "permute": false,
+        "question": "A programmer completes the user manual for a video game she has developed and realizes she has reversed the roles of goats and sheep throughout the text. Consider the programmer\u2019s goal of changing all occurrences of \u201cgoats\u201d to \u201csheep,\u201d and all occurrences of \u201csheep\u201d to \u201cgoats.\u201d The programmer will use the fact that the word \u201cfoxes\u201d does not appear anywhere in the original text.\n<br>\nWhich of the following algorithms can be used to accomplish the programmer\u2019s goal?",
+        "type": 0,
+        "wrongfeedback": ""
+    },
+    {
+        "choices": [
+            {
+                "feedback": "Right.",
+                "score": 0.33,
+                "text": "is exemplified by RSA and Diffie-Hellman."
+            },
+            {
+                "feedback": "Let me add new information to help you solve this; the idea of an asymmetric cipher was first conceived by British cryptographer, James Ellis, in 1970.  But his work was classified. Diffie-Hellman independently came up with the idea in 1976.",
+                "score": -1.0,
+                "text": "was first discovered by Euclid 5 B.C."
+            },
+            {
+                "feedback": "Right. In RSA Bob would use Alice's <i>pubic key</i> is used to encrypt messages to her and Alice would use her <i>private key</i> to decrypt the message.",
+                "score": 0.33,
+                "text": "Uses different keys for encryption and decryption."
+            },
+            {
+                "feedback": "Yes. The Diffie-Hellman algorithm was the first algorithm to be used solve the key exchange problem.",
+                "score": 0.34,
+                "text": "Can be used to solve the <i>key exchange problem</i>."
+            }
+        ],
+        "description": "Asymmetric definition",
+        "permute": false,
+        "question": "An <i>asymmetric cipher</i>________________ ",
+        "type": 0,
+        "wrongfeedback": ""
+    },
+    {
+        "choices": [
+            {
+                "feedback": "We\u2019re in the learning zone today. Mistakes are our friends!",
+                "score": 0.0,
+                "text": "Data"
+            },
+            {
+                "feedback": "",
+                "score": 1.0,
+                "text": "Information"
+            },
+            {
+                "feedback": "We\u2019re in the learning zone today. Mistakes are our friends!",
+                "score": 0.0,
+                "text": "Knowledge"
+            },
+            {
+                "feedback": "We\u2019re in the learning zone today. Mistakes are our friends!",
+                "score": 0.0,
+                "text": "Wisdom"
+            }
+        ],
+        "description": "Data Info Knowledge Wisdom",
+        "permute": false,
+        "question": "What is the appropriate classification for the following statement?<br>\n\"Over 80% of Africans own a cell phone.\"",
+        "type": 0,
+        "wrongfeedback": ""
+    },
+    {
+        "choices": [
+            {
+                "feedback": "Mistakes are welcome here! Try reviewing this; it is best to give buttons names that help you understand their function. ",
+                "score": 0.0,
+                "text": "Button1"
+            },
+            {
+                "feedback": "Mistakes are welcome here! Try reviewing this; this choice tells us what is happening, but it doesn't tell us what is making something clear. Therefore a better option would also tell us that it was a button. ",
+                "score": 0.0,
+                "text": "Clear"
+            },
+            {
+                "feedback": "Correct! ",
+                "score": 1.0,
+                "text": "ClearButton"
+            },
+            {
+                "feedback": "Mistakes are welcome here! Try reviewing this; it is best to give buttons names that help you understand their function.",
+                "score": 0.0,
+                "text": "ButtonA"
+            }
+        ],
+        "description": "Component naming",
+        "permute": false,
+        "question": "Which of the following is the best name for a button whose function is to clear another component?",
+        "type": 0,
+        "wrongfeedback": ""
+    },
+    {
+        "choices": [
+            {
+                "feedback": "This will be a challenging concept to learn, but we can all reach this goal. The number 8 in binary is represented as 1000.  Additional numbers can be represented by turning some of the 0s into 1s.  For example, the number 9 would be represented as 1001. ",
+                "score": 0.0,
+                "text": "5"
+            },
+            {
+                "feedback": "This will be a challenging concept to learn, but we can all reach this goal. The number 12 in binary is represented as 1100.  Additional numbers can be represented by turning some of the 0s into 1s.  For example, the number 13 would be represented as 1101.",
+                "score": 0.0,
+                "text": "12"
+            },
+            {
+                "feedback": "Yes. The largest number that can be represented in 4 bits would be 1111, which is 1 + 2 + 4 + 8, which equals 15. ",
+                "score": 1.0,
+                "text": "15"
+            },
+            {
+                "feedback": "This will be a challenging concept to learn, but we can all reach this goal. To represent 16 in binary, you would need 5 bits.  It's representation is 10000.  ",
+                "score": 0.0,
+                "text": "16"
+            }
+        ],
+        "description": "Largest number in 4 bits",
+        "permute": false,
+        "question": "What's the largest number that can be represented in 4 bits?  ",
+        "type": 0,
+        "wrongfeedback": ""
+    },
+    {
+        "choices": [
+            {
+                "feedback": "",
+                "score": 3.0,
+                "text": "Clear and well described"
+            },
+            {
+                "feedback": "",
+                "score": 2.0,
+                "text": "Adequately described, some problems"
+            },
+            {
+                "feedback": "",
+                "score": 1.0,
+                "text": "Poorly describe"
+            },
+            {
+                "feedback": "",
+                "score": 0.0,
+                "text": "Missing"
+            }
+        ],
+        "description": "EPT - Artifact Explanation",
+        "question": "Visual Artifact Explanation: Included a written summary to describe how the visual artifact created illustrates the benefit or harm of the innovation.",
+        "type": 0
+    },
+    {
+        "choices": [
+            {
+                "feedback": "This is challenging, but rewarding! This would not cause an overflow.  15 is represented as 1111 in 4 bits. ",
+                "score": -1.0,
+                "text": "Trying to represent 15 in 4 bits. "
+            },
+            {
+                "feedback": "Yes.  The largest number that can be represented in 4 bits is 15, which is 1111.  To represent 16 you would need an additional bit, 1 0000.",
+                "score": 0.5,
+                "text": "Trying to represent 16 in 4 bits."
+            },
+            {
+                "feedback": "This is challenging, but rewarding! This would not cause an overflow.  31 is represented as 1 1111 in 5 bits. ",
+                "score": -1.0,
+                "text": "Trying to represent 31 in 5 bits. "
+            },
+            {
+                "feedback": "Yes.  The largest number that can be represented in 5 bits is 31, which is 1 1111.  To represent 32 you would need a 6th bit,  10 0000.",
+                "score": 0.5,
+                "text": "Trying to represent 32 in 5 bits "
+            }
+        ],
+        "description": "Binary number overflow error",
+        "permute": false,
+        "question": "An <i><b>overflow error</b></i> occurs when there aren't enough bits to represent a given number.  Which of following would cause an overflow error to occur. (Choose all that apply.)",
+        "type": 0,
+        "wrongfeedback": ""
+    },
+    {
+        "choices": [
+            {
+                "feedback": "If it were easy, you wouldn\u2019t be learning anything!",
+                "score": 0.0,
+                "text": "a. To store a person's name in an app to be retrieved later."
+            },
+            {
+                "feedback": "Right. TinyWebDb is useful for sharing data among several players of a multiplayer game. The decision doesn't really depend on the amount or type of data and storing the person's name can be done in a TinyDb",
+                "score": 1.0,
+                "text": "b. To allow users of a mobile app to share data among themselves."
+            },
+            {
+                "feedback": "If it were easy, you wouldn\u2019t be learning anything!",
+                "score": 0.0,
+                "text": "c. To store a large amount of data."
+            },
+            {
+                "feedback": "If it were easy, you wouldn\u2019t be learning anything!",
+                "score": 0.0,
+                "text": "d. To store a list of data."
+            }
+        ],
+        "description": "TinyWebDb vs TinyDb",
+        "permute": false,
+        "question": "When should you use a <i><b>TinyWebDb</b></i> instead of a <i><b>TinyDb</b></i>?",
+        "type": 0,
+        "wrongfeedback": ""
+    },
+    {
+        "choices": [
+            {
+                "feedback": "This is challenging, but rewarding! Decryption is actually the process of converting cipher text back into plain text. For example: khoor ----> hello",
+                "score": 0.0,
+                "text": "decryption"
+            },
+            {
+                "feedback": "That's right! Frequency analysis is the technique whereby you count the letters in the secret message. In English, the letter with the highest frequency is 'e'. By counting letter frequencies you can identify the shift that was used to encrypt the message. That is why the Caesar cipher is not a secure cipher.",
+                "score": 1.0,
+                "text": "frequency analysis"
+            },
+            {
+                "feedback": "This is challenging, but rewarding! Encryption is actually the process of converting plain text into cipher text. For example: hello ---->khoor",
+                "score": 0.0,
+                "text": "encryption"
+            },
+            {
+                "feedback": "This is challenging, but rewarding!",
+                "score": 0.0,
+                "text": "cryptography analysis"
+            }
+        ],
+        "description": "How to break a Caesar cipher",
+        "permute": false,
+        "question": "One technique that can be used to break a Caesar cipher is called _________________________. ",
+        "type": 0,
+        "wrongfeedback": ""
+    },
+    {
+        "choices": [
+            {
+                "feedback": "",
+                "score": 0.33,
+                "text": "is a string of bits that provides a computer's Internet address. "
+            },
+            {
+                "feedback": "",
+                "score": 0.33,
+                "text": "is used to route data through the Internet "
+            },
+            {
+                "feedback": "",
+                "score": 0.34,
+                "text": "consists of 32 bits "
+            },
+            {
+                "feedback": "This is challenging, but rewarding! IPv4 addresses consist of 32 bits. ",
+                "score": -1.0,
+                "text": "consists of 64 bits "
+            }
+        ],
+        "description": "IPv4",
+        "permute": false,
+        "question": "An IPv4 address ____________________. \n<br>\nChoose all that apply.",
+        "type": 0,
+        "wrongfeedback": ""
+    },
+    {
+        "choices": [
+            {
+                "feedback": "This answer is correct.",
+                "score": 1.0,
+                "text": "All students must participate in all steps in the process of creating the video."
+            },
+            {
+                "feedback": "",
+                "score": 0.0,
+                "text": "Flaws in the video are likely to be detected during the process, since team members will be reviewing the video regularly."
+            },
+            {
+                "feedback": "",
+                "score": 0.0,
+                "text": "In order to collaborate effectively, the students may need a method to resolve differences of opinion."
+            },
+            {
+                "feedback": "",
+                "score": 0.0,
+                "text": "The process facilitates the inclusion of multiple team members\u2019 perspectives."
+            }
+        ],
+        "description": "AP CS P EXAM PREP Collaborative Process",
+        "permute": false,
+        "question": "A team of students is creating a video to advertise an upcoming school activity. While working\non the video, the students plan to meet every day to review their progress and plan next steps.\n\n\n<br><br>Which of the following is a FALSE statement about the described collaborative process?",
+        "type": 0,
+        "wrongfeedback": ""
+    },
+    {
+        "choices": [
+            {
+                "feedback": "This is challenging, but rewarding!",
+                "score": -1.0,
+                "text": "a. Data stored in a TinyDb can easily be shared with other devices and users."
+            },
+            {
+                "feedback": "That's right! Data stored in a TinyDb persist between uses of the app, but these data are stored on the device (not in the cloud) and cannot be shared with other devices or users. A TinyDb can store strings or numbers or lists.",
+                "score": 1.0,
+                "text": "b. Data stored in a TinyDb will persist between different uses of the app."
+            },
+            {
+                "feedback": "This is challenging, but rewarding!",
+                "score": -1.0,
+                "text": "c. Data stored in a TinyDb disappears when you quit the app. "
+            },
+            {
+                "feedback": "This is challenging, but rewarding!",
+                "score": -1.0,
+                "text": "d. Data stored in a TinyDb is stored in the cloud. "
+            },
+            {
+                "feedback": "This is challenging, but rewarding!",
+                "score": -1.0,
+                "text": "e. Only strings (text) can be stored in a TinyDb. "
+            }
+        ],
+        "description": "TinyDB Component",
+        "permute": false,
+        "question": "Which of the following statements are true for a TinyDb component. <br>\nChoose all that apply. ",
+        "type": 0,
+        "wrongfeedback": ""
+    },
+    {
+        "choices": [
+            {
+                "feedback": "",
+                "score": 1.0,
+                "text": "True"
+            },
+            {
+                "feedback": "Don\u2019t worry, it\u2019s hard! Let\u2019s go back and try it again.",
+                "score": 0.0,
+                "text": "False"
+            }
+        ],
+        "description": "Client Server Model",
+        "permute": false,
+        "question": "<b>True or False: </b>Cloud computing is made possible by the Internet and the World Wide Web and employs a computation model known as client-server computing. ",
+        "type": 0,
+        "wrongfeedback": ""
+    },
+    {
+        "choices": [
+            {
+                "feedback": "",
+                "score": 3.0,
+                "text": "Well organized, easy to follow"
+            },
+            {
+                "feedback": "",
+                "score": 2.0,
+                "text": "Adequately organized"
+            },
+            {
+                "feedback": "",
+                "score": 1.0,
+                "text": "Poorly organized"
+            },
+            {
+                "feedback": "",
+                "score": 0.0,
+                "text": "Did not complete a report"
+            }
+        ],
+        "description": "EPT - Organization",
+        "question": "Writing Organization - The report is well organized in a way that is easy to follow.",
+        "type": 0
+    },
+    {
+        "description": "Caesar cipher encryption",
+        "graders": [
+            {
+                "feedback": "That's right! With a Caesar shift of 3, the 'alphabet' is encrypted into 'doskdehw'.",
+                "matcher": "case_insensitive",
+                "response": "doskdehw",
+                "score": "1.0"
+            }
+        ],
+        "hint": "Try writing the alphabet out, A to Z, and then writing the shifted letters below it.",
+        "question": "Encrypt the word <i><b>alphabet</b></i> using a Caesar cipher with a \nshift of 3. Type your answer into the Textbox. ",
+        "type": 1,
+        "wrongfeedback": "You're not quite there, yet. Give it another try; with a little more work you can figure this out! "
+    }
+]

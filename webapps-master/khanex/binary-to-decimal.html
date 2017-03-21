@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html data-require="math morelli">
+<head>
+	<meta charset="UTF-8" />
+	<title>Converting Binary to Decimal</title>
+	<script src="../khan-exercise.js"></script>
+        </script>
+</head>
+<body>
+	<div class="exercise">
+	<div class="vars">
+		<var id="Dec">randRange( 0, 32 )</var>
+	</div>
+
+	<div class="problems">
+		<div "decimal to binary">
+			<div class="question">
+			        <p>Express the binary number <font color="red"><var>to6BitString(Dec)</var></font> in decimal (base 10)  notation.
+			</div>
+			<div class="solution" data-type="text"><var>Dec</var></div>
+		</div>
+	</div>
+
+	<div class="hints">
+                <table><tr><td>32s</td><td>16s</td><td>8s</td><td>4s</td><td>2s</td><td>1s</td><td><font color="red"><< Remember the binary place values, e.g 32s place, 16s place.</font></td></tr></table>
+	        <p>Sum the values of those places that contain a '1' digit and ignore those that have a '0' digit.</p>
+	        <p>The value in a particular position that contains a '1', is 1 times the place value. For example, 1 times 4 or 1 times 8.</p>
+		<p>The answer is <var>Dec</var></p>
+	</div>
+	</div>
+</body>
+</html>
