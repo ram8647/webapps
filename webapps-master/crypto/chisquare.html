@@ -1,0 +1,140 @@
+// Author: Meisha Mandal
+
+<html>
+<head>
+</head>
+<body>
+<SCRIPT LANGUAGE="JavaScript">
+// Simple Substitution Cipher
+var text = "";
+var alphabet = "abcdefghijklmnopqrstuvwxyz";
+var alphabetDoubled = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz";
+var dots = "....................................................................................................";
+var freqs = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+var normFreqs = [8.167, 1.492, 2.782, 4.253, 12.702, 2.228, 2.015, 6.094, 6.966, 0.153, 0.772, 4.025, 2.406, 6.749, 7.507, 1.929, 0.095, .987, 6.327, 9.056, 2.758, 0.978, 2.360, 0.150, 1.974, 0.074];
+var count = 0;
+
+function getLowScore() {
+  var lowScore = Infinity;
+  var shift = 0;
+  var text = document.forms.freqs.text.value;
+  text = text.toLowerCase();
+  var freqPercent = countLetters(text);
+  var lastVal;
+  var chart = "<table><tr><td>Shift  </td><td>Chi Square</td></tr>";
+  for(var i=0;i<26;i++){
+    var chiSq = getChiSq(freqPercent,normFreqs);
+    var row = "<tr><td>"  + i + "</td><td>" + Math.round(chiSq*100)/100  + "</td></tr>";
+    chart += row
+    if(chiSq<lowScore){
+      lowScore = chiSq;
+      shift = i;
+    }
+    lastVal = normFreqs.shift();
+    normFreqs.push(lastVal);
+  }
+  chart += "<tr><td>Lowest Chi Sqare Value: " + Math.round(lowScore*100)/100 + "</td></tr>";
+  chart += "<tr><td>Shift Amount: " + shift + "</td></tr>"
+  chart +=  "</table>";
+  document.getElementById('result').innerHTML = chart;
+  deCode(text,shift);
+}
+
+function deCode(text,shift){
+  decodedText = "";
+  for(var i = 0; i < text.length; i++){
+    charIndex = alphabet.indexOf(text[i]);
+    if (charIndex < 0){
+      decodedText += text[i];
+    }
+    else {
+      newChar = alphabetDoubled[charIndex+shift];
+      decodedText += newChar;
+    }
+  }
+  // document.getElementById('result').innerHTML += "<p><font size="+2">" + decodedText + "</font></p>";
+  document.getElementById('result').innerHTML += "<p>" + decodedText + "</p>";
+  console.log(decodedText);
+  // document.getElementById('result').innerHTML = decodedText;
+}
+
+function getChiSq(freqPercent,normFreqs){
+  var chiSqTotal = 0,
+      currentChiSq;
+  for (var i=0; i < normFreqs.length; i++){
+    currentChiSq = (Math.pow((freqPercent[i]-normFreqs[i]),2))/normFreqs[i];
+    chiSqTotal += currentChiSq;
+  }
+  return chiSqTotal;
+}
+
+function countLetters(text) {
+  count = 0;
+  freqs = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+  for (var k = 0; k < text.length; k++) {
+    var ch = text.charAt(k);
+    if (alphabet.indexOf(ch) != -1) {
+      var x = ch.charCodeAt(0) - "a".charCodeAt(0);
+      ++freqs[x];
+      ++count;
+    }
+  }
+//  alert('Freqs ' + freqs);
+  var freqPercent = [];
+  var chart = "<table><tr><th>ltr</th><th>%</th><th>....|....|....|....|....|....|....|....|....|....|....|....|....|....|....</th></tr>";
+  for (var k=0; k < freqs.length; k++) {
+    var percent = freqs[k]/count * 100;
+    freqPercent.push(percent);
+    // var row = "<tr><td>";
+    // row += String.fromCharCode("a".charCodeAt(0) + k) + " </td><td align='right'> " + percent.toPrecision(2) + "</td><td>" + (dots.substring(0,percent * 5)) + "</td></tr>";
+    // chart += row;
+  }
+  // chart += "</table>";
+  // document.getElementById('result').innerHTML = chart;
+  return freqPercent;
+}
+</SCRIPT>
+
+<table width="575" align="center" border="1" frame="box" rules="none">
+<tr>
+<td colspan="2">
+<h2 align="center">ChiSquare Analysis<img src="./android_CSP-128px.jpg" width="64"></h2>
+Type or paste some text into the text area and type  <b><i>Go</i></b> to see a frequency
+histogram.
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<FORM onSubmit="" NAME="freqs">
+<CENTER>
+<TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
+<TR>
+<TD BGCOLOR="#999999">
+<FONT COLOR="#ffffff" FACE="Arial"><B>Paste Your Text Here</B></FONT>
+<TEXTAREA NAME="text" ROWS="8" COLS="80">
+</TEXTAREA>
+</TD>
+<TD>
+<INPUT TYPE="button" VALUE="Go" onClick='countLetters()'>
+<INPUT TYPE="button" VALUE="Decode" onClick='getLowScore()'>
+</TD>
+</TR>
+<TR>
+<TD BGCOLOR="FFFFFF">
+<font type="courier" size="1" color="#000000"><LABEL id="result" for="prompt">Result</LABEL></font>
+<BR>
+</TD>
+</TR>
+</TABLE>
+</CENTER>
+</FORM>
+</td>
+</tr>
+</table>
+<style>
+  p{
+    font-size: 2em;
+  }
+</style>
+</body>
+</html>

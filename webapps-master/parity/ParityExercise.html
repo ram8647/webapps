@@ -1,0 +1,249 @@
+
+<!-- saved from url=(0077)http://elms.readyhosting.com/classes/Web%20Programming/Parity%20Exercise.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<style>
+.button {
+  height: 20px;
+  width: 100px;
+  background: darkgrey;
+  border: 2px solid black;
+  border-radius: 50px;
+  color: black;
+}
+
+.button:hover {
+  background:lightgrey;
+}
+
+#mainbox {
+	width: 50%;
+	margin: auto;
+	padding: 5px;
+	border: medium solid #a4c639;
+}
+
+#formbox {
+   border:thin #000000 solid; 
+   width: 70%; 
+   margin: auto; 
+   padding:5; 
+   text-align=center; 
+   background-color:#a4c639;
+}
+</style>
+<script language="javascript">
+
+// B. Hoffman - 2016
+// Some code inspiration based on Richard Zheng's code in https://7f81a732fb45daebaf56cc064d411b7df213b640.googledrive.com/host/0B75y0rh66O57aUdwcXd2ZmZyek0/
+// R. Morelli, 2016 Added limits to number of rows/cols and radio buttons to switch the parity. 
+    
+var rowBitCounts = []; // sorry, using globals :-)
+var colBitCounts = [];
+
+var even_parity = true;
+var MIN_ROWS = 2;
+var MIN_COLS = MIN_ROWS;
+var MAX_ROWS = 10;
+var MAX_COLS = MAX_ROWS;
+
+// sets up a rows x cols blank table
+function setupTable() {
+    var rows = parseInt(document.getElementById("rows").value) + 2;
+    var cols = parseInt(document.getElementById("cols").value) + 2;
+    even_parity = document.getElementById("even").checked;
+
+
+    //  Limit the Max and Min for rows and cols
+    if (rows > MAX_ROWS + 2) {
+      rows = MAX_ROWS + 2;
+      document.getElementById("rows").value = MAX_ROWS;
+    } 
+    if (rows <= MIN_ROWS + 2) {
+      rows = MIN_ROWS + 2;
+      document.getElementById("rows").value = MIN_ROWS;
+    }
+    if (cols > MAX_COLS + 2) {
+      cols = MAX_COLS + 2;
+      document.getElementById("cols").value = MAX_COLS;
+    } 
+    if (cols <= MIN_COLS + 2) {
+      cols = MIN_COLS + 2;
+      document.getElementById("cols").value = MIN_COLS;
+    }
+
+    // If the parity is odd, then the number of rows
+   //  and cols must both be odd or both be even.
+    if (!even_parity) {
+      if ( (rows % 2 == 00 & cols % 2 == 0) || (rows % 2 == 1 && cols %2 == 1)) {
+         // this is okay
+      } else {
+         even_parity = true;
+         document.getElementById("even").checked = true;;
+      }      
+    }
+
+    var table = document.getElementById('bitTable');
+    table.innerHTML = "";
+    for(i=0; i < cols; i++)
+        colBitCounts[i] = 0;
+    
+    for(r = 0; r < rows; r++) {
+        var row = table.insertRow(r);
+        rowBitCounts[r] = 0;
+        
+        for(c=0; c < cols; c++) {
+                 var cell = row.insertCell(c);
+                 cell.innerHTML = "";
+            
+                // put in random 0s and 1s in inner table   
+                if (c < cols-2 && r < rows -2) {
+                 var bit = parseInt(Math.random()*2);				
+                 cell.innerHTML = bit;	 
+			     rowBitCounts[r] += bit;
+                 colBitCounts[c] += bit;
+                }
+                   
+        // put in textfields in next to last column
+        if (c == cols - 2 && r < rows-1)
+             cell.innerHTML = "<input type=text size=2 id=r" + r + " onChange='checkRow(" + r + ");'/>";
+                 
+        // next to last row
+        if (r == rows - 2 && c < cols-1) 
+            cell.innerHTML = "<input type=text size=2 id=c" + c + " onChange='checkCol(" + c + ");'/>";
+        
+        // last square   
+        if (r==rows-2 && c==cols-2)
+            cell.innerHTML = "<input type=text size=2 id=lastCell  onChange='checkLast();'/>";
+        }
+    }
+}
+    
+	
+function checkRow(i){
+  var val = document.getElementById("r" + i).value;
+  var table = document.getElementById('bitTable');
+  var cols = table.rows[0].cells.length;
+  //alert(rowBitCounts[i]);
+  if (even_parity) {
+     if (rowBitCounts[i]%2 == val)
+       table.rows[i].cells[cols-1].innerHTML = "&#10004;";
+     else 
+       table.rows[i].cells[cols-1].innerHTML = "X"; 
+  } else {
+     if (rowBitCounts[i]%2 == val)
+       table.rows[i].cells[cols-1].innerHTML = "X";
+     else 
+       table.rows[i].cells[cols-1].innerHTML = "&#10004;"; 
+  }
+}
+    
+  /**
+   * Odd parity works only when the number of rows and cols are both
+   *  odd or both even.  It doesn't work if one is odd and the other
+   *  is even.
+   *
+  */
+  function resetParity() {
+    even_parity = document.getElementById("even").checked;
+    if (!even_parity) {
+       var rows = parseInt(document.getElementById("rows").value);
+       var cols = parseInt(document.getElementById("cols").value);
+       if ( (rows % 2 == 0 && cols % 2 == 0) || (rows % 2 == 1 && cols % 2 == 1)) {
+         // This is ok
+       } else {
+         even_parity = true;
+         document.getElementById("even").checked = true;;
+       }
+    }
+  }
+
+  function checkCol(i){
+    var val = document.getElementById("c" + i).value;
+    var table = document.getElementById('bitTable');
+    var rows = table.rows.length;
+    //alert(colBitCounts[i]);
+   if (even_parity) {
+     if (colBitCounts[i]%2 == val)
+       table.rows[rows-1].cells[i].innerHTML = "&#10004;"; 
+     else 
+         table.rows[rows-1].cells[i].innerHTML = "X";
+   } else {
+     if (colBitCounts[i]%2 == val)
+       table.rows[rows-1].cells[i].innerHTML = "X"; 
+     else 
+         table.rows[rows-1].cells[i].innerHTML = "&#10004;";
+   }
+}  
+    
+function checkLast() {
+    var lastCell = document.getElementById("lastCell");
+    var table = document.getElementById('bitTable');
+    var rows = table.rows.length;
+    var cols = table.rows[0].cells.length;
+    var count = 0;
+    for(i=0; i < rows-2; i++)
+    {
+        var cell = document.getElementById("r" + i);
+        if (cell.value == "") {
+            lastCell.value = "";
+            table.rows[rows-1].cells[cols-1].innerHTML= "Please fill in row parity bits first!";
+            return;
+        }
+        count += parseInt(cell.value);
+    }
+    //alert(count);
+    if (even_parity) {
+      if (count%2 == lastCell.value)
+          table.rows[rows-1].cells[cols-1].innerHTML = "&#10004;"; 
+      else 
+          table.rows[rows-1].cells[cols-1].innerHTML = "X";
+    } else {
+      if (count%2 == lastCell.value)
+          table.rows[rows-1].cells[cols-1].innerHTML = "X"; 
+      else 
+          table.rows[rows-1].cells[cols-1].innerHTML = "&#10004;";
+    }
+}
+
+</script>
+  </head>
+
+  <body onload="setupTable(); ">
+    <div id="mainbox">
+      
+      <h3> Parity Magic Exercise</h3>
+      <p>
+        In order to be able to perform the <a target="_blank" href="http://csunplugged.org/wp-content/uploads/2014/12/unplugged-04-error_detection.pdf">
+        CS Unplugged Parity Magic Trick</a>, you have to be able to fill 
+        the parity column and parity row correctly.  This widget will give you some practice
+        with that. 
+        <br><br>
+        Fill in the correct parity in each row and column.  For <b>even parity</b>, the number of 1s
+        in each column and row has to be an even number.  For <b>odd parity</b>, the number of 1s
+        in each column and row has to be an odd number.  Remember that 0 is an even number. 
+        <br><br>RULES: For even parity, you can use any size table, between 2 and 10 rows and/or columns.  
+        But for odd parity the number of rows and the number of columns must both be even or both be odd for the parity to work.
+
+<!--
+	Try the <a href="https://7f81a732fb45daebaf56cc064d411b7df213b640.googledrive.com/host/0B75y0rh66O57aUdwcXd2ZmZyek0/"> Parity Magic Trick </a> 
+        where 1 person flips an android and the other can magically find  the  flipped one by looking for a row 
+        and column with an even number of green androids. Then, try to figure out the even parity bit for the following 
+        rows and columns (make sure the number of 1's in each row and column are even by filling in the textfield at 
+        the end of each row and column): 
+-->
+      </p>
+      <form id="formbox">
+	Rows:    <input type="text" size="3" name="rows" id="rows" value="4"> 
+	Columns:    <input type="text" size="3" name="cols" id="cols" value="4">
+        Parity: <input type="radio" name="parity" id="even" value="even" checked onchange="resetParity()">Even  
+        <input type="radio" name="parity" id="odd" value="odd" onchange="resetParity()">Odd
+	<input type="button" value="Reset" onclick="setupTable();">
+	
+	<div id="output" style="border:thin #000000 solid;   padding:5; text-align=left; background-color:#FFFFFF"> 
+	  <table id="bitTable"></table>
+	</div>
+
+      </form>
+    </div>
+  </body>
+</html>

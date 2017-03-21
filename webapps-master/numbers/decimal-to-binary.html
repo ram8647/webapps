@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>DecToBin</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="./widget.css">
+
+  <!-- edX: This script enables communication between iframe and the platform.
+       REQUIRED for edX - - - DO NOT REMOVE!! -->
+   <script src="/static/js/capa/src/jschannel.js"></script>
+   <script src="./edx-jsinput.js"></script>
+
+   <script src="./converters.js"></script>
+   <script>
+     // Decimal to converter widget
+     var decimalValue = 0;
+     var binary = "00000";
+     var nCorrect = 0;
+     var nTries = 0;
+     var hintNum = 0;
+     var hints = [
+	 "Let the decimal number be D.<br /> Write down the binary place values -- 32  16  8  4  2  1 -- with 0s under them.",
+	 "Put a 1 under the largest binary place value that goes into D <br />and subtract its value from D.",
+	 "Repeat until D becomes 0."
+	 ];
+
+     // Initialize the app.
+     function init() {
+	decimalValue = Math.round(Math.random() * 64);
+	document.getElementById("decimal").innerHTML = decimalValue;
+     }
+
+     // Give the next hint wrapping around to the beginning.
+     function hint() {
+	document.getElementById("hinttext").innerHTML = "HINT #" + (hintNum+1) + ": " + hints[hintNum];
+	hintNum = (hintNum + 1) % hints.length;
+     }
+
+     // Check the user's answer.
+     function check() {
+	var input = document.getElementById("answer").value;
+	var answer = binaryToDecimal(input);
+	if (answer == decimalValue) {
+	  nCorrect += 1;
+	  alert("Correct! That's " + nCorrect + " correct.");
+	  nTries = 0;
+	  decimalValue = Math.round((Math.random() * 64));
+	  document.getElementById("decimal").innerHTML = decimalValue;
+	  document.getElementById("correct").innerHTML = "Correct: " + nCorrect;
+	}
+	else {
+	  nTries += 1;
+	  if (nTries <= 3) {
+	     alert(input + " which is " + answer + " in decimal, is incorrect. \nNumber of tries = " + nTries + " Try again. ");
+	  }
+	  else  {
+	     alert(input + " which is " + answer + " in decimal, is incorrect. \nNumber of tries = " + nTries 
+			 + "\n" + decimalValue + " is " + decToBinary(decimalValue) + " in binary. \nLet's try a new problem. ");
+	     nTries = 0;
+	     decimalValue = Math.round((Math.random() * 64));
+	     document.getElementById("decimal").innerHTML = decimalValue;
+	  }
+	} 
+     }
+    </script>
+</head>
+<body onLoad="init()">
+  <div class="center" style="width:605px">
+
+    <table class="container" style="width:600px">
+      <tr>
+	<td>
+          <div class="alignleft" >
+  	    <img src="./android_mobileCSP-192.jpg" alt="mobile csp logo">
+            <br /><input class="button" style="background:#A9C639" onMouseOut="this.style.background='#A9C639'" onMouseOver="this.style.background='#B9D649'" type="button" value="Hints" onclick='hint()'>
+          </div>
+          <br /><label style="font-size:1.8em">Converting Decimal to Binary</label>
+	  <br /><br />Type your answer in the text field and click the <b><i>Check</i></b> button.
+	  <br /><br /><br /><label style="font-size:0.75em" id="hinttext"></label>
+	</td>
+      </tr>
+    </table>
+
+    <table class="widget" style="width:600px">
+      <tr>
+	<td style="width:400px">
+	  <p style="padding-top:5px"><label >The decimal number is: </label>
+	    <label style="font-size:1.5em" id="decimal" >25</label>
+	    <label >What is its binary (base 2) value?</label></p>
+	  <br /><input style="height:30px;font-size:1.2em;border:1px"  type="text" id="answer" size="10" onchange="check()">
+        </td>
+      </tr>
+      <tr>
+        <td>  
+          <input class="button" type="button" value="Check" onclick='check()'>
+          <label id="correct">correct: 0</label>
+	</td>
+      </tr>
+    </table>
+
+  </div>
+</body>
+</html>

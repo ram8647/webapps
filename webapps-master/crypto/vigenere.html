@@ -1,0 +1,135 @@
+<html>
+<head>
+  <meta charset="utf-8">
+</head>
+<body>
+<SCRIPT LANGUAGE="JavaScript">
+// Vigenere Cipher
+
+var plain_alphabet = "abcdefghijklmnopqrstuvwxyz";
+var cipher_alphabet = "";
+var keyword = "zebra";
+var message = "";
+
+function doEncrypt() {
+  var result = "";
+  var keyndx = 0;
+  message = message.toLowerCase();
+  for (var k=0; k < message.length; k++) {
+    var shift = keyword.charCodeAt(keyndx) - "a".charCodeAt(0);  // a number between 0 and 25
+    var polyalphabet = makeAlphabet(shift);
+    var ch = message.charAt(k);
+    var index = plain_alphabet.indexOf(ch);
+    if (index != -1) {
+      result += polyalphabet.charAt(index);
+      keyndx = (keyndx + 1) % keyword.length;
+    } else 
+      result += ch;
+  }
+  return result.toUpperCase();
+}
+
+function doDecrypt() {
+//  alert('Decrypting');
+  var result = "";
+  var keyndx = 0;
+  message = message.toLowerCase();
+  for (var k=0; k < message.length; k++) {
+    var shift = keyword.charCodeAt(keyndx) - "a".charCodeAt(0);  // a number between 0 and 25
+    var polyalphabet = makeAlphabet(shift);
+    var ch = message.charAt(k);
+    var index = polyalphabet.indexOf(ch);
+    if (index != -1) {
+      result += plain_alphabet.charAt(index);
+      keyndx = (keyndx + 1) % keyword.length;
+    } else 
+      result += ch;
+  }
+  return result.toLowerCase();
+}
+
+function makeAlphabet(key) {
+  return plain_alphabet.substring(key) + plain_alphabet.substring(0,key);
+}
+
+// This performs the encryption
+function doCipher() {
+//  alert('do cipher ' + document.forms.vigenere.encrypt.value);
+  keyword = document.forms.vigenere.keyword.value;
+  message = document.forms.vigenere.message.value;
+
+  var action = document.forms['vigenere'].querySelector('input:checked').value; 
+  if (action == 'encrypt') {
+    document.getElementById('result').innerHTML = doEncrypt();
+  } else {
+    document.getElementById('result').innerHTML = doDecrypt();
+  }
+}
+
+</SCRIPT>
+
+<table width="400" align="center" border="1" frame="box" rules="none">
+<tr>
+<td>
+<img src="http://upload.wikimedia.org/wikipedia/commons/1/1a/Vigenere.jpg" width="80">
+</td>
+<td>
+<h2 align="right">VigenereCipher <img src="./android_CSP-128px.jpg" width="48"></h2>
+Input your keyword, select your algorithm, type your message, and click <b><i>Go</i></b>.
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<FORM onSubmit="" NAME="vigenere" ID="vigenere">
+<CENTER>
+<TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" CELLPADDING="5">
+<TR>
+<TD>
+<FONT COLOR="#ffffff" FACE="Arial"><B>Keyword (40 chars) </B></FONT>
+<INPUT TYPE="text" NAME="keyword" SIZE="40" MAXLENGTH="40" VALUE="zebra">
+<TD>
+<FONT COLOR="#ffffff" FACE="Arial"><B>Algorithm: </B></FONT>
+
+<table>
+<tr>
+<td>
+<INPUT type="radio" name="encrypt" value="encrypt" checked="true">Encrypt
+</td>
+</tr>
+<tr>
+<td>
+<INPUT type="radio" name="encrypt" value="decrypt">Decrypt
+</td>
+</tr>
+</table>
+</TD>
+</TR>
+<TR>
+<TD colspan="2">
+
+<br><FONT COLOR="#ffffff" FACE="Arial"><B>Message (40 chars) </B></FONT>
+<INPUT TYPE="text" NAME="message" SIZE="40" VALUE="hello">
+<CENTER>
+<INPUT TYPE="button" VALUE="Go" onClick='doCipher()'>
+</CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD colspan="2">
+<CENTER>
+<HR>
+<font color="#ffffff"><LABEL id="result" for="prompt">Result</LABEL></font>
+<BR>
+</CENTER>
+</TD>
+</TR>
+</TABLE>
+</CENTER>
+</FORM>
+</td>
+</tr>
+</table>
+
+</body>
+</html>
