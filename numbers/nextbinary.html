@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Next Binary</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="./widget.css">
+
+  <!-- edX: This script enables communication between the iframe and the platform.
+       REQUIRED for edX - - - DO NOT REMOVE!! -->
+   <script src="/static/js/capa/src/jschannel.js"></script>
+   <script src="./edx-jsinput.js"></script>
+
+   <script src="./converters.js"></script>
+   <SCRIPT>
+    // Binary Odometer Code
+
+    var decimalValue = 0;
+    var binary = "00000";
+    var nCorrect = 0;
+    var nTries = 0;
+
+    function init() {
+       decimalValue = Math.round(Math.random() * 32);
+       document.getElementById("binary").innerHTML = decToBinary(decimalValue);
+    }
+
+    // Check the odometer
+    function check() {
+       var answer = document.getElementById("answer").value;
+    //   var answerDecimal = binaryToDecimal(answer, 1);
+       var answerDecimal = binaryToDecimal(answer);
+       if (decimalValue + 1 == answerDecimal) {
+	 nCorrect += 1;
+	 alert("Correct! That's " + nCorrect + " correct.");
+	 nTries = 0;
+	 decimalValue = Math.round((Math.random() * 32));
+	 document.getElementById("binary").innerHTML = decToBinary(decimalValue);
+	 document.getElementById("correct").innerHTML = "Correct: " + nCorrect;
+       }
+       else {
+	 nTries += 1;
+	 if (nTries <= 3) {
+	    alert("Incorrect. Number of tries = " + nTries + " Try again. ");
+	 }
+	 else  {
+	    alert("Incorrect. Number of tries = " + nTries + " The answer is " + decToBinary(decimalValue+1) + " Let's try a new problem. ");
+	    nTries = 0;
+	    decimalValue = Math.round((Math.random() * 32));
+	    document.getElementById("binary").innerHTML = decToBinary(decimalValue);
+	 }
+       } 
+    }
+   </SCRIPT>
+</head>
+<body onLoad="init()">
+  <div class="center">
+
+    <table class="container">
+      <tr>
+	<td>
+  	  <img style="float:left; width:128px" src="./android_mobileCSP-192.jpg" alt="mobile csp logo">
+	  <!-- <br /><input class="button" style="background:#A9C639" onMouseOut="this.style.background='#A9C639'" onMouseOver="this.style.background='#B9D649'" type="button" value="Hints" onclick='hint()'> -->
+          <br /><label style="font-size:1.8em">Counting in Binary</label>
+	  <br /><br />Type your answer in the text field and hit the <b><i>Enter</i></b> key.
+	  <!-- 	  <br /><br />Type your answer in the text field and click the <b><i>Check</i></b> button. -->
+	  <!-- 	   <br /><br /><br /><label style="font-size:0.75em" id="hinttext"></label> -->
+	</td>
+      </tr>
+    </table>
+
+    <table class="widget">
+      <tr>
+	<td style="width:400px">
+	  <p style="padding-top:2px"><label >The binary number is: </label>
+	    <label style="font-size:1.5em" id="binary" >00000</label>
+	    <br /><label >What is the next number?</label></p>
+	  <br /><input style="height:30px;font-size:1.2em;border:1px;background:#eeeeee"  placeholder="Answer?" type="text" id="answer" size="10" onchange="check()">
+          <label id="correct">correct: 0</label>
+        </td>
+      </tr>
+      <!--       <tr> -->
+      <!--         <td>   -->
+      <!--           <input class="button" type="button" value="Check" onclick='check()'> -->
+      <!-- 	</td> -->
+      <!--       </tr> -->
+    </table>
+  </div>
+</body>
+</html>

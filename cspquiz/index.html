@@ -1,0 +1,125 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Free Quiz App for the CS Principles Course">
+<meta name="keywords" content="HTML,CSS,JavaScript">
+<meta name="author" content="ralph.morelli@trincoll.edu">
+
+<meta name="viewport" content="width=device-width, initial-scale=1"> 
+<link type="text/css" rel="stylesheet" href="main.css">
+<link type="text/css" rel="stylesheet" href="main2.css">
+<link href="main.mobile.css" rel="stylesheet" type="text/css" media="only screen and (max-width: 700px)" />
+<link href="phone.css" rel="stylesheet" type="text/css" media="only screen and (max-width: 420px)" />
+    
+<!-- jquery.Mobile module for touch/swiping -->
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="jquery.mobile.custom.min.js"></script>
+    
+<!-- APML files -->      
+<link rel="stylesheet" type="text/css" href="blockStyles.css">  
+<script type="text/javascript" src="apml.js"></script>  
+
+ <!-- code to show the quiz shared with editor.html -->
+<script type="text/javascript" src="./quiz_code.js"></script>
+    
+<title>CSP Quiz</title>
+
+<!-- Quiz Data:  Sets the global variable quiz_data --> 
+<!-- <script type="text/javascript" src="./q3r_load_pretty.js"></script> -->
+<script type="text/javascript" src="./questions.js"></script>
+
+</head>
+
+<body onload="initQuizData()">
+
+ <div id="quiz_section">
+  <div id="quiz_heading">
+ 
+     <img id="logo" src="./mobile-csp-logo.png"  onclick="about()"/>
+
+     <div id="heading">CS Principles Quiz</div>
+
+   <div id="filter-div">
+     <select class="gcb-button" id="filter" onchange="filter()">
+      <option value="filter">Filtering Categories</option>      
+      <option disabled>---------------</option>      
+      <option disabled>Big Ideas</option>      
+      <option value="creativity">&nbsp;&nbsp;&nbsp;Creativity</option>      
+      <option value="abstraction">&nbsp;&nbsp;&nbsp;Abstraction</option>      
+      <option value="data">&nbsp;&nbsp;&nbsp;Data</option>      
+      <option value="algorithms">&nbsp;&nbsp;&nbsp;Algorithms</option>      
+      <option value="programming">&nbsp;&nbsp;&nbsp;Programming</option>      
+      <option value="internet">&nbsp;&nbsp;&nbsp;Internet</option>      
+      <option value="impact">&nbsp;&nbsp;&nbsp;Global Impact</option>      
+      <option disabled>---------------</option>      
+      <option value="keyword">Keyword</option>
+      <option value="cb">College Board Sample Questions&nbsp;&nbsp;&nbsp; </option>      
+      <option value="unanswered">Unanswered questions&nbsp;&nbsp;&nbsp; </option>  
+            <option value="unfilter">All questions</option>
+      <option disabled>---------------</option>      
+      <option value="random">Randomize</option>        
+       <option value="resetScore">Reset Score</option>  
+     </select>
+     <span id="keyword-span" style="display:none"> 
+       &nbsp;<b>Keyword:</b> <input type="text" id="keyword-input" > &nbsp;
+       <input type="submit" class="gcb-button" onclick="keyword_filter()" value="Submit">
+     </span>
+   </div>
+   <br>
+   <div id="controls">
+       <button class="gcb-button" id="prev_button_1" onclick="previousQuestion()"><< Previous</button>
+       <button class="gcb-button" id="next_button_1" onclick="nextQuestion()">Next >></button>
+       &nbsp;&nbsp;|&nbsp;&nbsp;
+       <button class="gcb-button" id="hint_button" onclick="giveHint()">Hint</button>  
+    
+     <!-- Moving down score and hint text to next row -->
+        <br>
+       <div id="hint-div"><div id="hint"></div></div>
+       
+       <div id="score"><img id="completedImage" src="not_started.png"/> (<span id=points>0/0</span>)
+          </div>
+       <!-- Move reset score to menu
+        <button class="gcb-button" id="reset_score" onclick="resetScore()" style="float:right; margin-right:5px; margin-top:2px; font-size: 9pt;">Reset Score</button>  -->
+      </div> <!-- controls -->
+     </div> <!-- quiz heading -->
+  <div id="quizbody"> 
+    <br />
+<!--    <div style="overflow-y: scroll; max-height:400px;">-->
+    <div id="questiondiv">
+     <span id="question"></span>
+    </div>
+   
+<!--     <div id="choices_container" style="overflow-y:scroll; max-height:400px; background-color: #ADCF2F; visibility:hidden"> -->
+    <div id="choices_container" style="background-color: #ADCF2F; ">
+     <span id="choices_table"></span>
+   </div>
+   
+    
+    <!-- moved feedback before controls -->
+    <div id="feedback-div">
+      <span><label id="feedback"></label></span>
+    </div>
+  
+ <div id="choice-controls">
+   </div>
+      
+</div> <!-- quiz body -->
+      <footer style="text-align:center">
+      <!--      <img src="swipe.png" width="50"/> <br>
+          <a href="CSPQuiz.apk"><u>Download mobile app</u></a> -->
+     </footer>
+    </div> <!-- quiz section -->
+    
+<!-- Custom Modal-->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">x</span>
+    <p id="msg"></p>
+  </div>
+
+</div>
+
+</body>
+</html>

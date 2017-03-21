@@ -1,0 +1,129 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Multi Odometer</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="./widget.css">
+
+  <!-- This script enables communication between you iframe and the platform.
+       REQUIRED - - - DO NOT REMOVE!! -->
+   <script src="/static/js/capa/src/jschannel.js"></script>
+   <script src="./edx-jsinput.js"></script>
+
+   <script src="./converters.js"></script>
+   <script type="text/javascript">
+
+    // ------------- Multibase Odometer ---------------
+    var value = 0;
+    base = 2;
+    var odometer = "00000000";
+
+    //Sets the base from drop-down 
+    function setBase(n) {
+      if (n == 0) {
+	 document.getElementById("basediv").style.visibility="visible";
+	 var val = document.getElementById("baseinput").value;
+	 if (val > 32) {
+	    alert("Sorry, I can only handle bases up to 32.");
+    //        document.getElementById("basediv").style.visibility="hidden";
+	    document.getElementById("baseinput").value = base;
+	    return;    // ignore bases above 32
+	 }
+	 base = val;
+	 value = 0;
+	 document.getElementById("odometer").innerHTML = "00";
+	 document.getElementById("decimal").innerHTML = value;
+	 setOdoLabel(base);
+	 return;
+      }
+      base = n;
+      value = 0;
+      document.getElementById("odometer").innerHTML = padForBase(decToAltBase(value, base), base);
+      document.getElementById("decimal").innerHTML = value;
+      document.getElementById("basediv").style.visibility="hidden";
+      setOdoLabel(base);
+    }
+
+    function setOdoLabel(base) {
+       var label = document.getElementById("odolabel")
+       if (base == 2)
+	 label.innerHTML = "binary";
+       else if (base == 8)
+	 label.innerHTML = "octal";
+       else if (base == 10)
+	 label.innerHTML = "decimal";
+       else if (base == 16)
+	 label.innerHTML = "hex";
+       else
+	 label.innerHTML = "base " + base;
+    }
+
+    // Advance the odometer
+    function advance() {
+       value += 1;
+       if (value > limit(base))
+	 value = 0;
+       odometer =    padForBase(decToAltBase(value, base), base);
+    //   alert(value + " = " + pad(decToBinary(value)));
+       document.getElementById("odometer").innerHTML = odometer;
+       document.getElementById("decimal").innerHTML = value;
+    }
+   </script>
+
+
+</head>
+<body>
+  <div class="center" style="width:605px">
+
+    <table class="container" style="width:600px">
+      <tr>
+	<td>
+          <div class="alignleft" >
+  	    <img src="./android_mobileCSP-192.jpg" alt="mobile csp logo">
+          </div>
+          <br /><label style="font-size:1.8em">Variable Base </label>
+	  <br /><br />	Choose a base from the drop-down menu and click the <b><i>Next Number</i></b> button to advance
+	  the odometer by 1. You can try bases from 2 to 32.
+	</td>
+      </tr>
+    </table>
+
+    <table class="widget" style="width:600px">
+      <tr>
+	<td style="width:400px">
+          <table>
+            <tr>
+              <td style="width:300px;border:0px" >
+ 		<select id="bases" onchange="setBase(value)">
+		  <option value="2" selected>binary</option>
+		  <option value="8">octal</option>
+		  <option value="10">decimal</option>
+		  <option value="16">hexadecimal</option>
+		  <option value="0">other</option>
+		</select>
+		<label style="font-size:1.8em">Odometer</label>
+              </td>
+              <td style="border:0px;">
+		<div id="basediv" style="visibility:hidden;">
+		  <label style="font-size:1.8em">Base: </label>
+		  <input style="height:30px;font-size:1.2em;border:1px"  type="text" id="baseinput" size="2" maxlength="2" value="4" onchange="setBase(0)">
+		</div>
+              </td>
+            </tr>
+          </table>
+          <br /><label style="font-size:0.75em">decimal</label>
+          <label style="font-size:1.8em" id="decimal" >0</label>
+
+	</td>
+      </tr>
+      <tr>
+        <td>  
+          <label style="font-size:0.75em" id="odolabel">binary</label>
+          <label style="font-size:1.8em" id="odometer" >00000000</label>
+          <br /><input class="button" type="button" value="Next Number" onclick='advance()'>
+	</td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

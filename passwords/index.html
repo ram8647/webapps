@@ -1,0 +1,111 @@
+<html>
+<head>
+<style>
+.button {
+  height: 20px;
+  width: 100px;
+  background: darkgrey;
+  border: 2px solid black;
+  border-radius: 50px;
+  color: black;
+}
+
+.button:hover {
+  background:lightgrey;
+}
+
+#mainbox {
+	width: 80%;
+	margin: auto;
+	padding: 5px;
+	border: medium solid #a4c639;
+}
+
+#formbox {
+   border:thin #000000 solid; 
+   width: 70%; 
+   margin: auto; 
+   padding:5; 
+   text-align=center; 
+   background-color:#a4c639;
+}
+</style>
+<script language="javascript">
+// B. Hoffman - 2016
+// Code inspiration from http://passcodes.org/passcodes/brute-force-attack-calculator/
+    function calculate()
+    {
+        var guessesPerSecond = document.getElementById("guesses").value;
+        var passwLength = document.getElementById("passLen").value;
+        var chars = 0;
+        if (document.getElementById("upper").checked)
+            chars += 26;
+        if (document.getElementById("lower").checked)
+            chars += 26;
+        if (document.getElementById("numbers").checked)
+            chars += 10;
+        if (document.getElementById("special").checked)
+            chars += 34;
+        
+        var combos = Math.pow(chars,passwLength);
+        var seconds = combos / guessesPerSecond;
+        var minutes = seconds / 60;
+        var hours = minutes / 60;
+        var days = hours / 24;
+        var years = days / 365;
+        //alert(chars + " " + combos + " " + seconds);
+        document.getElementById("output").innerHTML =
+            "That password has " + combos.toLocaleString('en') + " possible combinations!<br/><br/>" +
+            "At " + parseFloat(guessesPerSecond).toLocaleString('en') + " guesses per second " +
+            " that will take: <br/>&nbsp;&nbsp; " 
+              + parseFloat(seconds.toFixed(1)).toLocaleString('en') + " seconds or <br/>&nbsp;&nbsp; " +
+               parseFloat(minutes.toFixed(1)).toLocaleString('en') + " minutes or <br/>&nbsp;&nbsp; " + 
+               parseFloat(hours.toFixed(1)).toLocaleString('en') + " hours or <br/>&nbsp;&nbsp; " + 
+             parseFloat(days.toFixed(1)).toLocaleString('en') + " days or <br/>&nbsp;&nbsp; " + 
+             parseFloat(years.toFixed(1)).toLocaleString('en') + " years to crack.";
+    }
+
+</script>
+</head>
+
+<body>
+<div id="mainbox" style="background-color: Snow;">
+  <table><tr><td>
+   <img src="./android_CSP-128px.jpg">
+  </td>
+  <td>
+ <h3> Password Strength Calculator</h3>
+</td>
+</tr>
+</table>
+ <form>
+ How long would it take <a target="_blank" href="https://en.wikipedia.org/wiki/Password_cracking">an ordinary desktop PC</a> 
+that can perform 100 million guesses per second to guess your password?
+<br/>
+<br/>
+Put in the length of the password, select the types of characters used, and click the Calculate button.
+<br/>
+<br/>
+
+ Password Length:  <input type="number" id="passLen" name="passLen" value="8" min=0/> <br/>
+  <br/>The password contains: <br/>
+  <input type="checkbox" name="upper" id="upper" value="upper" checked> Uppercase letters  <br/> 
+  <input type="checkbox" name="lower" id="lower" value="lower">  Lowercase letters <br/>
+  <input type="checkbox" name="numbers" id="numbers" value="numbers">   Numbers   <br/>
+  <input type="checkbox" name="special" id="special" value="special">   Special keyboard characters  
+  <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(!\"#$%&amp;'()*+,-./:;&lt;&gt;=?@[\]^_`{|}~)
+  <br/>
+     
+  <br/>
+  Guesses tried per second: <input type="text" id="guesses" name="guesses" value="100000000"/> 
+  <p/>
+     
+  <input type="button" value="Calculate" onClick="calculate();"/>
+     
+  <p/>
+<div id="output" style="border:thin #000000 solid;   padding:5; text-align=left; background-color:#FFFFFF"> 
+</div>
+</div>
+</form>
+</body>
+</html>

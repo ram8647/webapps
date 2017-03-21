@@ -1,0 +1,108 @@
+<html>
+<head>
+</head>
+<body>
+<SCRIPT LANGUAGE="JavaScript">
+// Caesar Cipher
+
+var plain_alphabet = "abcdefghijklmnopqrstuvwxyz";
+var cipher_alphabet = "";
+var key = 3;
+var message = "";
+
+function doEncrypt() {
+//  alert('Encrypting');
+  var result = "";
+  message = message.toLowerCase();
+  for (var k=0; k < message.length; k++) {
+    var ch = message.charAt(k);
+    var index = plain_alphabet.indexOf(ch);
+    if (index != -1)
+      result += cipher_alphabet.charAt(index);
+    else 
+      result += ch;
+  }
+  return result.toUpperCase();
+}
+
+function doDecrypt() {
+//  alert('Encrypting');
+  var result = "";
+  message = message.toLowerCase();
+  for (var k=0; k < message.length; k++) {
+    var ch = message.charAt(k);
+    var index = cipher_alphabet.indexOf(ch);
+    if (index != -1)
+      result += plain_alphabet.charAt(index);
+    else 
+      result += ch;
+  }
+  return result.toLowerCase();
+}
+
+// This performs the encryption
+// It is controlled by the label on the 'go' button.
+function doCipher() {
+  key = document.forms.caesar.key.value;
+  if (key < 0 || key > 25)
+    key = 3;
+  message = document.forms.caesar.message.value;
+  cipher_alphabet = plain_alphabet.substring(key) + plain_alphabet.substring(0,key);
+
+  var action = document.forms['caesar'].querySelector('input:checked').value; 
+  if (action == 'encrypt') {
+    document.getElementById('result').innerHTML = doEncrypt();
+  } else {
+    document.getElementById('result').innerHTML = doDecrypt();
+  }
+}
+
+</SCRIPT>
+
+<table width="400" align="center" border="1" frame="box" rules="none">
+<tr>
+<td>
+<img src="http://img2.wikia.nocookie.net/__cb20130606052819/spartacus/images/5/55/Juliuscaesar.jpg" width="80" align="right">
+</td>
+<td>
+<h2 align="right">Caesar Cipher <img src="./android_CSP-128px.jpg" width="48"></h2>
+Input your key, select your algorithm, type your message, and click <b><i>Go</i></b>.
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<FORM onSubmit="" NAME="caesar">
+<CENTER>
+<TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
+<TR>
+<TD BGCOLOR="#999999">
+<FONT COLOR="#ffffff" FACE="Arial"><B>Key (0-25) </B></FONT>
+<INPUT TYPE="text" NAME="key" SIZE="2" MAXLENGTH="2" VALUE="3">
+<FONT COLOR="#ffffff" FACE="Arial"><B>Algorithm: </B></FONT>
+<INPUT type="radio" name="encrypt" value="encrypt" checked="true">Encrypt
+<INPUT type="radio" name="encrypt" value="decrypt">Decrypt
+
+<br><FONT COLOR="#ffffff" FACE="Arial"><B>Message (40 chars) </B></FONT>
+<INPUT TYPE="text" NAME="message" SIZE="40" VALUE="hello">
+<CENTER>
+<INPUT TYPE="button" VALUE="Go" onClick='doCipher()'>
+</CENTER>
+</TD>
+</TR>
+<TR>
+<TD>
+<CENTER>
+<font color="#ffffff"><LABEL id="result" for="prompt">Result</LABEL></font>
+<BR>
+</CENTER>
+</TD>
+</TR>
+</TABLE>
+</CENTER>
+</FORM>
+</td>
+</tr>
+</table>
+
+</body>
+</html>

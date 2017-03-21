@@ -1,0 +1,183 @@
+<html>
+<head>
+</head>
+<body>
+<SCRIPT LANGUAGE="JavaScript">
+// A Transposition Cipher
+
+var plain_alphabet = "abcdefghijklmnopqrstuvwxyz";
+var cipher_alphabet = "";
+var keyword_len = 5;
+var keyword = "53124";  // describes the transpose pattern
+var message = "";
+var BLOCK_LENGTH = 4;
+
+/*
+ * The transposition occurs on a block of text and is 
+ * desribed by the keyword.  For example, a keyword of
+ * 53124  on the word hello would lead to OLHEL.  
+ * The length of the keyword determines the blocksize. 
+ * The result is divided into blocks of length BLOCK_LENGTH. 
+ */
+function doEncrypt() {
+//  alert('Encrypting');
+  var result = "";
+  message = message.toLowerCase();
+  message = remove_punctuation(message);
+  for (var k=0; k < message.length; k += keyword_len) {
+    var block = message.substring(k, k + keyword_len);
+    var newblk = '';
+    if (block.length < keyword_len) {
+        newblk = block;    
+    } else {
+       for (var j = 0; j < keyword.length; j++) {
+	 var num  = Number(keyword.charAt(j)) - 1;
+	 newblk += block.charAt(num);
+       }
+    }
+    result += newblk;    
+  }
+  return block_format(result.toUpperCase(), BLOCK_LENGTH);
+}
+
+/*
+ * Decryption works by reversing the encrypt pattern, block
+ * by block.  If the pattern is 53124, then the block OLHEL
+ * would be transposed to HELLO.  An array is used to store
+ * the letters in each block. 
+ * 
+ */
+function doDecrypt() {
+//  alert('Decrypting');
+  var result = "";
+  message = message.toLowerCase();
+  message = remove_punctuation(message);
+  for (var k=0; k < message.length; k += keyword_len) {
+    var block = message.substring(k, k + keyword_len);
+    var newblk = [];  // Use an array
+    if (block.length < keyword_len) {
+        newblk = block;    
+    } else {
+       for (var j = 0; j < keyword.length; j++) {
+	 var num  = Number(keyword.charAt(j)) - 1;
+	 newblk[num] = block.charAt(j);
+       }
+    }
+    result += remove_punctuation(newblk.toString());    
+  }
+  return block_format(result.toUpperCase(), BLOCK_LENGTH);
+}
+
+// This performs the encryption
+// It is controlled by the label on the 'go' button.
+function doCipher() {
+  keyword = document.forms.simple.keyword.value;
+  keyword_len = keyword.length;
+  message = document.forms.simple.message.value;
+  var key="";
+  for (var k = 0; k < keyword.length; k++) {
+    var ch = keyword.charAt(k);
+    if (key.indexOf(ch) == -1) 
+      key += ch;
+  }
+  keyword = key;
+  cipher_alphabet = keyword;
+  for (var k = 0; k < plain_alphabet.length; k++) {
+    var ch = plain_alphabet.charAt(k);
+    if (cipher_alphabet.indexOf(ch) == -1)
+      cipher_alphabet += ch;
+  }
+
+  var action = document.forms['simple'].querySelector('input:checked').value; 
+  if (action == 'encrypt') {
+    document.getElementById('result').innerHTML = doEncrypt();
+  } else {
+    document.getElementById('result').innerHTML = doDecrypt();
+  }
+}
+
+function block_format(msg, blklen) {
+   var newmsg = '';
+   for (var k=0; k < msg.length; k++) {
+      if (k != 0 && k % blklen == 0) {
+          newmsg += ' ';
+      }
+      newmsg = newmsg + msg.charAt(k);
+   }
+   return newmsg;
+}
+
+function remove_punctuation(msg) {
+   var newmsg = '';
+   for (var k=0; k < msg.length; k++) {
+      if (plain_alphabet.indexOf(msg.charAt(k)) != -1) {
+          newmsg = newmsg + msg.charAt(k);
+      }
+   }
+   return newmsg;
+}
+
+</SCRIPT>
+
+<table width="400" align="center" border="1" frame="box" rules="none">
+<tr>
+<td colspan="2">
+<h2 align="right">Transposition Cipher <img src="./android_CSP-128px.jpg" width="48"></h2>
+The keyword should be a string of digits 1, 2, ..., n of length, n <= 9,  that specifies the rearrangement
+of a block of text of length n.  For example 53124 would rearrange hello to OLHEL. Type in a keyword, 
+and a message, select encrypt or decrypt, and press <b><i>Go</i></b>.
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<FORM onSubmit="" NAME="simple">
+<CENTER>
+<TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
+<TR>
+<TD BGCOLOR="#999999">
+<FONT COLOR="#ffffff" FACE="Arial"><B>Keyword (<=  9 digits) </B></FONT>
+<INPUT TYPE="text" NAME="keyword" SIZE="26" MAXLENGTH="26" VALUE="53124">
+<BR>
+<FONT COLOR="#ffffff" FACE="Arial"><B>Algorithm: </B></FONT>
+<table>
+<tr>
+<td>
+<INPUT type="radio" name="encrypt" value="encrypt" checked="true">Encrypt
+</td>
+</tr>
+<tr>
+<td>
+<INPUT type="radio" name="encrypt" value="decrypt">Decrypt
+</td>
+</tr>
+</table>
+
+<!-- <INPUT type="radio" name="encrypt" value="encrypt" checked="true">Encrypt -->
+<!-- <INPUT type="radio" name="encrypt" value="decrypt">Decrypt -->
+
+<br><FONT COLOR="#ffffff" FACE="Arial"><B>Message </B></FONT>
+<TEXTAREA  NAME="message" rows="8" cols="50">
+</TEXTAREA>
+<!-- <INPUT TYPE="text" NAME="message" SIZE="40" VALUE="hello"> -->
+<CENTER>
+<INPUT TYPE="button" VALUE="Go" onClick='doCipher()'>
+</CENTER>
+</TD>
+</TR>
+<TR>
+<TD>
+<CENTER>
+<font color="#ffffff"><LABEL id="result" for="prompt">Result</LABEL></font>
+<BR>
+</CENTER>
+</TD>
+</TR>
+</TABLE>
+</CENTER>
+</FORM>
+</td>
+</tr>
+</table>
+
+</body>
+</html>
