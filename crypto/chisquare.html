@@ -42,9 +42,9 @@ function getLowScore() {
 }
 
 function calcShift(){
+  var shiftVal = parseInt(document.forms.output.shiftField.value);
+  var text = document.forms.output.text.value;
   if(shiftVal >=0 && shiftVal <= 25){
-    var shiftVal = parseInt(document.forms.output.shiftField.value);
-    var text = document.forms.output.text.value;
     document.getElementById('result').innerHTML = "";
     outputRes(text,shiftVal);
   }
@@ -65,7 +65,7 @@ function outputRes(text, shiftVal){
   chart += "<tr><p>Chi Sqare Value: " + Math.round(chiSq*100)/100 + "</p></tr>";
   decodedText = decode(shiftedText, shiftVal)
   document.getElementById('result').innerHTML += "<p>Shifted/Decoded Text:</p>";
-  document.getElementById('result').innerHTML += "<p>" + decodedText + "</p>";
+  document.getElementById('result').innerHTML += "<p>" + shiftedText + "</p>";
   document.getElementById('result').innerHTML += "<p>Shift Amount: " + shiftVal + "</p>";
   document.getElementById('result').innerHTML += chart;
 
@@ -89,16 +89,16 @@ function decode(text,shift){
 function incrementShift(incrementVal){
   var shiftVal = parseInt(document.forms.output.shiftField.value);
   shiftVal += parseInt(incrementVal);
-  if(shiftVal >=0 && shiftVal <= 25){
-    document.forms.output.shiftField.value = shiftVal;
-    var text = document.forms.output.text.value;
-    document.getElementById('result').innerHTML = "";
-    outputRes(text, shiftVal)
+  if (shiftVal === 25 && incrementVal === 1){
+    shiftVal = 0;
   }
-  else {
-    alert("Not a valid shift");
+  else if (shiftVal === 0 && incrementVal === -1){
+    shiftVal = 25
   }
-
+  document.forms.output.shiftField.value = shiftVal;
+  var text = document.forms.output.text.value;
+  document.getElementById('result').innerHTML = "";
+  outputRes(text, shiftVal)
 }
 
 function getChiSq(freqPercent,normFreqs){
