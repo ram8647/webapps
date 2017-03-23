@@ -13,7 +13,7 @@ var normFreqs = [8.167, 1.492, 2.782, 4.253, 12.702, 2.228, 2.015, 6.094, 6.966,
 var count = 0;
 // var shiftVal = parseInt(document.forms.output.shiftField.value);
 // var text = document.forms.output.text.value;
-text = text.toLowerCase();
+// text = text.toLowerCase();
 
 function getLowScore() {
   var lowScore = Infinity;
@@ -54,6 +54,7 @@ function calcShift(){
 }
 
 function outputRes(text, shiftVal){
+  text = text.toLowerCase();
   var shiftedText = decode(text,shiftVal);
   var freqPercent = countLetters(shiftedText);
   var chart = "<table><tr><td> Letter </td><td> Normal Frequency </td><td> Shifted Frequency </td></tr>";
@@ -88,12 +89,12 @@ function decode(text,shift){
 
 function incrementShift(incrementVal){
   var shiftVal = parseInt(document.forms.output.shiftField.value);
-  shiftVal += parseInt(incrementVal);
-  if (shiftVal === 25 && incrementVal === 1){
-    shiftVal = 0;
+
+  if (parseInt(incrementVal) === 1){
+    shiftVal = (shiftVal + 1) % alphabet.length;
   }
-  else if (shiftVal === 0 && incrementVal === -1){
-    shiftVal = 25
+  else if (parseInt(incrementVal) === -1) {
+    shiftVal = (alphabet.length + (shiftVal -1)) % alphabet.length;
   }
   document.forms.output.shiftField.value = shiftVal;
   var text = document.forms.output.text.value;
