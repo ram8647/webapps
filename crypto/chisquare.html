@@ -11,9 +11,6 @@ var alphabetDoubled = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz";
 var freqs = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 var normFreqs = [8.167, 1.492, 2.782, 4.253, 12.702, 2.228, 2.015, 6.094, 6.966, 0.153, 0.772, 4.025, 2.406, 6.749, 7.507, 1.929, 0.095, .987, 6.327, 9.056, 2.758, 0.978, 2.360, 0.150, 1.974, 0.074];
 var count = 0;
-// var shiftVal = parseInt(document.forms.output.shiftField.value);
-// var text = document.forms.output.text.value;
-// text = text.toLowerCase();
 
 function getLowScore() {
   var lowScore = Infinity;
@@ -23,9 +20,9 @@ function getLowScore() {
   var freqPercent = countLetters(text);
   var lastVal;
   var chart = "<table><tr><td>Shift  </td><td>Chi Square</td></tr>";
-  for(var i=0;i<26;i++){
-    var chiSq = getChiSq(freqPercent,normFreqs);
-    var row = "<tr><td>"  + i + "</td><td>" + Math.round(chiSq*100)/100  + "</td></tr>";
+  for(var i=alphabet.length; i > 0; i--){
+    var chiSq = getChiSq(freqPercent, normFreqs);
+    var row = "<tr><td>"  + i + "</td><td>" + Math.round(chiSq*10)/10  + "</td></tr>";
     chart += row
     if(chiSq<lowScore){
       lowScore = chiSq;
@@ -34,7 +31,7 @@ function getLowScore() {
     lastVal = normFreqs.shift();
     normFreqs.push(lastVal);
   }
-  document.getElementById('result').innerHTML = "<p>Lowest Chi Sqare Value: " + Math.round(lowScore*100)/100 + "</p>";
+  document.getElementById('result').innerHTML = "<p style='text-align:center'>Lowest Chi Sqare Value: " + Math.round(lowScore*10)/10 + "</p>";
 
   outputRes(text,shift);
   document.forms.output.shiftField.value = shift;
@@ -44,7 +41,7 @@ function getLowScore() {
 function calcShift(){
   var shiftVal = parseInt(document.forms.output.shiftField.value);
   var text = document.forms.output.text.value;
-  if(shiftVal >=0 && shiftVal <= 25){
+  if(shiftVal >=0 && shiftVal < alhpabet.length){
     document.getElementById('result').innerHTML = "";
     outputRes(text,shiftVal);
   }
@@ -57,18 +54,29 @@ function outputRes(text, shiftVal){
   text = text.toLowerCase();
   var shiftedText = decode(text,shiftVal);
   var freqPercent = countLetters(shiftedText);
-  var chart = "<table><tr><td> Letter </td><td> Normal Frequency </td><td> Shifted Frequency </td></tr>";
-  for(var i=0; i<26; i++){
-    var row = "<tr><td>" + alphabet[i] + "</td><td>"  + normFreqs[i] + "</td><td>" + Math.round(freqPercent[i]*100)/100  + "</td></tr>";
-    chart += row
+  // var chart = "<table><tr><td> Letter </td><td> Normal Frequency </td><td> Shifted Frequency </td></tr>";
+  var chart = "<table>";
+  var alphabetRow = "<tr><td>" + "      " + "</td>";
+  var shiftedFreqsRow = "<tr><td>Shifted </td>";
+  var normFreqsRow = "<tr><td>Normal </td>";
+  for(var i=0; i<alphabet.length; i++){
+
+    alphabetRow += "<td style='display:inline-block; text-align:center; width:25px;'>"  + alphabet[i] + "</td>";
+    shiftedFreqsRow += "<td style='display:inline-block; text-align:center; width:25px;'>" + Math.round(freqPercent[i]*10)/10  + "</td>";
+    normFreqsRow += "<td style='display:inline-block; text-align:center; width:25px;'>"  + Math.round(normFreqs[i]*10)/10 + "</td>";
   }
+  alphabetRow += "</tr>";
+  shiftedFreqsRow += "</tr>";
+  normFreqsRow += "</tr>";
+  chart += alphabetRow + shiftedFreqsRow + normFreqsRow + "</table>";
   chiSq = getChiSq(freqPercent, normFreqs);
-  chart += "<tr><p>Chi Sqare Value: " + Math.round(chiSq*100)/100 + "</p></tr>";
   decodedText = decode(shiftedText, shiftVal)
+
+  document.getElementById('result').innerHTML += "<p>Shift: " + shiftVal + "</p>";
+  document.getElementById('result').innerHTML += "<p>Chi Sqare Value: " + Math.round(chiSq*10)/10 + "</p>";
+  document.getElementById('result').innerHTML += chart;
   document.getElementById('result').innerHTML += "<p>Shifted/Decoded Text:</p>";
   document.getElementById('result').innerHTML += "<p>" + shiftedText + "</p>";
-  document.getElementById('result').innerHTML += "<p>Shift Amount: " + shiftVal + "</p>";
-  document.getElementById('result').innerHTML += chart;
 
 }
 
@@ -80,7 +88,7 @@ function decode(text,shift){
       decodedText += text[i];
     }
     else {
-      newChar = alphabetDoubled[charIndex+shift];
+      newChar = alphabetDoubled[charIndex+ alphabet.length -shift];
       decodedText += newChar;
     }
   }
@@ -132,7 +140,7 @@ function countLetters(text) {
 }
 </SCRIPT>
 
-<table width="575" align="center" border="1" frame="box" rules="none">
+<table width="91%" align="center" border="1" frame="box" rules="none">
 <tr>
 <td colspan="2">
 <h2 align="center">Chi Square Analysis<img src="./android_CSP-128px.jpg" width="64"></h2>
@@ -146,16 +154,16 @@ Enter a number into the text field to shift the text by that amount or increment
 <CENTER>
 <TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
 <TR>
-<TD BGCOLOR="#999999">
+<TD BGCOLOR="#999999" style='display:block; width:593px; margin:0 auto;'>
 <FONT COLOR="#ffffff" FACE="Arial"><B>Paste Your Text Here</B></FONT>
 <TEXTAREA NAME="text" ROWS="8" COLS="80">
 </TEXTAREA>
 
 </TD>
-<TD style="padding:5px;">
+<TD style="padding:5px; width:73px;">
 <!-- <INPUT TYPE="button" VALUE="Shift" onClick='calcShift()' > -->
   <INPUT TYPE="button" VALUE="-" onClick='incrementShift(-1)' style="float:left;">
-  <input type="text" name="shiftField" value="0" size="10" onchange="calcShift()" style="width:30%;" >
+  <input type="text" name="shiftField" value="0" size="10" onchange="calcShift()" style="width:30px; float:left; display:block; text-align:center" >
   <INPUT TYPE="button" VALUE="+" onClick='incrementShift(1)' style="float:right;">
   <INPUT TYPE="button" VALUE="Decode" onClick='getLowScore()' style="margin:40px 0;">
 </TD>
