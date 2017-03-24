@@ -72,8 +72,8 @@ function outputRes(text, shiftVal){
   chiSq = getChiSq(freqPercent, normFreqs);
   decodedText = decode(shiftedText, shiftVal)
 
-  document.getElementById('result').innerHTML += "<p>Shift: " + shiftVal + "</p>";
-  document.getElementById('result').innerHTML += "<p>Chi Sqare Value: " + Math.round(chiSq*10)/10 + "</p>";
+  document.getElementById('result').innerHTML += "<p>Shift: " + shiftVal + "&emsp;&emsp;&emsp;&emsp;Chi Sqare Value: " + Math.round(chiSq*10)/10 +"</p>";
+  // document.getElementById('result').innerHTML += "<p>Chi Sqare Value: " + Math.round(chiSq*10)/10 + "</p>";
   document.getElementById('result').innerHTML += chart;
   document.getElementById('result').innerHTML += "<p>Shifted/Decoded Text:</p>";
   document.getElementById('result').innerHTML += "<p>" + shiftedText + "</p>";
@@ -143,7 +143,7 @@ function countLetters(text) {
 <table width="91%" align="center" border="1" frame="box" rules="none">
 <tr>
 <td colspan="2">
-<h2 align="center">Chi Square Analysis<img src="./android_CSP-128px.jpg" width="64"></h2>
+<h2 align="center">Chi Square Analyzer<img src="./android_CSP-128px.jpg" width="64"></h2>
 Type or paste some text into the text area and click  <b><i>Decode</i></b> to decode the text using a chi square analysis.
 Enter a number into the text field to shift the text by that amount or increment the shift using the + and - buttons.
 </td>
@@ -182,7 +182,7 @@ Enter a number into the text field to shift the text by that amount or increment
 </table>
 <style>
   p{
-    font-size: 2em;
+    font-size: 1.5em;
   }
 </style>
 </body>
