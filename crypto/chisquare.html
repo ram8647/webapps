@@ -60,9 +60,9 @@ function outputRes(text, shiftVal){
   var shiftedFreqsRow = "<tr><td>Shifted </td>";
   var normFreqsRow = "<tr><td>Normal </td>";
   for(var i=0; i<alphabet.length; i++){
-    alphabetRow += "<td style='display:inline-block; text-align:center; width:22px;'>"  + alphabet[i] + "</td>";
-    shiftedFreqsRow += "<td style='display:inline-block; text-align:center; width:22px;'>" + Math.round(freqPercent[i]*10)/10  + "</td>";
-    normFreqsRow += "<td style='display:inline-block; text-align:center; width:22px;'>"  + Math.round(normFreqs[i]*10)/10 + "</td>";
+    alphabetRow += "<td style='display:inline-block; text-align:center; width:20px;'>"  + alphabet[i] + "</td>";
+    shiftedFreqsRow += "<td style='display:inline-block; text-align:center; width:20px;'>" + Math.round(freqPercent[i]*10)/10  + "</td>";
+    normFreqsRow += "<td style='display:inline-block; text-align:center; width:20px;'>"  + Math.round(normFreqs[i]*10)/10 + "</td>";
   }
   alphabetRow += "</tr>";
   shiftedFreqsRow += "</tr>";
@@ -139,7 +139,7 @@ function countLetters(text) {
 }
 </SCRIPT>
 
-<table width="50%" align="center" border="1" frame="box" rules="none">
+<table width="700px" align="center" border="1" frame="box" rules="none">
 <tr>
 <td colspan="2">
 <h2 align="center">Chi Squared
@@ -163,17 +163,17 @@ produce a decryption.
 <CENTER>
 <TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
 <TR>
-<TD BGCOLOR="#999999" style='display:block; width:95%; margin:0 auto;'>
+<TD BGCOLOR="#999999" style='display:block; width:90%; margin:0 auto;'>
 <FONT COLOR="#ffffff" FACE="Arial"><B>Paste Your Text Here</B></FONT>
-<TEXTAREA NAME="text" ROWS="8" COLS="88">
+<TEXTAREA NAME="text" ROWS="8" style="width:100%;">
 </TEXTAREA>
 </TD>
-<TD style="padding:5px; width:93px;">
+<TD style="padding:5px; width:10%;">
 <!-- <INPUT TYPE="button" VALUE="Shift" onClick='calcShift()' > -->
-  <INPUT TYPE="button" VALUE="-" onClick='incrementShift(-1)' style="float:left;">
-  <input type="text" name="shiftField" value="0" size="10" onchange="calcShift()" style="width:30px; float:left; display:block; text-align:center" >
-  <INPUT TYPE="button" VALUE="+" onClick='incrementShift(1)' style="float:left;">
-  <INPUT TYPE="button" VALUE="Decode" onClick='getLowScore()' style="margin:40px 0;">
+  <INPUT TYPE="button" VALUE="+" onClick='incrementShift(1)' style="float:top;margin-bottom:5px;">
+  <input type="text" name="shiftField" value="0" size="10" onchange="calcShift()" style="width:30px; float:top; display:block; text-align:center; margin-bottom:5px;" >
+  <INPUT TYPE="button" VALUE="-" onClick='incrementShift(-1)' style="float:top; margin-bottom:10px;">
+  <INPUT TYPE="button" VALUE="Decode" onClick='getLowScore()' style="float:bottom-left;">
 </TD>
 </TR>
 <TR>
