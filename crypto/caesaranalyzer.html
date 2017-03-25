@@ -1,0 +1,190 @@
+ <!-- Author: Meisha  Mandal -->
+
+<html>
+<head>
+</head>
+<body>
+<SCRIPT LANGUAGE="JavaScript">
+var text = "";
+var alphabet = "abcdefghijklmnopqrstuvwxyz";
+var alphabetDoubled = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz";
+var freqs = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+var normFreqs = [8.167, 1.492, 2.782, 4.253, 12.702, 2.228, 2.015, 6.094, 6.966, 0.153, 0.772, 4.025, 2.406, 6.749, 7.507, 1.929, 0.095, .987, 6.327, 9.056, 2.758, 0.978, 2.360, 0.150, 1.974, 0.074];
+var count = 0;
+
+function getLowScore() {
+  var lowScore = Infinity;
+  var shift = 0;
+  var text = document.forms.output.text.value;
+  text = text.toLowerCase();
+  var freqPercent = countLetters(text);
+  var lastVal;
+  var chart = "<table><tr><td>Shift  </td><td>Chi Square</td></tr>";
+  for(var i=alphabet.length; i > 0; i--){
+    var chiSq = getChiSq(freqPercent, normFreqs);
+    var row = "<tr><td>"  + i + "</td><td>" + Math.round(chiSq*10)/10  + "</td></tr>";
+    chart += row
+    if(chiSq<lowScore){
+      lowScore = chiSq;
+      shift = i;
+    }
+    lastVal = normFreqs.shift();
+    normFreqs.push(lastVal);
+  }
+  document.getElementById('result').innerHTML = "<p style='text-align:center'>Lowest Chi Sqare Value: " + Math.round(lowScore*10)/10 + "</p>";
+
+  outputRes(text,shift);
+  document.forms.output.shiftField.value = shift;
+
+}
+
+function calcShift(){
+  var shiftVal = parseInt(document.forms.output.shiftField.value);
+  var text = document.forms.output.text.value;
+  if(shiftVal >=0 && shiftVal < alhpabet.length){
+    document.getElementById('result').innerHTML = "";
+    outputRes(text,shiftVal);
+  }
+  else {
+    alert("Not a valid shift");
+  }
+}
+
+function outputRes(text, shiftVal){
+  text = text.toLowerCase();
+  var shiftedText = decode(text,shiftVal);
+  var freqPercent = countLetters(shiftedText);
+  var chart = "<table style='font-size:1em;'>";
+  var alphabetRow = "<tr><td>" + "      " + "</td>";
+  var shiftedFreqsRow = "<tr><td>Shifted </td>";
+  var normFreqsRow = "<tr><td>Normal </td>";
+  for(var i=0; i<alphabet.length; i++){
+    alphabetRow += "<td style='display:inline-block; text-align:center; width:20px;'>"  + alphabet[i] + "</td>";
+    shiftedFreqsRow += "<td style='display:inline-block; text-align:center; width:20px;'>" + Math.round(freqPercent[i]*10)/10  + "</td>";
+    normFreqsRow += "<td style='display:inline-block; text-align:center; width:20px;'>"  + Math.round(normFreqs[i]*10)/10 + "</td>";
+  }
+  alphabetRow += "</tr>";
+  shiftedFreqsRow += "</tr>";
+  normFreqsRow += "</tr>";
+  chart += alphabetRow + shiftedFreqsRow + normFreqsRow + "</table>";
+  chiSq = getChiSq(freqPercent, normFreqs);
+  decodedText = decode(shiftedText, shiftVal)
+
+  document.getElementById('result').innerHTML += "<p><u>Shift:</u> " + shiftVal + "&nbsp;&nbsp;<u>Frequencies</u></p>";
+  document.getElementById('result').innerHTML += chart;
+  document.getElementById('result').innerHTML += "<p>Shifted/Decoded Text:</p>";
+  document.getElementById('result').innerHTML += "<p>" + shiftedText + "</p>";
+}
+
+function decode(text,shift){
+  var decodedText = "";
+  for(var i = 0; i < text.length; i++){
+    charIndex = alphabet.indexOf(text[i]);
+    if (charIndex < 0){
+      decodedText += text[i];
+    }
+    else {
+      newChar = alphabetDoubled[charIndex+ alphabet.length -shift];
+      decodedText += newChar;
+    }
+  }
+  return decodedText;
+}
+
+function incrementShift(incrementVal){
+  var shiftVal = parseInt(document.forms.output.shiftField.value);
+
+  if (parseInt(incrementVal) === 1){
+    shiftVal = (shiftVal + 1) % alphabet.length;
+  }
+  else if (parseInt(incrementVal) === -1) {
+    shiftVal = (alphabet.length + (shiftVal -1)) % alphabet.length;
+  }
+  document.forms.output.shiftField.value = shiftVal;
+  var text = document.forms.output.text.value;
+  document.getElementById('result').innerHTML = "";
+  outputRes(text, shiftVal)
+}
+
+function getChiSq(freqPercent,normFreqs){
+  var chiSqTotal = 0,
+      currentChiSq;
+  for (var i=0; i < normFreqs.length; i++){
+    currentChiSq = (Math.pow((freqPercent[i]-normFreqs[i]),2))/normFreqs[i];
+    chiSqTotal += currentChiSq;
+  }
+  return chiSqTotal;
+}
+
+function countLetters(text) {
+  count = 0;
+  freqs = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+  for (var k = 0; k < text.length; k++) {
+    var ch = text.charAt(k);
+    if (alphabet.indexOf(ch) != -1) {
+      var x = ch.charCodeAt(0) - "a".charCodeAt(0);
+      ++freqs[x];
+      ++count;
+    }
+  }
+  var freqPercent = [];
+  for (var k=0; k < freqs.length; k++) {
+    var percent = freqs[k]/count * 100;
+    freqPercent.push(percent);
+  }
+  return freqPercent;
+}
+</SCRIPT>
+
+<table width="700px" align="center" border="1" frame="box" rules="none">
+<tr>
+<td colspan="2">
+<h2 align="center">Caesar
+Analyzer<img src="./android_CSP-128px.jpg" width="96"></h2> 
+</td>
+</tr>
+<tr>
+<td colspan="2">
+Type or
+paste some Caesar-encrypted text into the text area. Use the <b>+</b> and <b>-</b>
+buttons to try decrypting the message with a specific shift. 
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<FORM onSubmit="" NAME="output">
+<CENTER>
+<TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
+<TR>
+<TD BGCOLOR="#999999" style='display:block; width:90%; margin:0 auto;'>
+<FONT COLOR="#ffffff" FACE="Arial"><B>Paste Your Text Here</B></FONT>
+<TEXTAREA NAME="text" ROWS="8" style="width:100%;">
+</TEXTAREA>
+</TD>
+<TD style="padding:5px; width:10%;">
+<!-- <INPUT TYPE="button" VALUE="Shift" onClick='calcShift()' > -->
+  <INPUT TYPE="button" VALUE="+" onClick='incrementShift(1)' style="float:top;margin-bottom:5px;">
+  <input type="text" name="shiftField" value="0" size="10" onchange="calcShift()" style="width:30px; float:top; display:block; text-align:center; margin-bottom:5px;" >
+  <INPUT TYPE="button" VALUE="-" onClick='incrementShift(-1)' style="float:top; margin-bottom:10px;">
+<!--   <INPUT TYPE="button" VALUE="Decode" onClick='getLowScore()' style="float:bottom-left;"> -->
+</TD>
+</TR>
+<TR>
+<TD BGCOLOR="FFFFFF" colspan="2">
+<font type="courier" size="1" color="#000000"><LABEL id="result" for="prompt">Result</LABEL></font>
+<BR>
+</TD>
+</TR>
+</TABLE>
+</CENTER>
+</FORM>
+</td>
+</tr>
+</table>
+<style>
+  p{
+    font-size: 1.5em;
+  }
+</style>
+</body>
+</html>
