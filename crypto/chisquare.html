@@ -55,15 +55,14 @@ function outputRes(text, shiftVal){
   var shiftedText = decode(text,shiftVal);
   var freqPercent = countLetters(shiftedText);
   // var chart = "<table><tr><td> Letter </td><td> Normal Frequency </td><td> Shifted Frequency </td></tr>";
-  var chart = "<table>";
+  var chart = "<table style='font-size:1em;'>";
   var alphabetRow = "<tr><td>" + "      " + "</td>";
   var shiftedFreqsRow = "<tr><td>Shifted </td>";
   var normFreqsRow = "<tr><td>Normal </td>";
   for(var i=0; i<alphabet.length; i++){
-
-    alphabetRow += "<td style='display:inline-block; text-align:center; width:25px;'>"  + alphabet[i] + "</td>";
-    shiftedFreqsRow += "<td style='display:inline-block; text-align:center; width:25px;'>" + Math.round(freqPercent[i]*10)/10  + "</td>";
-    normFreqsRow += "<td style='display:inline-block; text-align:center; width:25px;'>"  + Math.round(normFreqs[i]*10)/10 + "</td>";
+    alphabetRow += "<td style='display:inline-block; text-align:center; width:22px;'>"  + alphabet[i] + "</td>";
+    shiftedFreqsRow += "<td style='display:inline-block; text-align:center; width:22px;'>" + Math.round(freqPercent[i]*10)/10  + "</td>";
+    normFreqsRow += "<td style='display:inline-block; text-align:center; width:22px;'>"  + Math.round(normFreqs[i]*10)/10 + "</td>";
   }
   alphabetRow += "</tr>";
   shiftedFreqsRow += "</tr>";
@@ -140,12 +139,22 @@ function countLetters(text) {
 }
 </SCRIPT>
 
-<table width="91%" align="center" border="1" frame="box" rules="none">
+<table width="50%" align="center" border="1" frame="box" rules="none">
 <tr>
 <td colspan="2">
-<h2 align="center">Chi Square Analyzer<img src="./android_CSP-128px.jpg" width="64"></h2>
-Type or paste some text into the text area and click  <b><i>Decode</i></b> to decode the text using a chi square analysis.
-Enter a number into the text field to shift the text by that amount or increment the shift using the + and - buttons.
+<h2 align="center">Chi Squared
+Analyzer<img src="./android_CSP-128px.jpg" width="96"></h2> 
+</td>
+</tr>
+<tr>
+<td colspan="2">
+Type or
+paste some Caesar-encrypted text into the text area. Use the <b>+</b> and <b>-</b>
+buttons to do a <a target="_blank"
+href="https://en.wikipedia.org/wiki/Chi-squared_test">Chi-squared
+analysis</a> on a specific shift.  Given a sufficient amount of text,
+the <b><i>Decode</i></b> button will automatically find the shift and
+produce a decryption.
 </td>
 </tr>
 <tr>
@@ -154,22 +163,21 @@ Enter a number into the text field to shift the text by that amount or increment
 <CENTER>
 <TABLE ALIGN="CENTER" BGCOLOR="#AAAAAA" BORDER="1" CELLPADDING="5">
 <TR>
-<TD BGCOLOR="#999999" style='display:block; width:593px; margin:0 auto;'>
+<TD BGCOLOR="#999999" style='display:block; width:95%; margin:0 auto;'>
 <FONT COLOR="#ffffff" FACE="Arial"><B>Paste Your Text Here</B></FONT>
-<TEXTAREA NAME="text" ROWS="8" COLS="80">
+<TEXTAREA NAME="text" ROWS="8" COLS="88">
 </TEXTAREA>
-
 </TD>
-<TD style="padding:5px; width:73px;">
+<TD style="padding:5px; width:93px;">
 <!-- <INPUT TYPE="button" VALUE="Shift" onClick='calcShift()' > -->
   <INPUT TYPE="button" VALUE="-" onClick='incrementShift(-1)' style="float:left;">
   <input type="text" name="shiftField" value="0" size="10" onchange="calcShift()" style="width:30px; float:left; display:block; text-align:center" >
-  <INPUT TYPE="button" VALUE="+" onClick='incrementShift(1)' style="float:right;">
+  <INPUT TYPE="button" VALUE="+" onClick='incrementShift(1)' style="float:left;">
   <INPUT TYPE="button" VALUE="Decode" onClick='getLowScore()' style="margin:40px 0;">
 </TD>
 </TR>
 <TR>
-<TD BGCOLOR="FFFFFF">
+<TD BGCOLOR="FFFFFF" colspan="2">
 <font type="courier" size="1" color="#000000"><LABEL id="result" for="prompt">Result</LABEL></font>
 <BR>
 </TD>
