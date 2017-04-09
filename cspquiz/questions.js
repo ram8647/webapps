@@ -4,13 +4,13 @@ var quiz_data = [
         "feedback": "That's right! With a Caesar shift of 3, the word 'alphabet' is encrypted into 'doskdehw'.",
         "response": "doskdehw",
         "score": "1.0",
-        "hint": "In Caesar cipher encryption with shift 3, each letter is replaced with a letter 3 letters down in the alphabet, so a becomes c.",
+        "hint": "In Caesar cipher encryption with shift 3, each letter is replaced with a letter 3 letters down in the alphabet, so a becomes d.",
         "heading": "Cryptography",
         "question": "Encrypt the word <i><b>alphabet</b></i> using a Caesar cipher with a \nshift of 3. Type your answer into the Textbox. ",
         "cspcode":"6.3.1K",
         "source":"mcsp-7",
         "type": "Fi",
-        "wrongfeedback": "Sorry, that's not right. In Caesar cipher encryption with shift 3, each letter is replaced with a letter 3 letters down in the alphabet, so a becomes c. "
+        "wrongfeedback": "Sorry, that's not right. In Caesar cipher encryption with shift 3, each letter is replaced with a letter 3 letters down in the alphabet, so a becomes d. "
     },
     {
         "choices": [
@@ -701,16 +701,16 @@ var quiz_data = [
   { 
       "choices":[
           {"feedback":"A is not correct. When you arrange a deck of cards you are <i>sorting</i>, not searching.",
-           "score":"-1",
+           "score": -1.0,
            "text":"A. Arranging a deck of cards from the lowest to the highest value cards. "},
     {"feedback":"B is correct. Looking up a phone number is a problem that can be solved by a sequential search, although binary search would be faster since the phone book is alphabetized.",
-     "score":"0.5",
+     "score": 0.5,
      "text":"B. Looking up a phone number in the phone book given the person's full (unique) name."},
     {"feedback":"C is not correct. Searching algorithms are used to find an element in a list, not to average a list of numbers.",
-     "score":"-1",
+     "score": -1.0,
      "text":"C. Averaging a list of numbers."},
     {"feedback":"D is correct! Looking up a person's name given a phone number could be solved by a linear search. You would need to start at one end of the phone book and check each phone number individually, in order, until you find the phone number you were given and then you can find the last name associated with the phone number.",
-     "score":"0.5",
+     "score": 0.5,
      "text":"D. Looking up a person's name in the phone book given the person's phone number. "}],
     "cspcode":"4.2.4H",
    "description":"Sequential Search",
