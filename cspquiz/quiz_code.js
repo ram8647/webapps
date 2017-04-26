@@ -15,8 +15,8 @@
 
   // Quiz data are stored in global quiz_data as a json array
   var IDEAS = ["creativity", "abstraction", "data", "algorithms", "programming", "internet", "impact"];
-  var COURSES = ["mcsp", "cb"];     // Could be expanded to other curricula -- e.g., bjc, uteach
-  var COURSE_NAMES = {mcsp:"Mobile CSP", cb:"College Board Sample Question"};
+  var COURSES = ["mcsp", "cb", "tracing"];     // Could be expanded to other curricula -- e.g., bjc, uteach
+  var COURSE_NAMES = {mcsp:"Mobile CSP", cb:"College Board Sample Question", tracing:"Tracing Code"};
   var Q_TYPES  = ["Mc", "Ma", "Fi"];  // multiple choice, muliple answer, fill-in
   var UNITS = ["1","2","3","4","5","6","7","8","9","10","11"];  // unit or chapter keywords
 
@@ -504,6 +504,8 @@ function course_filter(course) {
     calculate_filtered_points();
     if (course == "cb")
         course = "College Board AP";
+    else if (course == "tracing")
+        course = "tracing";
     else
         course = "Mobile CSP"
     open_modal('There are currently ' + (quiz_index.length - filtered_points)  + ' unanswered questions in this set of ' + quiz_index.length + " " + course  + ' questions.');

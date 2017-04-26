@@ -6,10 +6,11 @@ function convertAPML(input) {
     if (first == -1) 
         return input; // no APML code;
     
-    var last = input.lastIndexOf('</apml>');
+    var last = input.indexOf('</apml>');
     var pre = input.substr(0,first);
     var apmlSection = input.substr(first+6, last); // leaving off <apml> tags
     var post = input.substr(last+8,input.length);
+ 
     if (apmlSection != "") {                                    
         apmlSection = ap2apml(apmlSection);
         for(var i=0; i<convs.length; i++){

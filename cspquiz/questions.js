@@ -1,5 +1,296 @@
 var quiz_data = [
     {
+        "description": "Tracing Code",
+        "heading": "AND Tracing",
+        "question": "If count = 0 and limit = 10, is the following logical expression true or false?  <div id='APblocks'> <cond> <cond>count < 10</cond> AND <cond>limit < 10</cond></cond>",
+        "hint": "For this logical expression to be true, both sides of the AND must be true.",
+        "cspcode":"4.1.1",
+        "source":"tracing-x",
+        "type": "Mc",
+    "choices": [
+            {
+                "feedback": "No, although count is less than 10, limit is not less than 10 but equal to 10. ",
+                "score": 0.0,
+                "text": "True"
+            },
+            {
+                "feedback": "That's correct! Although count is less than 10, limit is not less than 10 but equal to 10.",
+                "score": 1.0,
+                "text": "False"
+            }
+            
+    ]
+},
+    {
+        "description": "Tracing Code",
+        "heading": "OR Tracing",
+        "question": "If count = 0 and limit = 10, is the following logical expression true or false?  <div id='APblocks'> <cond> <cond>limit > 20 </cond> OR <cond>count < 5</cond></cond>",
+        "hint": "For this logical expression to be true, at least one or the other side of the OR must be true.",
+        "cspcode":"4.1.1",
+        "source":"tracing-x",
+        "type": "Mc",
+    "choices": [
+            {
+                "feedback": "No, although limit is not greater than 20, count is less than 5. ",
+                "score": 0.0,
+                "text": "False"
+            },
+            {
+                "feedback": "That's correct! Although limit is not greater than 20, count is less than 5.",
+                "score": 1.0,
+                "text": "True"
+            }
+            
+    ]
+},
+     {
+        "description": "Tracing Code",
+        "heading": "NOT Tracing",
+        "question": "If count = 0 and limit = 10, is the following logical expression true or false?  <div id='APblocks'><cond>NOT <cond> <cond> limit > 20 </cond> OR <cond>count < 5</cond></cond></cond>",
+        "hint": "For this logical expression to be false, at least one or the other side of the OR must be true.",
+        "cspcode":"4.1.1",
+        "source":"tracing-x",
+        "type": "Mc",
+    "choices": [
+            {
+                "feedback": "No, count is less than 5 is true, so NOT that is false.",
+                "score": 0.0,
+                "text": "True"
+            },
+            {
+                "feedback": "That's correct. count is less than 5 is true, so NOT that is false.",
+                "score": 1.0,
+                "text": "False"
+            }
+            
+    ]
+},
+    {
+        "description": "Tracing Code",
+        "heading": "Tracing",
+        "question": "What does the following program display? <apml>[a <- 1]<br>[b <- a]<br>[b <- [b + a]]<br>[a <- [b + a]]<br>[DISPLAY a]<br>[DISPLAY b]</apml>",
+        "score": "1.0",
+        "hint": "Write down the variables and keep track of their values after each line of code.",
+        "cspcode":"4.1.1",
+        "source":"tracing-x",
+        "type": "Mc",
+    "choices": [
+            {
+                "feedback": "That's correct!",
+                "score": 1.0,
+                "text": "3 2"
+            },
+            {
+                "feedback": "Sorry, try again.",
+                "score": 0.0,
+                "text": "2 3"
+            },
+            {
+                "feedback": "Sorry, try again.",
+                "score": 0.0,
+                "text": "1 1"
+            },
+           {
+                "feedback": "Sorry, try again.",
+                "score": 0.0,
+                "text": "2 2"
+            }
+    ]
+},
+     {
+        "description": "Tracing Code",
+        "heading": "Tracing",
+        "question": "What does the following code do? <apml>[i <- 1]<br>[REPEAT UNTIL i >= 100 <br> [DISPLAY i] <br> [i <- i + 2] <br>]</apml>",
+        "score": "1.0",
+        "hint": "",
+        "cspcode":"4.1.1",
+        "source":"tracing-x",
+        "type": "Mc",
+    "choices": [
+            {
+                "feedback": "Yes, that's correct.",
+                "score": 1.0,
+                "text": "Prints out all the odd numbers between 1 and 100."
+            },
+            {
+                "feedback": "No, try again.",
+                "score": 0.0,
+                "text": "Prints out all the even numbers between 1 and 100."
+            },
+            {
+                "feedback": "No, try again.",
+                "score": 0.0,
+                "text": "It's an infinite loop."
+            },
+           {
+                "feedback": "No, try again.",
+                "score": 0.0,
+                "text": "Prints out all the numbers between 1 and 100."
+            }
+    ]
+},
+      {
+        "description": "Tracing Code",
+        "heading": "Tracing",
+        "question": "What does the following code do? <apml>[list <- [1, 0, 4, 2]]<br>[x <- -1]<br> [FOR EACH item IN list <br>  [IF (item > x)  <br>&nbsp; [x <- item]]] <br> [DISPLAY x]</apml>",
+        "score": "1.0",
+        "hint": "",
+        "cspcode":"4.1.1",
+        "source":"tracing-x",
+        "type": "Mc",
+    "choices": [
+            {
+                "feedback": "That's correct!",
+                "score": 1.0,
+                "text": "Displays 4 which is the max item in the list."
+            },
+            {
+                "feedback": "No, the items in the list replace x's -1 value.",
+                "score": 0.0,
+                "text": "Displays -1 which is the value of x."
+            },
+            {
+                "feedback": "No, 0 is not greater than -1.",
+                "score": 0.0,
+                "text": "Displays 0 which is the min item in the list."
+            },
+           {
+                "feedback": "No, 1 is replaced the second time through the loop.",
+                "score": 0.0,
+                "text": "Displays 1 which is the first item in the list."
+            }
+    ]
+},
+     {
+        "description": "Tracing Code",
+        "heading": "Tracing",
+        "question": "Which code below could be placed in the following loop to print out the item in a list that has the lowest (minimum) value?  <apml>[list <- [1, 0, 4, 2]]<br>[x <- 99]<br> [FOR EACH item IN list <br> &nbsp;<i>&lt;MISSING CODE&gt;</i>] <br> [DISPLAY x]</apml>",
+        "score": "1.0",
+        "hint": "",
+        "cspcode":"4.1.1",
+        "source":"tracing-x",
+        "type": "Mc",
+    "choices": [
+            {
+                "feedback": "That's correct!",
+                "score": 1.0,
+                "text": "<apml>[IF (item < x)  <br>&nbsp; [x <- item]]</apml>"
+            },
+            {
+                "feedback": "No, that would find the max item in the list.",
+                "score": 0.0,
+                "text": "<apml>[IF (item > x)  <br>&nbsp; [x <- item]]</apml>"
+            },
+            {
+                "feedback": "No, that would display the last item in the list.",
+                "score": 0.0,
+                "text": "<apml>[IF (item < 99)  <br>&nbsp; [x <- item]]</apml>"
+            },
+           {
+                "feedback": "No, that would only display 99.",
+                "score": 0.0,
+                "text": "<apml>[IF (item > 99)  <br>&nbsp; [x <- item]]</apml>"
+            }
+    ]
+},
+      {
+        "description": "Tracing Code",
+        "heading": "Tracing",
+        "question": "What is the missing condition in the following loop to convert inches to feet such that 27 inches becomes 2 feet and 3 inches.<apml>[inches <- 27]<br>[feet <- 0]<br>[REPEAT UNTIL <i>missing condition</i> <br> &nbsp;    [feet <- feet + 1] <br> &nbsp;    [inches <- inches - 12]]</apml>",
+        "score": "1.0",
+        "hint": "Write down the 2 variables inches and feet and trace through the code line by line changing their values with each of the possible conditions below.",
+        "cspcode":"4.1.1",
+        "source":"tracing-x",
+        "type": "Mc",
+    "choices": [
+            {
+                "feedback": "That's correct!",
+                "score": 1.0,
+                "text": "(inches < 12)"
+            },
+            {
+                "feedback": "No, inches is already greater than 12 before the loop runs.",
+                "score": 0.0,
+                "text": "(inches > 12)"
+            },
+            {
+                "feedback": "No, that would not calculate the right number of feet and inches.",
+                "score": 0.0,
+                "text": "(inches <= 0)"
+            },
+           {
+                "feedback": "No, that would not calculate the right number of feet and inches.",
+                "score": 0.0,
+                "text": "(inches == 12)"
+            }
+    ]
+},
+      {
+        "description": "Tracing Code",
+        "heading": "Tracing",
+        "question": "What are the items in the list after the following code is executed?<apml>[list <- [0, 2, 4, 6, 8]]<br>[i <- 1]<br>[REPEAT [LENGTH(list) - 1] TIMES<br>&nbsp;   [list[i] <- list[i+1]]<br> &nbsp;   [i <- i + 1]] <br> [list[i] <- 10]</apml>",
+        "score": "1.0",
+        "hint": "Note that the loop copies the i+1 item in the list into the ith item in the list.",
+        "cspcode":"4.1.1",
+        "source":"tracing-x",
+        "type": "Mc",
+    "choices": [
+            {
+                "feedback": "That's correct!",
+                "score": 1.0,
+                "text": "[2, 4, 6, 8, 10]"
+            },
+            {
+                "feedback": "No, try again.",
+                "score": 0.0,
+                "text": "[0, 2, 4, 6, 8]"
+            },
+            {
+                "feedback": "No, try again.",
+                "score": 0.0,
+                "text": "[1, 3, 5, 7, 9]"
+            },
+           {
+                "feedback": "No, try again.",
+                "score": 0.0,
+                "text": "[1, 3, 5, 7, 10]"
+            }
+    ]
+},
+        {
+        "description": "Tracing Code",
+        "heading": "Tracing",
+        "question": "What are the values in the list after executing the following code: <apml>[list <- [0, 3, 5]]<br>[APPEND [list, 4]]<br>[INSERT [list, 2, 1]]<br>[REMOVE [list, 1]]</apml>",
+        "score": "1.0",
+        "hint": "APPEND(list,value) puts the value at the end of the list, while INSERT(list, i, value) puts the value at position i in the list and REMOVE(list,i) removes the ith element.",
+        "cspcode":"4.1.1",
+        "source":"tracing-x",
+        "type": "Mc",
+    "choices": [
+            {
+                "feedback": "That's correct!",
+                "score": 1.0,   
+                "text": "[1, 3, 5, 4]"  
+            },
+            {
+                "feedback": "No, you may have mixed up the arguments of INSERT. Remember that INSERT(list, i, value) puts the value at position i in the list.",
+                "score": 0.0,
+                "text": "[0, 3, 5, 4]"
+            },
+            {
+                "feedback": "No, try the hint.",
+                "score": 0.0,
+                "text": "[1, 2, 3, 4]"
+            },
+           {
+                "feedback": "No, try the hint.",
+                "score": 0.0,
+                "text": "[0, 3, 4, 5]"
+            }
+    ]
+},
+    
+    {
         "description": "Caesar cipher encryption",
         "feedback": "That's right! With a Caesar shift of 3, the word 'alphabet' is encrypted into 'doskdehw'.",
         "response": "doskdehw",
@@ -470,7 +761,7 @@ var quiz_data = [
                 "text": "An IPv4 address consists of 32 bits "
             },
             {
-                "feedback": "This is challenging, but rewarding! IPv4 addresses consist of 32 bits. ",
+                "feedback": "That's correct! IPv4 addresses consist of 32 bits. ",
                 "score": 1.0,
                 "text": "An IPv4 address consists of 64 bits "
             }
