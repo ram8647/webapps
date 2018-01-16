@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<style>
+h1, h2 {
+    display: inline-block;
+}
+
+.buttonbasic {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+</style>
+
+<script>
+var time = 0;
+var max_trials = 0;
+var door = 0;
+var guess = 0;
+var trials = 0;
+var wins = 0;
+var t0 = 0
+var t1 = 0;
+var strategy;
+var timer;
+var progressbar;
+
+// Run one of the 3 stragies based on radio buttons
+function runModel() {
+  init_simulation();
+  if (document.getElementById('random').checked) {
+    strategy = "random";
+    timer = setInterval(function(){random_body()}, 1);
+  }
+  else if (document.getElementById('neverswitch').checked) {
+    strategy = "never switch";
+    timer = setInterval(function(){never_body()}, 1);
+  }
+  else {
+    strategy = "always switch";
+    timer = setInterval(function(){always_body()}, 1);
+  }
+}
+
+// Do initializations for any strategy
+function init_simulation() {
+  max_trials = document.getElementById('N').value;
+  if (max_trials > 10000)
+    max_trials = 10000;
+  trials = 0;
+  wins = 0;
+  t0 = performance.now();
+  progressbar = document.getElementById("bar");
+  progressbar.max = 100;
+  progressbar.value = 0;
+}
+
+// Random strategy 
+function random_body() {
+  if (trials >= max_trials) {
+    clearInterval(timer);
+    t1 = performance.now();
+    report(t1-t0);
+    return;
+  }
+  var door = Math.floor((Math.random() * 3) + 1);
+  var guess = Math.floor((Math.random() * 3) + 1);
+  progressbar.value = Math.floor(100 * trials/max_trials);
+  trials += 1;
+  var choice = Math.floor((Math.random() * 2) + 1);
+  if (choice == 1 && door == guess) {
+      wins += 1;
+  } else if (choice == 2 && door != guess) {
+      wins += 1;
+  }
+}
+
+// Never switch strategy 
+function never_body() {
+  if (trials >= max_trials) {
+    clearInterval(timer);
+    t1 = performance.now();
+    report(t1-t0);
+    return;
+  }
+  progressbar.value = Math.floor(100 * trials/max_trials);
+  var door = Math.floor((Math.random() * 3) + 1);
+  var guess = Math.floor((Math.random() * 3) + 1);
+  trials += 1;
+  if (door == guess) {
+    wins += 1;
+  }
+}
+
+// Always switch strategy f
+function always_body() {
+  if (trials >= max_trials) {
+    clearInterval(timer);
+    t1 = performance.now();
+    report(t1-t0);
+    return;
+  }
+  progressbar.value = Math.floor(100 * trials/max_trials);
+  var door = Math.floor((Math.random() * 3) + 1);
+  var guess = Math.floor((Math.random() * 3) + 1);
+  trials += 1;
+  if (door != guess) {
+    wins += 1;
+  }
+}
+
+// Report, t is the runtime of the simulation
+function report(t) {
+  document.getElementById('results').innerHTML = 
+      '<br><b>Results</b><br>' +
+      ' strategy: ' + strategy + 
+      ' <br>trials: ' + trials + 
+      ' wins: ' + wins +
+      ' ( ' + ( Math.round(10 * (wins / trials * 100)) / 10) + '%) ' +
+      '<br>runtime: ' + Math.round(t) + ' ms';  
+}
+</script>
+
+<h1>Monty Hall Simulation</h1>
+<span id="instr"><h3>Directions: Choose a strategy and enter the number
+of trials. <br>Then click the 'Go' button and think about the results.</h3></span>
+
+<form onSubmit="" name="rng">
+<h2>Strategies, pick one:</h2>  
+<br>&nbsp;&nbsp;<input type="radio" style="font-size:30;" name="strategy" id="random" value="0" checked />&nbsp;<b>Random -- sometimes switch and sometimes not</b>
+<br>&nbsp;&nbsp;<input type="radio" name="strategy" id="neverswitch" value="1" />&nbsp;<b>Never Switch</b>
+<br>&nbsp;&nbsp;<input type="radio" name="strategy" id="alwaysswitch" value="2" />&nbsp;<b>Always Switch</b>
+<br>
+
+<h2>Trials, how many games to simulate (max 10000):</h2> <INPUT TYPE="text" ID="N" SIZE="14" MAXLENGTH="10" VALUE="1000">
+<br><br>
+<INPUT type="button" class="buttonbasic" VALUE="Go" onClick='runModel()'>
+<INPUT type="button" class="buttonbasic" VALUE="Back to game" onClick="window.location.href='./game.html'">
+<br>
+
+<progress id="bar" width="400px" value ="0"></progress>
+<br><LABEL id="results">Results</LABEL>
+
+</form>
+</body>
+</html>

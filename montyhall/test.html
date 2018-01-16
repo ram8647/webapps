@@ -1,0 +1,48 @@
+<script>
+var button;
+var count;
+var countmax;
+var progressbar;
+var timerID;
+var t0, t1;
+
+function start(max) {
+    t0 = performance.now();
+    button = document.getElementById("button");
+    count = 0;
+    countmax = max;
+    progressbar = document.getElementById("bar");
+    progressbar.max = countmax;
+
+    timerID = setInterval(function(){update()},1);
+}//end function
+
+function update() {
+    button.innerHTML = "Counting to " + countmax;
+//    count = count + 100;
+    count = count + 1;
+    if (count % 100 == 0)
+      progressbar.value = count;
+    if (count >= countmax) {
+        t1 = performance.now();
+        document.getElementById("results").innerHTML = 'Time (ms) ' + Math.floor(t1-t0);
+        clearInterval(timerID);
+        button.innerHTML = "Ready";
+        progressbar.value = 0;
+        
+    }//end if
+}//end function
+
+</script>
+</head>
+
+<body>
+<p>
+    <button onclick="start(1000)" id="button" style="font-size:18px;">Ready</button><br>
+    <br>
+    <progress id="bar" value="0"></progress>
+    <br>
+    <LABEL id="results">Results</LABEL>
+</p>
+</body>
+</html>

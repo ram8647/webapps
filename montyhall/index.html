@@ -1,0 +1,95 @@
+<script>
+var time = 0;
+var max_trials = 0;
+var door = 0;
+var guess = 0;
+var trials = 0;
+var wins = 0;
+
+function runModel() {
+  max_trials = document.getElementById('N').value;
+  trials = 0;
+  wins = 0;
+  if (document.getElementById('random').checked)
+    random();
+  else if (document.getElementById('neverswitch').checked)
+    never_switch();
+  else 
+    always_switch();
+}
+
+// The random strategy
+function random() {
+  var t0 = performance.now();
+  for (var i = 0; i < max_trials; i++) {
+    var door = Math.floor((Math.random() * 3) + 1);
+    var guess = Math.floor((Math.random() * 3) + 1);
+    trials += 1;
+    var choice = Math.floor((Math.random() * 2) + 1);
+    if (choice == 1 && door == guess) {
+        wins += 1;
+    } else if (choice == 2 && door != guess) {
+        wins += 1;
+    }
+  }
+  var t1 = performance.now();
+  report(t1-t0);
+}
+
+// The never switch strategy
+function never_switch() {
+  var t0 = performance.now();
+  for (var i = 0; i < max_trials; i++) {
+    var door = Math.floor((Math.random() * 3) + 1);
+    var guess = Math.floor((Math.random() * 3) + 1);
+    trials += 1;
+    if (door == guess) {
+      wins += 1;
+    }
+  }
+  var t1 = performance.now();
+  report(t1-t0);
+}
+
+// The never switch strategy
+function always_switch() {
+  var t0 = performance.now();
+  for (var i = 0; i < max_trials; i++) {
+    var door = Math.floor((Math.random() * 3) + 1);
+    var guess = Math.floor((Math.random() * 3) + 1);
+    trials += 1;
+    if (door != guess) {
+      wins += 1;
+    }
+  }
+  var t1 = performance.now();
+  report(t1-t0);
+}
+
+// Report, is the runtime of the simulation
+function report(t) {
+  document.getElementById('results').innerHTML = 
+      '<br><b>Results</b><br>' +
+      ' trials: ' + trials + 
+      ' wins: ' + wins +
+      ' ( ' + ( Math.round(10 * (wins / trials * 100)) / 10) + '%) ' +
+      '<br>runtime: ' + Math.round(t) + ' ms';  
+}
+</script>
+
+<h1>Monty Hall Simulation</h1>
+<p><b>Directions:</b> Choose a strategy, <br>enter the number
+of trials, <br>click the 'Go' button, <br>and think about the results.</p>
+<form onSubmit="" name="rng">
+
+<b><u>Strategy:</u></b>  
+<br>&nbsp;&nbsp;<input type="radio" name="strategy" id="random" value="0" checked />Random
+<br>&nbsp;&nbsp;<input type="radio" name="strategy" id="neverswitch" value="1" />Never Switch
+<br>&nbsp;&nbsp;<input type="radio" name="strategy" id="alwaysswitch" value="2" />Always Switch
+<br>
+<br><b><u>Trials</u>:</b> <INPUT TYPE="text" ID="N" SIZE="10" MAXLENGTH="10" VALUE="1000">
+<br><br><INPUT TYPE="button" VALUE="Go" onClick='runModel()'>
+<br>
+<LABEL id="results">Results</LABEL>
+
+</form>

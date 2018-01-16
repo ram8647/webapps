@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+//    display: inline-block;
+    float:left;
+    font-size: 80px;
+    margin: 4px 2px;
+    cursor: pointer;
+    width: 197px;
+    height: 256px;
+}
+.buttonbasic {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+</style>
+</head>
+<body onload='newGame()'>
+
+<script>
+var ntries = 0;
+var ncorrect = 0;
+var nswitch = 0;
+var guessdoor = 0;
+var prizedoor = 0;
+var boobydoor = 0;
+var reguessdoor = 0;
+var msg1 = "<h3>Behind one of these doors is a nice prize.<br>The other doors are hiding goats.<br>Click on the door that's hiding the prize.</h3>";
+
+function newGame() {
+  prizedoor = Math.floor((Math.random() * 3) + 1);
+  guessdoor = boobydoor = reguessdoor = 0;
+  var btns = document.getElementsByClassName('button');  // Enable all the buttons
+  for (var btn = 0; btn < btns.length; btn++) {
+   btns[btn].enabled = true;
+   btns[btn].disabled = false;
+   btns[btn].value = btn + 1;
+  }
+  document.getElementById('button1').style.backgroundImage="none"
+  document.getElementById('button2').style.backgroundImage="none"
+  document.getElementById('button3').style.backgroundImage="none"
+  document.getElementById('instr').innerHTML = msg1;
+}
+
+function guessDoor(doorno) {
+  var msg = "";
+  if (guessdoor == 0) {                // User makes initial guess
+    guessdoor = doorno;
+    openBoobyPrizeDoor(doorno);
+  } else {                            // This is the player's second guess.
+    document.getElementById('button' + doorno).disabled = true;
+    var isaSwitch = (doorno != guessdoor) ? true : false;
+    var isaWin = false;
+    if (isaSwitch) {                  // The player switched doors
+      reguessdoor = chooseAnotherDoor([guessdoor, boobydoor]);
+      isaWin = (prizedoor != guessdoor) ? true : false;
+      if (!isaWin) {
+        openDoor(reguessdoor, "url('./goat.jpeg')");
+        msg = "<h3>You win another goat!</h3>";
+      } else {
+        openDoor(reguessdoor, "url('./dollarsign.png')");
+        msg = "<h3>More money for you!</h3>";
+      }
+    } else {                           // Player stayed with initial guess
+      isaWin = (prizedoor == guessdoor) ? true : false;
+      if (isaWin) {
+        openDoor(guessdoor, "url('./dollarsign.png')");
+        msg = "<h3>More money for you!</h3>";
+      } else {
+        openDoor(guessdoor, "url('./goat.jpeg')");
+        msg = "<h3>You win another goat!</h3>";
+      }
+    }
+    document.getElementById('instr').innerHTML = msg;
+    var lastdoor = chooseAnotherDoor([doorno, boobydoor]);
+    var img = (lastdoor == prizedoor) ? "url('./dollarsign.png')" : "url('./goat.jpeg')";
+    openDoor(lastdoor, img);
+    updateStats(isaWin, isaSwitch);
+  }
+}
+
+function openBoobyPrizeDoor(doorno) {
+  var doors = [guessdoor, prizedoor];
+  boobydoor = chooseAnotherDoor(doors);
+  openDoor(boobydoor, "url('./goat.jpeg')");
+  document.getElementById('button' + boobydoor).disabled = true;
+  var msg = "<h3>You chose door # " + doorno + ". <br>I'm showing you what's behind door #" + boobydoor +
+         ". <br>You can now either switch doors or stay with your first guess by clicking on a door.</h3>" ;
+  document.getElementById('instr').innerHTML = msg;
+}
+
+function chooseAnotherDoor(dontpickarray) {
+  var choices = [];
+  for (var i = 1; i <= 3; i++) {
+    if (! dontpickarray.includes(i))
+      choices.push(i);
+  } 
+  return choices[Math.floor(Math.random() * choices.length)];
+}
+
+function openDoor(doorno, prizeImg) {
+  document.getElementById('button' + doorno).value = '';
+  document.getElementById('button' + doorno).style.backgroundImage = prizeImg;
+}
+
+function updateStats(isaWin, isaSwitch) {
+  ntries += 1;
+  var deltacorrect = (isaWin) ? 1 : 0;
+  var deltaswitch = (isaSwitch) ? 1 : 0;
+  ncorrect += deltacorrect;
+  nswitch += deltaswitch;
+  var str = "<h3>Results: Tries=" + ntries + " Correct=" + ncorrect + " Switches=" + nswitch + " Winning Percentage=" + Math.round((ncorrect/ntries) * 1000)/10 + "%</h3>";
+  document.getElementById('results').innerHTML = str;
+}
+
+</script>
+
+<h1>Let's Make a Deal!</h1>
+<span id="instr"><h3>Behind one of these doors is a nice prize.<br>The other doors are hiding goats.<br>Click on the door that's hiding the prize.</h3></span>
+<form onSubmit="" name="rng">
+<INPUT id='button1' type="button" class="button" VALUE="1" onClick='guessDoor(1)' /> 
+<INPUT id='button2' type="button" class="button" VALUE="2" onClick='guessDoor(2)' />
+<INPUT id='button3' type="button" class="button" VALUE="3" onClick='guessDoor(3)' />
+<div style="clear:both;"></div>
+<span id="results"><h3>Results: Tries=0 Correct=0 Switches=0 Winning Percentage=</h3></span>
+<INPUT type="button" class="buttonbasic" Value="Play again." onClick='newGame()' />
+<INPUT type="button" class="buttonbasic" Value="Run simulation." onClick="window.location.href='./animated.html'" />
+</form>
+</body>
+</html>

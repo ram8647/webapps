@@ -1,0 +1,153 @@
+<script>
+var time = 0;
+var max_trials = 0;
+var curr_trials = 0;
+var door = 0;
+var guess = 0;
+var trials = 0;
+var wins = 0;
+var t0 = 0
+var t1 = 0;
+var timer;
+var progressbar;
+
+function runModel() {
+  max_trials = document.getElementById('N').value;
+  trials = 0;
+  wins = 0;
+  if (document.getElementById('random').checked)
+    random_animated();
+//    random();
+  else if (document.getElementById('neverswitch').checked) {
+    progressbar = document.getElementById("bar")
+    progressbar.max = 100; // 100%;
+    progressbar.value = 0;
+    never_switch();
+  }
+  else 
+    always_switch();
+}
+
+function random_animated() {
+  t0 = performance.now();
+  curr_trials = 0;
+  progressbar = document.getElementById("bar");
+  progressbar.max = 100; // 100%
+  progressbar.value = 0;
+  timer = setInterval(function(){random_body()}, 1);
+}
+
+function random_body() {
+  if (curr_trials >= max_trials) {
+    clearInterval(timer);
+    t1 = performance.now();
+    report(t1-t0);
+    return;
+  }
+  var door = Math.floor((Math.random() * 3) + 1);
+  var guess = Math.floor((Math.random() * 3) + 1);
+  curr_trials += 1;
+  if (curr_trials % 100 == 0) 
+    progressbar.value = Math.floor(curr_trials/max_trials * 100);
+  trials += 1;
+  var choice = Math.floor((Math.random() * 2) + 1);
+  if (choice == 1 && door == guess) {
+      wins += 1;
+  } else if (choice == 2 && door != guess) {
+      wins += 1;
+  }
+}
+
+// The random strategy
+function random() {
+  var t0 = performance.now();
+  document.getElementById("bar").style.width = "1%";
+  setInterval(animate, 10);
+//  for (var i = 0; i < max_trials; i++) {
+  for (curr_trials = 0; curr_trials < max_trials; curr_trials++) {
+    var door = Math.floor((Math.random() * 3) + 1);
+    var guess = Math.floor((Math.random() * 3) + 1);
+    trials += 1;
+    var choice = Math.floor((Math.random() * 2) + 1);
+    if (choice == 1 && door == guess) {
+        wins += 1;
+    } else if (choice == 2 && door != guess) {
+        wins += 1;
+    }
+  }
+  var t1 = performance.now();
+  clearInterval();
+  report(t1-t0);
+}
+
+function update_progress() {
+  console.log('hi');
+  progressbar.value = Math.floor(100 * curr_trials/max_trials);
+}
+
+// The never switch strategy
+function never_switch() {
+  var t0 = performance.now();
+  for (curr_trials = 0; curr_trials < max_trials; curr_trials++) {
+    var door = Math.floor((Math.random() * 3) + 1);
+    var guess = Math.floor((Math.random() * 3) + 1);
+    trials += 1;
+    if (door == guess) {
+      wins += 1;
+    }
+    if (curr_trials % (max_trials / 10) == 0)
+      setTimeout(update_progress, 0);
+  }
+  var t1 = performance.now();
+  report(t1-t0);
+}
+
+// The never switch strategy
+function always_switch() {
+  var t0 = performance.now();
+  for (var i = 0; i < max_trials; i++) {
+    var door = Math.floor((Math.random() * 3) + 1);
+    var guess = Math.floor((Math.random() * 3) + 1);
+    trials += 1;
+    if (door != guess) {
+      wins += 1;
+    }
+  }
+  var t1 = performance.now();
+  report(t1-t0);
+}
+
+// Report, is the runtime of the simulation
+function report(t) {
+  document.getElementById('results').innerHTML = 
+      '<br><b>Results</b><br>' +
+      ' trials: ' + trials + 
+      ' wins: ' + wins +
+      ' ( ' + ( Math.round(10 * (wins / trials * 100)) / 10) + '%) ' +
+      '<br>runtime: ' + Math.round(t) + ' ms';  
+}
+
+function animate() {
+  document.getElementById("bar").style.width = Math.floor(curr_trials/max_trials*100) + '%';
+}
+
+</script>
+
+<h1>Monty Hall Simulation</h1>
+<p><b>Directions:</b> Choose a strategy, <br>enter the number
+of trials, <br>click the 'Go' button, <br>and think about the results.</p>
+<form onSubmit="" name="rng">
+
+<b><u>Strategy:</u></b>  
+<br>&nbsp;&nbsp;<input type="radio" name="strategy" id="random" value="0" checked />Random
+<br>&nbsp;&nbsp;<input type="radio" name="strategy" id="neverswitch" value="1" />Never Switch
+<br>&nbsp;&nbsp;<input type="radio" name="strategy" id="alwaysswitch" value="2" />Always Switch
+<br>
+<br><b><u>Trials</u>:</b> <INPUT TYPE="text" ID="N" SIZE="10" MAXLENGTH="10" VALUE="1000">
+<br><br><INPUT TYPE="button" VALUE="Go" onClick='runModel()'>
+<br>
+
+<progress id="bar" width="400px" value ="0"></progress>
+<br><LABEL id="results">Results</LABEL>
+
+</form>
