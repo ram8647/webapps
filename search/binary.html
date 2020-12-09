@@ -26,7 +26,7 @@
     var label = document.getElementById("gobutton").value;
     if (label.startsWith("Let")) {
       max = parseInt(document.getElementById("max").value);
-      nMaxGuesses = Math.ceil(log2(max));
+      nMaxGuesses = 1 + Math.floor(log2(max));
       low = 1;
       high = max;
       guess = Math.floor((low + high) / 2);

@@ -28,7 +28,7 @@
     var label = document.getElementById("gobutton").value;
     if (label.startsWith("Let")) {
       max = parseInt(document.getElementById("max").value);
-      nMaxGuesses = Math.ceil(log2(max));
+      nMaxGuesses = 1 + Math.floor(log2(max));
       secret = 1 + Math.round(Math.random()*(max-1));
       low = 1;
       high = max;
@@ -48,7 +48,8 @@
       } else if (guess > secret) {
 	  document.getElementById('response').innerHTML="That guess was too high.<br />";
       } else {
-          var guessstr = (nGuesses <= 1) ? " guess." : " guesses.";
+          var guessstr = (nGuesses <= 1) ? " guess. Nice going!" : " guesses. Nice going!";
+  	  alert('Congratulations. You guessed my number in  ' + nGuesses + guessstr );
 	  document.getElementById('response').innerHTML="Congratulations. You guessed my secret in " + nGuesses + guessstr + ".<br />";
 	  document.getElementById("gobutton").value = "Let's play!";
       }
@@ -88,7 +89,7 @@
 	  <hr>
 	  <label id="response"></label>
 	  <br />
-	  <b>Your guess:</b> <input type="text" id="guess" size="4" maxlength="4" value="0" onchange='go()'>
+	  <b>Your guess:</b> <input type="text" id="guess" size="4" maxlength="4" value="0">
 	  <input class="button" type="button" id="gobutton" value="Let's Play!" onclick='go()'>
 	</td>
       </tr>
