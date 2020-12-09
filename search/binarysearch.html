@@ -1,0 +1,110 @@
+<html>
+<head>
+</head>
+<body>
+<h1>Binary Search</h1>
+
+An efficient algorithm for solving the guessing game is known as <b>binary search</b>. It takes
+advantage of the fact that the numbers between 1 and 100 are in order from lowest to highest.
+Given that fact, by guessing the midpoint of the range each time, you can effectively eliminate
+half the numbers in the list on each guess -- hence the name <i>binary search</i>.
+
+<p>For example, suppose we do the guessing game on the numbers 1 to 16.
+<blockquote>
+<pre>
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16.
+</pre>
+</blockquote>
+<p>The optimal guess would be to guess the number at the midpoint of the range. Then after each 
+guess you can effectively eliminate (approximately) half of the remaining 
+numbers.  For example, suppose the secret number is 13. Our first guess would be 8, which is too
+low.  So we eliminate the bottom half of the range, leaving:
+<blockquote>
+<pre>
+                       9, 10, 11, 12, 13, 14, 15, 16.
+</blockquote>
+</pre>
+Our next guess would be 12, which is also too low, so we eliminate the bottom half of that range:
+<blockquote>
+<pre>
+                                     13, 14, 15, 16.
+</blockquote>
+</pre>
+Our next guess would be 14, which is too high, so we eliminate the top half of that range, giving:
+<blockquote>
+<pre>
+                                     13
+</pre>
+</blockquote>
+
+<p>Our final guess is 13, which is the secret number.  So, in this case it took us 4 guesses to find
+the secret number. 
+
+<h2>The Binary Search Algorithm</h2>
+
+Here's  a pseudocode version of the binary search algorithm for the guessing game.
+<blockquote>
+<pre>
+Repeat until your guess is correct or until you run out of numbers in the list.
+    Guess that the target number is the middle number in the list.
+    If the guess is too high,
+       Cut off the top half of the list.
+    If the guess is too low,
+       Cut off the bottom half of the list.
+    If the guess is correct,
+       Stop.
+If you ran out of numbers, the target number is not in the list.
+</pre>
+</blockquote>
+
+<p>How does that compare to the pseudocode that your team came up with?
+
+<h2>Some Observations About Binary Search</h2>
+
+<ul>
+<li>Why does the algorithm need the clause "or until you run out of numbers"?  
+<p>The reason
+is because for some binary searches the item being searched for doesn't occur in the list.  For
+example, suppose we are searching for the misspelled word "algrism" in a list of English
+words. In that case the search will conclude that the word is not in the list.
+</p>
+</li>
+<li>For list of 16 items, you need a maximum of 4 guesses to find the secret number.  For 
+a list of 64 numbers you need a maximum of 6 guesses.  Note that both of these numbers
+are powers of 2.  So 16 is 2<sup>4</sup> and 64 is 2<sup>6</sup>.   In those cases the
+number of guesses is equal to the <i>base 2 log</i> of the number -- i.e., the base 2
+logarithm of 16 is 4 and the base 2 logarithm of 64 is 6. (In more mathematical notation
+we would say <i>log<sub>2</sub> 64 = 6.</i>.)
+
+<p>What about for any arbitrary number <i>N</i>?  What's the maximum number of guesses
+in the general case?  As you might guess, the answer is related to the <i>base 2 log of N</i>.
+But you have to be a little careful here.  For example, the <i>log<sub>2</sub> 100 = 6.6438.</i>
+To figure out the maximum number of guesses in this case, we need to "round up" to 7
+guesses.
+
+<p>Do you need a calculator to figure that out? Not really.  Here's an easy way to figure
+out that maximum number of guesses for any value of <i>N</i>. Just write down the powers of 2
+in a table like this:
+
+<pre>
+X    2<sup>X</sup>
+==   ==
+0    1
+1    2
+2    4
+3    8
+4   16
+5   32
+6   64
+7  128
+8  256
+...
+</pre>
+<p>
+So, when <i>N = 100</i>, find the first number in the right column that's greater than
+or equal to 100 and the number in the left column will tell you how many guesses you need? 
+
+<p>How many guesses would be needed to guess a secret number between 1 and 1000?
+</body>
+</html>
+
