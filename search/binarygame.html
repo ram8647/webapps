@@ -28,7 +28,7 @@
     var label = document.getElementById("gobutton").value;
     if (label.startsWith("Let")) {
       max = parseInt(document.getElementById("max").value);
-      nMaxGuesses = 1 + Math.floor(log2(max));
+      nMaxGuesses = 1 + Math.floor(log2(max));              // updated
       secret = 1 + Math.round(Math.random()*(max-1));
       low = 1;
       high = max;
